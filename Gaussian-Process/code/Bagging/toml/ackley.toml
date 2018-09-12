@@ -1,0 +1,16 @@
+l1 = [0]
+l2 = [0]
+scale = [0.4]
+num_layers = [3]
+layer_size = [20]
+activation = ['relu']
+max_iter = [100]
+funct = 'ackley'
+bounds = [[-32,32],[-32,32]]
+num_train = 10
+num_test = 0
+dim = 2
+outdim = 1
+iter = 200
+K = 30
+num_models = 5

@@ -1,0 +1,91 @@
+    param lc1 = 7e-6 ;
+    param wc1 = 7e-6 ;
+    param lc2 = 7e-6 ;
+    param wc2 = 10e-6;
+    param lc3 = 5e-6 ;
+    param wc3 = 10e-6;
+
+#  param vdd33 = 3.3;
+    param vcp   = 2.2;
+
+    sweep vdd33 = { 2.97, 3.3, 3.63 };
+#  sweep vcp = { 1.0, 1.7, 2.5 };
+};
+
+file::process is "charge_pump_process"
+{
+    corner { SS, FF, TT }
+    {
+        lib "/hspice/v1p4/l0040ll_v1p4_1r.lib" "$$";
+        lib "/hspice/v1p4/l0040ll_v1p4_1r.lib" "RES_$$";
+    };
+
+    corner { SNFP, FNSP }
+    {
+        lib "/hspice/v1p4/l0040ll_v1p4_1r.lib" "$$";
+        lib "/hspice/v1p4/l0040ll_v1p4_1r.lib" "RES_TT";
+    };
+
+    temperature pll_temp = { "125", "-40" };
+    temperature pll_temp_simple = "25";
+};
+
+# define options for simulater
+file::simulation is "charge_pump"
+{
+    netlist net
+    {
+        sim_tool = "hspice64";
+#    sim_corner = TT;
+#    sim_temperature = pll_temp_simple;
+        sim_corner = { TT, FF, SS };
+        sim_temperature = pll_temp;
+#    net_proc_rel = "MUL";
+
+        net_source  = "tran.sp";
+        sim_depend  = "netlist";
+
+        extract { "up_imin", "up_iavg", "up_imax" } from "tran.mt0";
+        extract { "lo_imin", "lo_iavg", "lo_imax" } from "tran.mt0";
+    };
+};
+
+operation::specification is "charge_pump"
+{
+    const std_i   = 40;   # uA
+    var up_imin   = net::up_imin * 1e6; # turn to uA
+    var up_iavg   = net::up_iavg * 1e6; # turn to uA
+    var up_imax   = net::up_imax * 1e6; # turn to uA
+    var lo_imin   = net::lo_imin * 1e6; # turn to uA
+    var lo_iavg   = net::lo_iavg * 1e6; # turn to uA
+    var lo_imax   = net::lo_imax * 1e6; # turn to uA
+    var diff_upup = max( up_imax - up_iavg );
+    var diff_updn = max( up_iavg - up_imin );
+    var diff_loup = max( lo_imax - lo_iavg );
+    var diff_lodn = max( lo_iavg - lo_imin );
+    var sum_diff  = diff_upup + diff_updn + diff_loup + diff_lodn;
+    var deviation = max( abs( up_iavg - std_i ) ) + max( abs( lo_iavg - std_i ) );
+    var target    = sum_diff * 0.3 + deviation * 0.5;
+    fom target;
+
+    probe { up_imin, up_iavg, up_imax };
+    probe { lo_imin, lo_iavg, lo_imax };
+    probe { diff_upup, diff_updn, diff_loup, diff_lodn };
+    probe { sum_diff, deviation };
+
+    constraint diff_upup < 20;
+    constraint diff_updn < 20;
+    constraint diff_loup < 5;
+    constraint diff_lodn < 5;
+    constraint deviation < 5;
+};
+
+operation::optimization is "charge_pump_opt"
+{
+    opt_max_iter   = 1;
+    opt_max_solver = 1;
+    opt_option     = "0";
+    opt_strategy   = "TC";
+    opt_algo       = "SLSQP";
+    opt_stat       = "pf";
+};

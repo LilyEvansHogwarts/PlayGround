@@ -1,0 +1,6 @@
+$DATA1 SOURCE='HSPICE' VERSION='D-2010.03 64-BIT'
+.TITLE '*netlist'
+ gain             ugf              phase            pm                
+ temper           alter#            
+  9.227e+01        1.700e+07       -1.148e+02        6.517e+01        
+  2.500e+01        1.000e+00        

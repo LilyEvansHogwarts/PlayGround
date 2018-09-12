@@ -1,0 +1,69 @@
+* "simulator" "HSPICE" 
+* "version" "D-2010.03 64-BIT"
+* "format" "HSP"
+* "rundate" "17:04:47 08/30/2018 "
+* "netlist" "./Single_ended.sp "
+* "runtitle" "*netlist"
+* time =  0.000000000e+00 
+* temperature =  2.500000000e+01 
+*** BEGIN: Saved Operating Point ***                     
+.option 
++ gmindc= 1.000000000e-12 
+.nodeset
++ 100 = 0.000000000e+00 
++ 101 = 1.000000000e+00 
++ 100cmrr = 0.000000000e+00 
++ vcc_cmrr = 2.000000000e+00 
++ vcm_cmrr = 1.000000000e+00 
++ vdd_ac = 2.000000000e+00 
++ vdd_cmrr =-6.941024531e-01 
++ vdd_psr = 2.000000000e+00 
++ vdd_psrac = 2.000000000e+00 
++ vdd_sw = 2.000000000e+00 
++ vdd_tr = 2.000000000e+00 
++ vin_ac+ = 1.000000000e+00 
++ vin_ac- = 1.000000000e+00 
++ vin_cmrr+ = 1.000000000e+00 
++ vin_cmrr- =-6.603374442e-01 
++ vin_psr+ = 1.000000000e+00 
++ vin_sw = 1.000000000e+00 
++ vin_sw+ = 1.000000000e+00 
++ vin_sw- = 1.000000995e+00 
++ vin_tr+ = 0.000000000e+00 
++ vo_ac = 1.040908341e+00 
++ vo_cmrr =-6.603374442e-01 
++ vo_psr = 1.000000995e+00 
++ vo_sw = 1.000010948e+00 
++ vo_tr = 1.594260415e-02 
++ vss = 0.000000000e+00 
++ xac.bias = 3.704439734e-01 
++ xac.fb = 8.545160317e-01 
++ xac.net18 = 8.545160317e-01 
++ xac.net6 = 8.545160597e-01 
++ xac.net9 = 1.972189174e+00 
++ xac.net_check = 0.000000000e+00 
++ xtr.bias = 3.704439734e-01 
++ xtr.fb = 1.179125321e+00 
++ xtr.net18 = 1.179125321e+00 
++ xtr.net6 = 1.152852083e+00 
++ xtr.net9 = 1.683297097e+00 
++ xtr.net_check = 0.000000000e+00 
++ xsw.bias = 3.704439734e-01 
++ xsw.fb = 8.550662371e-01 
++ xsw.net18 = 8.550662371e-01 
++ xsw.net6 = 8.545155714e-01 
++ xsw.net9 = 1.972189271e+00 
++ xsw.net_check = 0.000000000e+00 
++ xpsr.bias = 3.704439734e-01 
++ xpsr.fb = 8.550663712e-01 
++ xpsr.net18 = 8.550663712e-01 
++ xpsr.net6 = 8.545155714e-01 
++ xpsr.net9 = 1.972189271e+00 
++ xpsr.net_check = 0.000000000e+00 
++ xcmrr.bias =-2.323658479e+00 
++ xcmrr.fb =-3.446285226e-01 
++ xcmrr.net18 =-3.446285226e-01 
++ xcmrr.net6 =-3.962849923e-01 
++ xcmrr.net9 =-6.941014053e-01 
++ xcmrr.net_check = 0.000000000e+00 
+***   END: Saved Operating Point ***                     

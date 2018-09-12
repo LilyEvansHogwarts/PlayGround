@@ -1,0 +1,51 @@
+workdir /export/home/wllv/Workspace/Paper-WEIBO/charge_pump/weibo_run/run2/
+
+des_var q_llower 3e-6    9e-6   
+des_var q_wlower 1e-6    4e-6   
+des_var q_lupper 1e-6    2e-6   
+des_var q_wupper 5e-6    20e-6  
+des_var q_lc     1e-6    4e-6   
+des_var q_wc     5e-6    20e-6  
+des_var q_lref   1e-6    4e-6   
+des_var q_wref   5e-6    20e-6  
+des_var q_lq     1e-6    4e-6   
+des_var q_wq     5e-6    20e-6  
+des_var lpdbin   0.55e-6 2e-6   
+des_var wpdbin   4e-6    15e-6  
+des_var lpdin    0.55e-6 2e-6   
+des_var wpdin    2e-6    6e-6   
+des_var luumid   0.6e-6  1.2e-6 
+des_var wuumid   5e-6    20e-6  
+des_var lumid    0.55e-6 2e-6   
+des_var wumid    8e-6    25e-6  
+des_var lp4      0.5e-6  2e-6   
+des_var wp4      1e-6    4e-6   
+des_var ln4      0.55e-6 2e-6   
+des_var wn4      1e-6    4e-6   
+des_var lnsupp   0.5e-6  2e-6   
+des_var wnsupp   1e-6    4e-6   
+des_var lnsupp2  0.8e-6  2.4e-6 
+des_var wnsupp2  1e-6    4e-6   
+des_var li10     2e-6    10e-6  
+des_var wi10     0.8e-6  4e-6   
+des_var lb1      2e-6    10e-6  
+des_var wb1      5e-6    25e-6  
+des_var lb2      2e-6    8e-6   
+des_var wb2      1e-6    3e-6   
+des_var lb3      0.5e-6  2e-6   
+des_var wb3      1e-6    6e-6   
+des_var lb4      0.55e-6 3e-6   
+des_var wb4      4e-6    16e-6  
+
+option num_spec 6
+option init_num 120
+option acq_sp 50
+option acq_sp_train 10
+option tol_no_improvement 10
+option noise_lb 1e-6
+
+option process_max_eval 1000
+option process_min_sample 5
+option min_PF 0
+option min_EI 0
+option tol_min_acq 3

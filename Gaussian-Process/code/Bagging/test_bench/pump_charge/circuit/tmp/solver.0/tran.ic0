@@ -1,0 +1,40 @@
+* "simulator" "HSPICE" 
+* "version" "D-2010.03 64-BIT"
+* "format" "HSP"
+* "rundate" "23:13:08 08/31/2018 "
+* "netlist" "/export/home/wllv/shzhang/Bagging/test_bench/test3/circuit/tmp/worker.11/tran.sp "
+* "runtitle" "* msp generated netlist file"
+* time =    0.            
+* temperature =  -40.0000        
+*** BEGIN: Saved Operating Point ***                     
+.option 
++ gmindc=  10.0000f       
+.nodeset
++ dn_net =   0.            
++ dnb_net =   0.            
++ i10u_net =   1.6351        
++ i5u_net = 965.7291m       
++ up_net =   0.            
++ upb_net =   0.            
++ vcp_net =   2.2000        
++ vdd33_net =   3.3000        
++ xi0.nb2 = 686.4160m       
++ xi0.net0119 = 187.2547m       
++ xi0.net0124 = 189.4783m       
++ xi0.net0149 = 686.4160m       
++ xi0.net0153 = 686.4160m       
++ xi0.net35 =   3.2385        
++ xi0.net47 =   3.2383        
++ xi0.net58 = 189.0067m       
++ xi0.net62 = 189.5184m       
++ xi0.net78 =   0.            
++ xi0.net79 =   3.3000        
++ xi0.net91 =   1.8733        
++ xi0.net98 =   2.4107        
++ xi0.pb1 =   2.5488        
++ xi0.pb2 =   2.6157        
++ xi0.quench =   2.1305        
++ xi0.xi40.n78 =   1.1164        
++ xi0.xi40.n79 =  21.2700m       
++ xi0.xi40.net18 =   2.8605        
+***   END: Saved Operating Point ***                     

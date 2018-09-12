@@ -1,0 +1,82 @@
+Conf path: conf
+Word dir: /export/home/wllv/Workspace/Paper-WEIBO/charge_pump/weibo_run/run2/
+q_llower: 3e-06, 9e-06
+q_wlower: 1e-06, 4e-06
+q_lupper: 1e-06, 2e-06
+q_wupper: 5e-06, 2e-05
+q_lc: 1e-06, 4e-06
+q_wc: 5e-06, 2e-05
+q_lref: 1e-06, 4e-06
+q_wref: 5e-06, 2e-05
+q_lq: 1e-06, 4e-06
+q_wq: 5e-06, 2e-05
+lpdbin: 5.5e-07, 2e-06
+wpdbin: 4e-06, 1.5e-05
+lpdin: 5.5e-07, 2e-06
+wpdin: 2e-06, 6e-06
+luumid: 6e-07, 1.2e-06
+wuumid: 5e-06, 2e-05
+lumid: 5.5e-07, 2e-06
+wumid: 8e-06, 2.5e-05
+lp4: 5e-07, 2e-06
+wp4: 1e-06, 4e-06
+ln4: 5.5e-07, 2e-06
+wn4: 1e-06, 4e-06
+lnsupp: 5e-07, 2e-06
+wnsupp: 1e-06, 4e-06
+lnsupp2: 8e-07, 2.4e-06
+wnsupp2: 1e-06, 4e-06
+li10: 2e-06, 1e-05
+wi10: 8e-07, 4e-06
+lb1: 2e-06, 1e-05
+wb1: 5e-06, 2.5e-05
+lb2: 2e-06, 8e-06
+wb2: 1e-06, 3e-06
+lb3: 5e-07, 2e-06
+wb3: 1e-06, 6e-06
+lb4: 5.5e-07, 3e-06
+wb4: 4e-06, 1.6e-05
+Option acq_sp = 50
+Option acq_sp_train = 10
+Option init_num = 120
+Option min_EI = 0
+Option min_PF = 0
+Option noise_lb = 1e-06
+Option num_spec = 6
+Option process_max_eval = 1000
+Option process_min_sample = 5
+Option tol_min_acq = 3
+Option tol_no_improvement = 10
+MPI process:    2
+OpenMP threads: 1
+Init num: 120
+Slave world 0 finished initializing
+Initialization done
+Finished initial GP training
+Finished initial splitting
+Started Optimizing
+After 870 seconds, 158 iters, new best from world 0: 25.3808   15.18  25.966   -4.34   -3.17   -4.42
+After 1067 seconds, 170 iters, new best from world 0: 21.5209   12.47  17.433    -4.6   -4.25   -4.59
+After 1252 seconds, 179 iters, new best from world 0: 15.304  -0.45   4.73  -3.16  -1.74  -4.02
+After 2381 seconds, 220 iters, new best from world 0: 13.233  -1.14   3.07  -4.54  -3.83  -4.67
+After 2919 seconds, 243 iters, new best from world 0: 13.534   0.02   2.63   -4.6  -4.07  -4.32
+After 2942 seconds, 244 iters, new best from world 0: 12.984  -1.01   1.42  -4.42  -3.76  -4.37
+After 2966 seconds, 245 iters, new best from world 0: 12.755  -1.74    1.3  -4.46   -3.6  -4.39
+After 3055 seconds, 249 iters, new best from world 0: 12.056  -3.49   0.02  -4.25  -3.11  -4.39
+After 3079 seconds, 250 iters, new best from world 0:       11.56       -4.18 3.55271e-15       -4.54       -3.53       -4.53
+After 3148 seconds, 253 iters, new best from world 0: 12.019  -4.49  -0.42  -3.99  -2.22  -4.29
+After 3226 seconds, 256 iters, new best from world 0: 9.472 -5.23 -4.11 -4.85 -4.72 -4.71
+After 3899 seconds, 278 iters, new best from world 0: 8.656 -5.83  -6.2 -4.85  -4.8 -4.68
+After 4306 seconds, 289 iters, new best from world 0: 8.596 -7.18 -5.43 -4.75 -4.57 -4.65
+After 5394 seconds, 319 iters, new best from world 0: 6.912 -8.89 -9.55 -4.66 -4.31 -4.73
+After 5576 seconds, 325 iters, new best from world 0:  6.589  -8.51 -10.63   -4.7  -4.63  -4.74
+After 5614 seconds, 326 iters, new best from world 0:  5.453 -10.99 -12.53  -4.57   -4.2  -4.72
+After 6691 seconds, 351 iters, new best from world 0:   5.41 -10.77 -12.89  -4.55  -4.29  -4.68
+After 12116 seconds, 446 iters, new best from world 0:   5.35 -10.75 -13.08  -4.44  -4.23   -4.8
+After 15525 seconds, 487 iters, new best from world 0:  4.918  -11.3 -13.16  -4.77  -4.71   -4.8
+After 33404 seconds, 659 iters, new best from world 0:  4.505 -11.85 -13.91  -4.94  -4.85  -4.66
+After 41592 seconds, 710 iters, new best from world 0:  4.265 -12.57  -14.7  -4.84  -4.69  -4.39
+Slave world 0 no remaining eval
+No running process, stop all processes
+Slave world 0 stopped
+Master world 1 stopped
