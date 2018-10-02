@@ -1,0 +1,8 @@
+scale = [0.4]
+max_iter = [100]
+funct = "branin"
+bounds = [[-5,10],[0,15]]
+num_train = 1000
+num_test = 10
+dim = 2
+outdim = 1
