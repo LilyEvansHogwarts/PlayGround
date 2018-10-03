@@ -6,6 +6,7 @@ from src.GP import GP
 from src.NN_GP import NN_GP
 from src.NN_scale_GP import NN_scale_GP
 from src.activations import *
+from src.Multifidelity_GP import Multifidelity_GP
 
 argv = sys.argv[1:]
 conf = toml.load(argv[0])
@@ -36,9 +37,9 @@ train_y = dataset['train_y']
 test_x = dataset['test_x']
 test_y = dataset['test_y']
 
-# model = GP(train_x, train_y, bfgs_iter=max_iter, debug=False)
+model = GP(train_x, train_y, bfgs_iter=max_iter, debug=False)
 # model = NN_GP(train_x, train_y, [layer_size]*num_layers, [get_act_f(activations)]*num_layers, l1=l1, l2=l2, bfgs_iter=max_iter, debug=True)
-model = NN_scale_GP(train_x, train_y, [layer_size]*num_layers, [get_act_f(activations)]*num_layers, l1=l1, l2=l2, bfgs_iter=max_iter, debug=True)
+# model = NN_scale_GP(train_x, train_y, [layer_size]*num_layers, [get_act_f(activations)]*num_layers, l1=l1, l2=l2, bfgs_iter=max_iter, debug=True)
 theta = model.rand_theta(scale=scale)
 print(model.neg_likelihood(theta))
 model.train(theta)

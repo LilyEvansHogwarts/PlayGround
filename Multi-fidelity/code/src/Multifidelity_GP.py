@@ -15,6 +15,8 @@ class Multifidelity_GP:
         self.high_x = high_x
         self.high_y = high_y
         self.standardization()
+        self.y = np.concatenate((self.low_y.reshape(self.low_y.size), self.high_y.reshape(self.high_y.size)))
+        self.y = self.y.reshape(1,self.y.size)
         self.dim = self.low_x.shape[0]
         self.num_low = self.low_x.shape[1]
         self.num_high = self.high_x.shape[1]
@@ -22,21 +24,18 @@ class Multifidelity_GP:
         self.num_param = 5 + 2*self.dim
 
     def standardization(self):
-        self.low_in_mean = self.low_x.mean(axis=1)
-        self.low_in_std = self.low_x.std(axis=1)
-        self.low_x = ((self.low_x.T - self.low_in_mean)/self.low_in_std).T
+        self.in_mean = np.concatenate((self.low_x.T, self.high_x.T)).mean(axis=0)
+        self.in_std = np.concatenate((self.low_x.T, self.high_x.T)).std(axis=0)
+        self.low_x = ((self.low_x.T - self.in_mean)/self.in_std).T
+        self.high_x = ((self.high_x.T - self.in_mean)/self.in_std).T
 
         self.low_out_mean = self.low_y.mean()
         self.low_out_std = self.low_y.std()
         self.low_y = (self.low_y - self.low_out_mean)/self.low_out_std
 
-        self.high_in_mean = self.high_x.mean(axis=1)
-        self.high_in_std = self.high_x.std(axis=1)
-        self.high_x = ((self.high_x.T - self.high_in_mean)/self.high_in_std).T
-
-        self.high_out_mean = self.high_y.mean()
-        self.high_out_std = self.high_y.std()
-        self.high_y = (self.high_y - self.high_out_mean)/self.high_out_std
+        self.out_mean = self.high_y.mean()
+        self.out_std = self.high_y.std()
+        self.high_y = (self.high_y - self.out_mean)/self.out_std
 
     def rand_theta(self):
         theta = np.random.randn(self.num_param)
@@ -70,10 +69,8 @@ class Multifidelity_GP:
         K = np.vstack((np.hstack((K_LL, K_LH)),np.hstack((K_LH.T, K_HH))))
         L = np.linalg.cholesky(K)
 
-        y = np.concatenate((self.low_y.reshape(self.low_y.size), self.high_y.reshape(self.high_y.size)))
-        y = y.reshape(1,y.size)
         logDetK = np.sum(np.log(np.diag(L)))
-        datafit = np.dot(y, chol_inv(L, y.T))
+        datafit = np.dot(self.y, chol_inv(L, self.y.T))
         neg_likelihood = 0.5*datafit + logDetK + 0.5*self.num*np.log(2*np.pi)
         neg_likelihood = neg_likelihood.sum()
         if np.isnan(neg_likelihood):
@@ -120,9 +117,21 @@ class Multifidelity_GP:
             print('Fail to build GP model')
             sys.exit(1)
 
+        self.alpha = chol_inv(self.L, self.y.T)
+
+    def predict(self, test_x):
+        test_x = ((test_x.T - self.in_mean)/self.in_std).T
         rho, low_sn2, high_sn2, low_hyp, high_hyp = self.split_theta(self.theta)
-        y = np.concatenate((self.low_y.reshape(self.low_y.size), self.high_y.reshape(self.high_y.size)))
-        y = y.reshape(1,y.size)
+        psi1 = rho * self.kernel(test_x, self.low_x, low_hyp)
+        psi2 = rho**2 * self.kernel(test_x, self.high_x, low_hyp) + self.kernel(test_x, self.high_x, high_hyp)
+        psi = np.hstack((psi1, psi2))
+        py = np.dot(psi, self.alpha)
+        py = self.out_mean + py * self.out_std
+        beta = chol_inv(self.L, psi.T)
+        ps2 = rho**2 * self.kernel(test_x, test_x, low_hyp) + self.kernel(test_x, test_x, high_hyp) - np.dot(psi, beta)
+        ps2 = ps2 * (self.out_std**2)
+        return py, ps2
+
 
 
 
