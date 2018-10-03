@@ -8,7 +8,7 @@ from .activations import *
 
 def scale_x(log_lscale, x):
     lscale = np.exp(log_lscale)
-    return np.true_divide(x.T, lscale).T
+    return (x.T/lscale).T
 
 def chol_inv(L, y):
     v = np.linalg.solve(L, y)
@@ -64,6 +64,7 @@ class NN_scale_GP:
         logDetA = 2*np.log(np.diag(LA)).sum()
         datafit = (np.dot(self.train_y, self.train_y.T) - np.dot(Phi_y.T, chol_inv(LA, Phi_y)))/sn2
         neg_likelihood = 0.5*(datafit + logDetA + self.num_train*np.log(2*np.pi*sn2) - self.m*np.log(self.m*sn2/sp2))
+        neg_likelihood = neg_likelihood.sum()
         if np.isnan(neg_likelihood):
             neg_likelihood = np.inf
 

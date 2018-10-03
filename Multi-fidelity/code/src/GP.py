@@ -79,7 +79,8 @@ class GP:
         neg_likelihood = np.inf
         logDetK = np.sum(np.log(np.diag(L)))
         alpha = chol_inv(L, self.train_y.T)
-        neg_likelihood = 0.5*(np.dot(self.train_y, alpha).sum() + self.num_train * np.log(2*np.pi)) + logDetK
+        neg_likelihood = 0.5*(np.dot(self.train_y, alpha) + self.num_train * np.log(2*np.pi)) + logDetK
+        neg_likelihood = neg_likelihood.sum()
         if(np.isnan(neg_likelihood)):
             neg_likelihood = np.inf
 

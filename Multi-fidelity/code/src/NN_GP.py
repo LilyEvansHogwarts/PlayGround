@@ -56,6 +56,7 @@ class NN_GP:
         datafit = (np.dot(self.train_y, self.train_y.T) - np.dot(Phi_y.T, chol_inv(LA, Phi_y)))/sn2
         logDetA = np.sum(np.log(np.diag(LA)))
         neg_likelihood = 0.5*datafit + logDetA + 0.5 * self.num_train * np.log(2*np.pi*sn2) - 0.5 * self.m * np.log(self.m * sn2 / sp2)
+        neg_likelihood = neg_likelihood.sum()
         if(np.isnan(neg_likelihood)):
             neg_likelihood = np.inf
 
