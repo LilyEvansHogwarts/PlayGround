@@ -10,7 +10,7 @@ class NAR_GP:
         self.low_x = low_x
         self.low_y = low_y
         self.high_x = high_x
-        self.high_y = self.high_y
+        self.high_y = high_y
         self.bfgs_iter = bfgs_iter
         self.debug = debug
         self.train()
@@ -19,7 +19,7 @@ class NAR_GP:
         self.model1 = GP(self.low_x, self.low_y, bfgs_iter=self.bfgs_iter, debug=self.debug)
         theta1 = self.model1.rand_theta(scale=0.4)
         self.model1.train(theta1)
-        py, ps2 = self.model1.predict(high_x)
+        py, ps2 = self.model1.predict(self.high_x)
 
         x = np.vstack((self.high_x, py.T))
         self.model2 = GP(x, self.high_y, bfgs_iter=self.bfgs_iter, debug=self.debug)
