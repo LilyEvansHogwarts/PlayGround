@@ -3,37 +3,28 @@ import autograd.numpy as np
 import matplotlib.pyplot as plt
 
 def high(x):
-    return (6.0*x-2.0)**2 * np.sin(12.*x-4.0)
+    return (6.0*x-2.0)**2 * np.sin(12.0*x-4.0)
 
 def low(x):
     return 0.5*high(x) + 10.0*(x-0.5) - 5.0
-num_low = 10
-num_high = 3
+num_low = 8
+num_high = 4
 num_test = 200
 
 low_x = np.arange(0,num_low)/(1.0*num_low)
 low_x = np.concatenate((low_x, np.array([1.0])))
-low_y = np.arange(0,num_low+1)
-for i in range(num_low+1):
-    low_y[i] = low(low_x[i])
 low_x = low_x.reshape(1,num_low+1)
-low_y = low_y.reshape(1,num_low+1)
+low_y = low(low_x)
 
 high_x = np.arange(0,num_high)/(1.0*num_high)
 high_x = np.concatenate((high_x, np.array([1.0])))
-high_y = np.arange(0,num_high+1)
-for i in range(num_high+1):
-    high_y[i] = high(high_x[i])
 high_x = high_x.reshape(1,num_high+1)
-high_y = high_y.reshape(1,num_high+1)
+high_y = high(high_x)
 
 test_x = np.arange(0,num_test)/(1.0*num_test)
 test_x = np.concatenate((test_x, np.array([1.0])))
-test_y = np.arange(0,num_test+1)
-for i in range(num_test+1):
-    test_y[i] = high(test_x[i])
 test_x = test_x.reshape(1,num_test+1)
-test_y = test_y.reshape(1,num_test+1)
+test_y = high(test_x)
 
 model = Multifidelity_GP(low_x, low_y, high_x, high_y, bfgs_iter=100, debug=True)
 theta = model.rand_theta()
