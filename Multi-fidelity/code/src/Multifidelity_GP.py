@@ -22,6 +22,8 @@ class Multifidelity_GP:
         self.num_high = self.high_x.shape[1]
         self.num = self.num_low + self.num_high
         self.num_param = 5 + 2*self.dim
+        self.bfgs_iter = bfgs_iter
+        self.debug = debug
 
     def standardization(self):
         self.in_mean = np.concatenate((self.low_x.T, self.high_x.T)).mean(axis=0)
@@ -44,7 +46,7 @@ class Multifidelity_GP:
         theta[2] = np.log(np.std(self.high_y))
         for i in range(self.dim):
             theta[4+i] = np.maximum(-100, np.log(0.5*(self.low_x[i].max() - self.low_x[i].min())))
-            theta[4+self.dim+i] = np.maximum(-100, np.log(0.5*(self.high_x[i].max() - self.high_x[i].min())))
+            theta[5+self.dim+i] = np.maximum(-100, np.log(0.5*(self.high_x[i].max() - self.high_x[i].min())))
         return theta
 
     def split_theta(self, theta):

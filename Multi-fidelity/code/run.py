@@ -6,7 +6,6 @@ from src.GP import GP
 from src.NN_GP import NN_GP
 from src.NN_scale_GP import NN_scale_GP
 from src.activations import *
-from src.Multifidelity_GP import Multifidelity_GP
 
 argv = sys.argv[1:]
 conf = toml.load(argv[0])
