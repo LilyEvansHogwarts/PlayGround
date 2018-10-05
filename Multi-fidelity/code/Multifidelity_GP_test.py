@@ -7,7 +7,7 @@ def high(x):
 
 def low(x):
     return 0.5*high(x) + 10.0*(x-0.5) - 5.0
-num_low = 8
+num_low = 10
 num_high = 4
 num_test = 200
 
@@ -32,7 +32,7 @@ dataset['low_y'] = low_y
 dataset['high_x'] = high_x
 dataset['high_y'] = high_y
 
-model = Bagging('Multifidelity_GP', 10, dataset, bfgs_iter=100, debug=True)
+model = Bagging('Multifidelity_GP', 10, dataset, bfgs_iter=100, debug=False)
 model.construct_model()
 model.train(scale=0.4)
 py, ps2 = model.predict(test_x)

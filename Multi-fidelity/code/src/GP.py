@@ -81,13 +81,13 @@ class GP:
         gloss = grad(loss)
 
         try:
-            fmin_l_bfgs_b(loss, theta0, gloss, maxiter=self.bfgs_iter, m = 100, iprint=1)
+            fmin_l_bfgs_b(loss, theta0, gloss, maxiter=self.bfgs_iter, m = 100, iprint=self.debug)
         except np.linalg.LinAlgError:
             print('Increase noise term and re-optimization')
             theta0 = np.copy(self.theta)
             theta0[0] += np.log(10)
             try:
-                fmin_l_bfgs_b(loss, theta0, gloss, maxiter=self.bfgs_iter, m=10, iprint=1)
+                fmin_l_bfgs_b(loss, theta0, gloss, maxiter=self.bfgs_iter, m=10, iprint=self.debug)
             except:
                 print('Exception caught, L-BFGS early stopping...')
                 if self.debug:
