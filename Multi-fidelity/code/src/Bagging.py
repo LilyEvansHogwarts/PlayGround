@@ -17,6 +17,7 @@ class Bagging:
         self.l1 = l1
         self.l2 = l2
         self.standardization()
+        self.construct_model()
 
     def standardization(self):
         if self.dataset.has_key('train_x'):
@@ -66,6 +67,11 @@ class Bagging:
             tmp_py, tmp_ps2 = self.models[i].predict(test_x)
             py += tmp_py/self.num_models
             ps2 += (tmp_ps2 + np.square(tmp_py))/self.num_models
+            if self.debug:
+                print('tmp_py',tmp_py.shape)
+                print('tmp_ps2',tmp_ps2.shape)
+                print('py',py.shape)
+                print('ps2',ps2.shape)
         ps2 -= np.square(py)
         py = self.out_mean + py * self.out_std
         ps2 = ps2 * (self.out_std**2)
