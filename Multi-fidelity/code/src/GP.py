@@ -14,40 +14,17 @@ def chol_inv(L, y):
     return np.linalg.solve(L.T, v)
 
 class GP:
-    def __init__(self, train_x, train_y, bfgs_iter=100, debug=True):
-        self.train_x = train_x
-        self.train_y = train_y
+    def __init__(self, dataset, bfgs_iter=100, debug=True):
+        self.train_x = dataset['train_x']
+        self.train_y = dataset['train_y']
         self.debug = debug
         self.bfgs_iter = bfgs_iter
-        self.standardization()
         self.dim = self.train_x.shape[0]
         self.num_train = self.train_x.shape[1]
         self.num_param = 2+self.dim # log_sn2, output_scale, lengthscales
         self.loss = np.inf
 
-    def standardization(self):
-        '''
-        self.in_mean: (self.dim,) self.in_std: (self.dim,)
-        self.out_mean: (self.outdim,) self.out_std: (self.outdim,)
-        '''
-        # standardize train_x
-        self.in_mean = self.train_x.mean(axis=1)
-        self.in_std = self.train_x.std(axis=1)
-        self.train_x = ((self.train_x.T - self.in_mean)/self.in_std).T
-        
-        # standardize train_y
-        self.out_mean = self.train_y.mean()
-        self.out_std = self.train_y.std()
-        self.train_y = (self.train_y - self.out_mean)/self.out_std
-        if self.debug:
-            print('self.in_mean',self.in_mean)
-            print('self.in_std',self.in_std)
-            print('self.out_mean',self.out_mean)
-            print('self.out_std',self.out_std)
-            print('train_x.shape',self.train_x.shape)
-            print('train_y.shape',self.train_y.shape)
-
-    def rand_theta(self, scale=1):
+    def rand_theta(self, scale=1.0):
         theta = scale * np.random.randn(self.num_param)
         theta[0] = np.log(np.std(self.train_y))
         for i in range(self.dim):
@@ -130,10 +107,8 @@ class GP:
     def predict(self, test_x):
         sn2 = np.exp(self.theta[0])
         hyp = self.theta[1:]
-        test_x = ((test_x.T - self.in_mean)/self.in_std).T
         tmp = self.kernel(test_x, self.train_x, hyp)
-        py = self.out_mean + np.dot(tmp, self.alpha) * self.out_std
+        py = np.dot(tmp, self.alpha)
         ps2 = sn2 + self.kernel(test_x, test_x, hyp) - np.dot(tmp, chol_inv(self.L, tmp.T))
-        ps2 = ps2 * (self.out_std**2)
         return py, ps2
 

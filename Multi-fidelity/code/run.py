@@ -2,14 +2,14 @@ import sys
 import toml
 from get_dataset import *
 import random
-from src.GP import GP
-from src.NN_GP import NN_GP
-from src.NN_scale_GP import NN_scale_GP
+from src.Bagging import Bagging
 from src.activations import *
 
 argv = sys.argv[1:]
 conf = toml.load(argv[0])
 
+name = conf['name']
+num_models = conf['num_models']
 scale = conf['scale']
 l1 = conf['l1']
 l2 = conf['l2']
@@ -31,19 +31,14 @@ dataset = get_dataset(main_f, num_train, num_test, dim, outdim, bounds)
 for k in dataset.keys():
     print(k,dataset[k].shape)
 
-train_x = dataset['train_x']
-train_y = dataset['train_y']
-test_x = dataset['test_x']
-test_y = dataset['test_y']
+dataset['train_y'] = dataset['train_y']
+dataset['test_y'] = dataset['test_y']
 
-model = GP(train_x, train_y, bfgs_iter=max_iter, debug=False)
-# model = NN_GP(train_x, train_y, [layer_size]*num_layers, [get_act_f(activations)]*num_layers, l1=l1, l2=l2, bfgs_iter=max_iter, debug=True)
-# model = NN_scale_GP(train_x, train_y, [layer_size]*num_layers, [get_act_f(activations)]*num_layers, l1=l1, l2=l2, bfgs_iter=max_iter, debug=True)
-theta = model.rand_theta(scale=scale)
-print(model.neg_likelihood(theta))
-model.train(theta)
-py, ps2 = model.predict(test_x)
+model = Bagging(name, num_models, dataset, bfgs_iter=max_iter, debug=False, layer_sizes=[layer_size]*num_layers, activations=[get_act_f(activations)]*num_layers, l1=l1, l2=l2)
+model.construct_model()
+model.train(scale=scale)
+py, ps2 = model.predict(dataset['test_x'])
 print('py',py.T)
-print('true',test_y)
+print('true',dataset['test_y'])
 print('ps2',np.diag(ps2))
-print('delta',test_y - py.T)
+print('delta',dataset['test_y'] - py.T)

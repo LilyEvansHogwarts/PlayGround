@@ -15,10 +15,9 @@ def chol_inv(L, y):
     return np.linalg.solve(L.T, v)
 
 class NN_scale_GP:
-    def __init__(self, train_x, train_y, layer_sizes, activations, l1=0, l2=0, bfgs_iter=100, debug=True):
-        self.train_x = train_x
-        self.train_y = train_y
-        self.standardization()
+    def __init__(self, dataset, layer_sizes, activations, l1=0, l2=0, bfgs_iter=100, debug=True):
+        self.train_x = dataset['train_x']
+        self.train_y = dataset['train_y']
         self.nn = NN(layer_sizes, activations)
         self.l1 = l1
         self.l2 = l2
@@ -29,14 +28,6 @@ class NN_scale_GP:
         self.m = self.nn.layer_sizes[-1]
         self.num_param = 2 + self.dim + self.nn.num_param(self.dim)
         self.loss = np.inf
-
-    def standardization(self):
-        self.in_mean = self.train_x.mean(axis=1)
-        self.in_std = self.train_x.std(axis=1)
-        self.train_x = ((self.train_x.T - self.in_mean)/self.in_std).T
-        self.out_mean = self.train_y.mean()
-        self.out_std = self.train_y.std()
-        self.train_y = (self.train_y - self.out_mean)/self.out_std
 
     def rand_theta(self, scale=1.0):
         theta = scale * np.random.randn(self.num_param)
@@ -119,12 +110,10 @@ class NN_scale_GP:
 
     def predict(self, test_x):
         sn2, sp2, log_lscale, w = self.split_theta(self.theta)
-        test_x = ((test_x.T - self.in_mean)/self.in_std).T
         scaled_x = scale_x(log_lscale, test_x)
         phi = self.nn.predict(w, scaled_x)
-        py = self.out_mean + np.dot(phi.T, self.alpha) * self.out_std
+        py = np.dot(phi.T, self.alpha)
         ps2 = sn2 + sn2 * np.dot(phi.T, chol_inv(self.LA, phi))
-        ps2 = ps2 * (self.out_std**2)
         return py, ps2
 
 

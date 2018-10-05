@@ -9,12 +9,11 @@ def chol_inv(L, y):
     return np.linalg.solve(L.T, v)
 
 class Multifidelity_GP:
-    def __init__(self, low_x, low_y, high_x, high_y, bfgs_iter=100, debug=True):
-        self.low_x = low_x
-        self.low_y = low_y
-        self.high_x = high_x
-        self.high_y = high_y
-        self.standardization()
+    def __init__(self, dataset, bfgs_iter=100, debug=True):
+        self.low_x = dataset['low_x']
+        self.low_y = dataset['low_y']
+        self.high_x = dataset['high_x']
+        self.high_y = dataset['high_y']
         self.y = np.concatenate((self.low_y.reshape(self.low_y.size), self.high_y.reshape(self.high_y.size)))
         self.y = self.y.reshape(1,self.y.size)
         self.dim = self.low_x.shape[0]
@@ -25,21 +24,7 @@ class Multifidelity_GP:
         self.bfgs_iter = bfgs_iter
         self.debug = debug
 
-    def standardization(self):
-        self.in_mean = np.concatenate((self.low_x.T, self.high_x.T)).mean(axis=0)
-        self.in_std = np.concatenate((self.low_x.T, self.high_x.T)).std(axis=0)
-        self.low_x = ((self.low_x.T - self.in_mean)/self.in_std).T
-        self.high_x = ((self.high_x.T - self.in_mean)/self.in_std).T
-
-        self.low_out_mean = self.low_y.mean()
-        self.low_out_std = self.low_y.std()
-        self.low_y = (self.low_y - self.low_out_mean)/self.low_out_std
-
-        self.out_mean = self.high_y.mean()
-        self.out_std = self.high_y.std()
-        self.high_y = (self.high_y - self.out_mean)/self.out_std
-
-    def rand_theta(self):
+    def rand_theta(self, scale=1.0):
         theta = np.random.randn(self.num_param)
         theta[0] = 1.0
         theta[1] = np.log(np.std(self.low_y))
@@ -122,16 +107,13 @@ class Multifidelity_GP:
         self.alpha = chol_inv(self.L, self.y.T)
 
     def predict(self, test_x):
-        test_x = ((test_x.T - self.in_mean)/self.in_std).T
         rho, low_sn2, high_sn2, low_hyp, high_hyp = self.split_theta(self.theta)
         psi1 = rho * self.kernel(test_x, self.low_x, low_hyp)
         psi2 = rho**2 * self.kernel(test_x, self.high_x, low_hyp) + self.kernel(test_x, self.high_x, high_hyp)
         psi = np.hstack((psi1, psi2))
         py = np.dot(psi, self.alpha)
-        py = self.out_mean + py * self.out_std
         beta = chol_inv(self.L, psi.T)
         ps2 = rho**2 * self.kernel(test_x, test_x, low_hyp) + self.kernel(test_x, test_x, high_hyp) - np.dot(psi, beta)
-        ps2 = ps2 * (self.out_std**2)
         return py, ps2
 
 

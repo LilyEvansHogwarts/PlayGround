@@ -6,11 +6,11 @@ import sys
 from .GP import GP
 
 class NAR_GP:
-    def __init__(self, low_x, low_y, high_x, high_y, bfgs_iter=100, debug=True):
-        self.low_x = low_x
-        self.low_y = low_y
-        self.high_x = high_x
-        self.high_y = high_y
+    def __init__(self, dataset, bfgs_iter=100, debug=True):
+        self.low_x = dataset['low_x']
+        self.low_y = dataset['low_y']
+        self.high_x = dataset['high_x']
+        self.high_y = dataset['high_y']
         self.bfgs_iter = bfgs_iter
         self.debug = debug
         self.train()
@@ -30,5 +30,10 @@ class NAR_GP:
         py, ps2 = self.model1.predict(test_x)
         x = np.vstack((test_x, py.T))
         return self.model2.predict(x)
+
+    def predict_tmp(self, test_x):
+        nsamples = 200
+        py, ps2 = self.model1.predict(test_x)
+
 
 
