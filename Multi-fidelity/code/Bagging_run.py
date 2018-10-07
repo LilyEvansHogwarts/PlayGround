@@ -31,13 +31,13 @@ dataset = get_dataset(main_f, num_train, num_test, dim, outdim, bounds)
 for k in dataset.keys():
     print(k,dataset[k].shape)
 
-dataset['train_y'] = dataset['train_y'][0]
-dataset['test_y'] = dataset['test_y'][0]
+dataset['train_y'] = dataset['train_y']
+dataset['test_y'] = dataset['test_y']
 
-model = Bagging(name, num_models, dataset, bfgs_iter=max_iter, debug=False, layer_sizes=[layer_size]*num_layers, activations=[get_act_f(activations)]*num_layers, l1=l1, l2=l2)
+model = Bagging(name, num_models, dataset, bfgs_iter=max_iter[0], debug=True, layer_sizes=[layer_size[0]]*num_layers[0], activations=[get_act_f(activations[0])]*num_layers[0], l1=l1[0], l2=l2[0])
 model.train(scale=scale)
 py, ps2 = model.predict(dataset['test_x'])
-print('py',py.T)
+print('py',py)
 print('true',dataset['test_y'])
 print('ps2',np.diag(ps2))
-print('delta',dataset['test_y'] - py.T)
+print('delta',dataset['test_y'] - py)

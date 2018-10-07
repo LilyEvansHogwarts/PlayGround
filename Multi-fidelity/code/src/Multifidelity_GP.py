@@ -24,7 +24,7 @@ class Multifidelity_GP:
         self.bfgs_iter = bfgs_iter
         self.debug = debug
 
-    def rand_theta(self, scale=1.0):
+    def rand_theta(self, scale):
         theta = scale * np.random.randn(self.num_param)
         theta[0] = 1.0
         theta[1] = np.log(np.std(self.low_y))
@@ -71,7 +71,8 @@ class Multifidelity_GP:
 
         return neg_likelihood
 
-    def train(self, theta):
+    def train(self, scale=1.0):
+        theta = self.rand_theta(scale)
         self.loss = np.inf
         theta0 = np.copy(theta)
         self.theta = np.copy(theta)
@@ -111,7 +112,7 @@ class Multifidelity_GP:
         psi1 = rho * self.kernel(test_x, self.low_x, low_hyp)
         psi2 = rho**2 * self.kernel(test_x, self.high_x, low_hyp) + self.kernel(test_x, self.high_x, high_hyp)
         psi = np.hstack((psi1, psi2))
-        py = np.dot(psi, self.alpha)
+        py = np.dot(psi, self.alpha).reshape(-1)
         beta = chol_inv(self.L, psi.T)
         ps2 = rho**2 * self.kernel(test_x, test_x, low_hyp) + self.kernel(test_x, test_x, high_hyp) - np.dot(psi, beta)
         return py, ps2

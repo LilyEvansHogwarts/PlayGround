@@ -20,6 +20,7 @@ class Bagging:
         self.construct_model()
 
     def standardization(self):
+        print('Bagging, start standardization...')
         if self.dataset.has_key('train_x'):
             self.in_mean = self.dataset['train_x'].mean(axis=1)
             self.in_std = self.dataset['train_x'].std(axis=1)
@@ -40,8 +41,10 @@ class Bagging:
             self.out_mean = self.dataset['high_y'].mean()
             self.out_std = self.dataset['high_y'].std()
             self.dataset['high_y'] = (self.dataset['high_y'] - self.out_mean)/self.out_std
+        print('Bagging, finish standardization')
 
     def construct_model(self):
+        print('Bagging, start construct model...')
         if self.name == 'GP':
             self.models = [GP(self.dataset, bfgs_iter=self.bfgs_iter, debug=self.debug) for i in range(self.num_models)]
         elif self.name == 'Multifidelity_GP':
@@ -53,23 +56,24 @@ class Bagging:
         else:
             print('There is no such gaussian process models as', self.name)
             sys.exit(1)
+        print('Bagging, finish construct models')
 
     def train(self, scale=1.0):
         for i in range(self.num_models):
-            theta = self.models[i].rand_theta(scale=scale)
-            self.models[i].train(theta)
+            self.models[i].train(scale=scale)
 
     def predict(self, test_x):
         test_x = ((test_x.T - self.in_mean)/self.in_std).T
-        py = np.zeros((test_x.shape[1],1))
+        py = np.zeros((test_x.shape[1]))
         ps2 = np.zeros((test_x.shape[1], test_x.shape[1]))
         for i in range(self.num_models):
             tmp_py, tmp_ps2 = self.models[i].predict(test_x)
-            py += tmp_py/self.num_models
-            ps2 += (tmp_ps2 + np.square(tmp_py))/self.num_models
             if self.debug:
                 print('tmp_py',tmp_py.shape)
                 print('tmp_ps2',tmp_ps2.shape)
+            py += tmp_py/self.num_models
+            ps2 += (tmp_ps2 + np.square(tmp_py))/self.num_models
+            if self.debug:
                 print('py',py.shape)
                 print('ps2',ps2.shape)
         ps2 -= np.square(py)

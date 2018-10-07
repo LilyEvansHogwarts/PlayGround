@@ -27,9 +27,9 @@ class NN_scale_GP:
         self.num_train = self.train_x.shape[1]
         self.m = self.nn.layer_sizes[-1]
         self.num_param = 2 + self.dim + self.nn.num_param(self.dim)
-        self.loss = np.inf
+        self.train_y = self.train_y.reshape(-1)
 
-    def rand_theta(self, scale=1.0):
+    def rand_theta(self, scale):
         theta = scale * np.random.randn(self.num_param)
         theta[0] = np.log(np.std(self.train_y)/2)
         theta[1] = np.log(np.std(self.train_y))
@@ -72,7 +72,8 @@ class NN_scale_GP:
 
         return neg_likelihood
 
-    def train(self, theta):
+    def train(self, scale=1.0):
+        theta = self.rand_theta(scale)
         self.loss = np.inf
         theta0 = np.copy(theta)
         self.theta = np.copy(theta)
