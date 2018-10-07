@@ -25,7 +25,7 @@ class Multifidelity_GP:
         self.debug = debug
 
     def rand_theta(self, scale=1.0):
-        theta = np.random.randn(self.num_param)
+        theta = scale * np.random.randn(self.num_param)
         theta[0] = 1.0
         theta[1] = np.log(np.std(self.low_y))
         theta[2] = np.log(np.std(self.high_y))

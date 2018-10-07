@@ -4,12 +4,13 @@ from autograd import grad
 from scipy.optimize import fmin_l_bfgs_b
 import traceback
 import sys
+from .activations import *
 
 class BO:
-    def __init__(self, name, num_models, dataset, bfgs_iter=100, debug=False, num_layers=[], layer_sizes=[], activations=[], l1=0, l2=0, scale=[]):
+    def __init__(self, name, num_models, dataset, bfgs_iter=100, debug=False, scale=[], num_layers=[], layer_sizes=[], activations=[], l1=0, l2=0):
         self.name = name
         self.num_models = num_models
-        self.dataset = np.copy(dataset)
+        self.dataset = dataset
         self.bfgs_iter = bfgs_iter
         self.debug = debug
         self.num_layers = np.copy(num_layers)
@@ -19,6 +20,9 @@ class BO:
         self.l2 = l2
         self.scale = np.copy(scale)
         self.construct_model()
+        self.best_constr = np.inf
+        self.best_y = np.zeros(self.outdim)
+        self.best_y[0] = np.inf
         # get best_y from the dataset
         if self.dataset.has_key('train_x'):
             self.get_best_y(self.dataset['train_x'], self.dataset['train_y'])
@@ -36,10 +40,14 @@ class BO:
         # construct gaussian process model for each output index
         self.models = []
         for i in range(self.outdim):
-            layer_sizes = [self.layer_sizes[i]]*self.num_layers[i]
-            act = [get_act_f(self.activations[i])]*self.num_layers[i]
-            model = Bagging(self.name, self.num_models, self.dataset, bfgs_iter=self.bfgs_iter, debug=self.debug, layer_sizes=layer_sizes, activations=act, l1=self.l1, l2=self.l2)
-            model.train(scale=self.scale[i])
+            if self.name == 'NN_GP' or self.name == 'NN_scale_GP':
+                layer_sizes = [self.layer_sizes[i]]*self.num_layers[i]
+                act = [get_act_f(self.activations[i])]*self.num_layers[i]
+                model = Bagging(self.name, self.num_models, self.dataset, bfgs_iter=self.bfgs_iter[i], debug=self.debug, layer_sizes=layer_sizes, activations=act, l1=self.l1[i], l2=self.l2[i])
+                model.train(scale=self.scale[i])
+            else:
+                model = Bagging(self.name, self.num_models, self.dataset, bfgs_iter=self.bfgs_iter[i], debug=self.debug)
+                model.train(scale=self.scale[i])
             self.models.append(model)
 
     def get_best_y(self, x, y):
@@ -59,7 +67,7 @@ class BO:
         ps2s = np.zeros((x.shape[1], self.outdim))
         for i in range(self.outdim):
             py, ps2 = self.models[i].predict(x)
-            pys[:,i] = py
+            pys[:,i] = py[:,0]
             ps2s[:,i] = np.diag(ps2)
         return pys, ps2s
 
