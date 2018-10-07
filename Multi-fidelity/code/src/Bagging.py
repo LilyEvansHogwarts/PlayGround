@@ -49,6 +49,8 @@ class Bagging:
             self.models = [GP(self.dataset, bfgs_iter=self.bfgs_iter, debug=self.debug) for i in range(self.num_models)]
         elif self.name == 'Multifidelity_GP':
             self.models = [Multifidelity_GP(self.dataset, bfgs_iter=self.bfgs_iter, debug=self.debug) for i in range(self.num_models)]
+        elif self.name == 'NAR_GP':
+            self.models = [NAR_GP(self.dataset, bfgs_iter=self.bfgs_iter, debug=self.debug) for i in range(self.num_models)]
         elif self.name == 'NN_GP':
             self.models = [NN_GP(self.dataset, layer_sizes=self.layer_sizes, activations=self.activations, l1=self.l1, l2=self.l2, bfgs_iter=self.bfgs_iter, debug=self.debug) for i in range(self.num_models)]
         elif self.name == 'NN_scale_GP':
@@ -59,8 +61,10 @@ class Bagging:
         print('Bagging, finish construct models')
 
     def train(self, scale=1.0):
+        print('Bagging, start training the model')
         for i in range(self.num_models):
             self.models[i].train(scale=scale)
+        print('Bagging, finish training the model')
 
     def predict(self, test_x):
         test_x = ((test_x.T - self.in_mean)/self.in_std).T

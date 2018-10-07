@@ -24,11 +24,11 @@ class GP:
             # sn2 + (output_scale + lengthscale) + (output_scale + lengthscales) * 2
             # 1 + 2 + (1 + self.dim - 1)*2 = 3 + 2*self.dim
             theta = scale * np.random.randn(3 + 2*self.dim)
-            theta[2] = np.maximum(-100, np.log(0.5*(self.train_x[self.dim].max() - self.train_x[self.dim].min())))
+            theta[2] = np.maximum(-100, np.log(0.5*(self.train_x[self.dim-1].max() - self.train_x[self.dim-1].min())))
             for i in range(self.dim-1):
                 tmp = np.maximum(-100, np.log(0.5*(self.train_x[i].max() - self.train_x[i].min())))
                 theta[4+i] = tmp
-                theta[5+self.dim+i] = tmp
+                theta[4+self.dim+i] = tmp
         else: # kernel1 RBF
             # sn2 + output_scale + lengthscales, 1 + 1 + self.dim
             theta = scale * np.random.randn(2 + self.dim)
@@ -49,7 +49,7 @@ class GP:
         hyp1 = hyp[:2]
         hyp2 = hyp[2:2+self.dim]
         hyp3 = hyp[2+self.dim:]
-        return self.kernel1(x, xp, hyp1, active_dims=[self.dim]) * self.kernel1(x, xp, hyp2, active_dims=np.arange(self.dim-1)) + self.kernel1(x, xp, hyp3, active_dims=np.arange(self.dim-1))
+        return self.kernel1(x, xp, hyp1, active_dims=[self.dim-1]) * self.kernel1(x, xp, hyp2, active_dims=np.arange(self.dim-1)) + self.kernel1(x, xp, hyp3, active_dims=np.arange(self.dim-1))
 
     def kernel(self, x, xp, hyp):
         if self.k: 

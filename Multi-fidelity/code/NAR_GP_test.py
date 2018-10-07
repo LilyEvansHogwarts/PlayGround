@@ -26,16 +26,15 @@ test_x = np.concatenate((test_x, np.array([1.0])))
 test_x = test_x.reshape(1,num_test+1)
 test_y = high(test_x)
 
-model = NAR_GP(low_x, low_y, high_x, high_y, bfgs_iter=100, debug=False)
-model.train()
-py, ps2 = model.predict(test_x)
-print('py',py.T)
-print('true',test_y)
-print('ps2',ps2)
-delta = py[:,0] - test_y[0]
-print('delta',delta)
-print('MSE', np.dot(delta, delta))
+dataset = {}
+dataset['low_x'] = low_x
+dataset['low_y'] = low_y
+dataset['high_x'] = high_x
+dataset['high_y'] = high_y
 
+model = NAR_GP(dataset, bfgs_iter=100, debug=True)
+model.train(scale=0.4)
+'''
 plt.plot(low_x[0], low_y[0], 'bo', markersize=3, label='low-fidelity data')
 plt.plot(high_x[0], high_y[0], 'ms', markersize=5, label='high-fidelity data')
 plt.plot(test_x[0], py[:,0], 'b-', label='prediction', linewidth=1)
@@ -43,7 +42,7 @@ plt.plot(test_x[0], test_y[0], 'r-', label='exact', linewidth=1)
 plt.fill_between(test_x[0], py[:,0]-3*np.diag(ps2), py[:,0]+3*np.diag(ps2), facecolor='orange', alpha=0.5, label='three std band')
 plt.legend(frameon=False)
 plt.show()
-
+'''
 
 
 

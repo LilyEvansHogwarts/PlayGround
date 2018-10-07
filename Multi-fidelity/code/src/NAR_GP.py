@@ -24,16 +24,19 @@ class NAR_GP:
         
         mu, v = self.model1.predict(self.high_x)
         dataset['train_x'] = np.concatenate((self.high_x, mu.reshape(1,-1)))
+        print('train_x',dataset['train_x'].shape)
         dataset['train_y'] = self.high_y
         model2 = GP(dataset, bfgs_iter=self.bfgs_iter, debug=self.debug, k=1)
         model2.train(scale=scale)
         self.model2 = model2
-
+'''
     def predict(self, test_x):
         nsamples = 100
+        Nts = test_x.shape[1]
         mu, v = self.model1.predict(test_x)
         Z = np.random.multivariate_normal(mu, v, nsamples)
         tmp_m = np.zeros((nsamples, Nts))
         tmp_v = np.zeros((nsamples, Nts))
         for j in range(0, nsamples):
-            mu, v = model2.predict(np.hstack
+            mu, v = model2.predict(np.concatenate((test_x, Z[:,j]
+'''
