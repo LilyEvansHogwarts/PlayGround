@@ -29,14 +29,26 @@ class NAR_GP:
         model2 = GP(dataset, bfgs_iter=self.bfgs_iter, debug=self.debug, k=1)
         model2.train(scale=scale)
         self.model2 = model2
-'''
+
     def predict(self, test_x):
-        nsamples = 100
-        Nts = test_x.shape[1]
-        mu, v = self.model1.predict(test_x)
-        Z = np.random.multivariate_normal(mu, v, nsamples)
-        tmp_m = np.zeros((nsamples, Nts))
-        tmp_v = np.zeros((nsamples, Nts))
-        for j in range(0, nsamples):
-            mu, v = model2.predict(np.concatenate((test_x, Z[:,j]
-'''
+        nsamples = 500
+        num_test = test_x.shape[1]
+        py1, ps21 = self.model1.predict(test_x)
+        Z = np.random.multivariate_normal(py1, ps21, nsamples)
+        if self.debug:
+            print('Z.shape',Z.shape)
+            print('Z[0,:].shape', Z[0,:].shape)
+            print('Z[0,:][None,:].shape', Z[0,:][None,:].shape)
+        
+        tmp_m = np.zeros((nsamples, num_test))
+        tmp_v = np.zeros((num_test, num_test))
+        for j in range(nsamples):
+            py2, ps22 = self.model2.predict(np.concatenate((test_x, Z[j].reshape(1,-1))))
+            tmp_m[j] = py2
+            tmp_v += ps22/nsamples
+
+        py = tmp_m.mean(axis=0)
+        ps2 = tmp_v + tmp_m.var(axis=0)
+        return py, ps2
+
+

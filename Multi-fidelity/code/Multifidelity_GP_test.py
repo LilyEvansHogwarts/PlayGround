@@ -8,23 +8,20 @@ def high(x):
 
 def low(x):
     return 0.5*high(x) + 10.0*(x-0.5) - 5.0
-num_low = 10
-num_high = 4
+num_low = 100
+num_high = 30
 num_test = 200
 
-low_x = np.arange(0,num_low)/(1.0*num_low)
-low_x = np.concatenate((low_x, np.array([1.0])))
-low_x = low_x.reshape(1,num_low+1)
+low_x = np.random.rand(1,num_low)
+low_x.sort()
 low_y = low(low_x)
 
-high_x = np.arange(0,num_high)/(1.0*num_high)
-high_x = np.concatenate((high_x, np.array([1.0])))
-high_x = high_x.reshape(1,num_high+1)
+high_x = np.random.rand(1,num_high)
+high_x.sort()
 high_y = high(high_x)
 
-test_x = np.arange(0,num_test)/(1.0*num_test)
-test_x = np.concatenate((test_x, np.array([1.0])))
-test_x = test_x.reshape(1,num_test+1)
+test_x = np.random.rand(1,num_test)
+test_x.sort()
 test_y = high(test_x)
 
 print('low_x',low_x.shape)
