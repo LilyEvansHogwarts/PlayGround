@@ -8,8 +8,8 @@ def high(x):
 
 def low(x):
     return 0.5*high(x) + 10.0*(x-0.5) - 5.0
-num_low = 100
-num_high = 30
+num_low = 50
+num_high = 10
 num_test = 200
 
 low_x = np.random.rand(1,num_low)

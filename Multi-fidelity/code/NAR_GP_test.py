@@ -7,7 +7,8 @@ def high(x):
 
 def low(x):
     return 0.5*high(x) + 10.0*(x-0.5) - 5.0
-num_low = 15
+
+num_low = 10
 num_high = 8
 num_test = 200
 
