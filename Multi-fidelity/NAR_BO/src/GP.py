@@ -112,7 +112,8 @@ class GP:
             sys.exit(1)
 
         self.alpha = chol_inv(self.L, self.train_y.T)
-        print('Finished training process')
+        if self.debug:
+            print('Finished training process')
 
     def predict(self, test_x):
         sn2 = np.exp(self.theta[0])

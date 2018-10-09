@@ -8,7 +8,7 @@ def high(x):
 
 def low(x):
     return 0.5*high(x) + 10.0*(x-0.5) - 5.0
-num_low = 15
+num_low = 10
 num_high = 8
 num_test = 200
 
@@ -32,6 +32,18 @@ dataset['high_y'] = high_y
 
 model = NAR_Bagging(10, dataset, bfgs_iter=100, debug=True)
 model.train(scale=0.4)
+
+py, ps2 = model.predict_low(test_x)
+ps2 = np.diag(ps2)
+plt.plot(low_x[0], low_y[0], 'bo', markersize=3, label='low-fidelity data')
+plt.plot(high_x[0], high_y[0], 'ms', markersize=5, label='high-fidelity data')
+plt.plot(test_x[0], py, 'b-', label='low prediction', linewidth=1)
+plt.plot(test_x[0], low(test_x[0]), 'r-', label='low exact', linewidth=1)
+plt.fill_between(test_x[0], py-3*ps2, py+3*ps2, facecolor='orange', alpha=0.5, label='low 3 std band')
+plt.legend(frameon=False)
+plt.show()
+
+
 py, ps2 = model.predict(test_x)
 ps2 = np.diag(ps2)
 print('py',py)
@@ -45,7 +57,7 @@ plt.plot(low_x[0], low_y[0], 'bo', markersize=3, label='low-fidelity data')
 plt.plot(high_x[0], high_y[0], 'ms', markersize=5, label='high-fidelity data')
 plt.plot(test_x[0], py, 'b-', label='prediction', linewidth=1)
 plt.plot(test_x[0], test_y[0], 'r-', label='exact', linewidth=1)
-plt.fill_between(test_x[0], py-3*ps2, py+3*ps2, facecolor='orange', alpha=0.5, label='three std band')
+plt.fill_between(test_x[0], py-3*ps2, py+3*ps2, facecolor='orange', alpha=0.5, label='high 3 std band')
 plt.legend(frameon=False)
 plt.show()
 

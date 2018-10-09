@@ -1,1 +1,1 @@
-__all__ = ['GP', 'NAR_GP', 'NAR_Bagging', 'BO', 'Bagging']
+__all__ = ['GP', 'NAR_GP', 'NAR_Bagging', 'BO', 'Bagging', 'activations']

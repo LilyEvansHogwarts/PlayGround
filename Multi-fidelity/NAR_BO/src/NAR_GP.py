@@ -24,7 +24,6 @@ class NAR_GP:
         
         mu, v = self.model1.predict(self.high_x)
         dataset['train_x'] = np.concatenate((self.high_x, mu.reshape(1,-1)))
-        print('train_x',dataset['train_x'].shape)
         dataset['train_y'] = self.high_y
         model2 = GP(dataset, bfgs_iter=self.bfgs_iter, debug=self.debug, k=1)
         model2.train(scale=scale)
@@ -50,5 +49,8 @@ class NAR_GP:
         py = tmp_m.mean(axis=0)
         ps2 = tmp_v + tmp_m.var(axis=0)
         return py, ps2
+
+    def predict_low(self, test_x):
+        return self.model1.predict(test_x)
 
 
