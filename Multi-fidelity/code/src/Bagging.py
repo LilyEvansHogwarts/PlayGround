@@ -2,7 +2,6 @@ import autograd.numpy as np
 from autograd import grad
 from .GP import GP
 from .NN_GP import NN_GP
-from .NN_scale_GP import NN_scale_GP
 from .Multifidelity_GP import Multifidelity_GP
 
 class Bagging:
@@ -52,9 +51,9 @@ class Bagging:
         elif self.name == 'NAR_GP':
             self.models = [NAR_GP(self.dataset, bfgs_iter=self.bfgs_iter, debug=self.debug) for i in range(self.num_models)]
         elif self.name == 'NN_GP':
-            self.models = [NN_GP(self.dataset, layer_sizes=self.layer_sizes, activations=self.activations, l1=self.l1, l2=self.l2, bfgs_iter=self.bfgs_iter, debug=self.debug) for i in range(self.num_models)]
+            self.models = [NN_GP(self.dataset, layer_sizes=self.layer_sizes, activations=self.activations, l1=self.l1, l2=self.l2, bfgs_iter=self.bfgs_iter, debug=self.debug, is_scale=False) for i in range(self.num_models)]
         elif self.name == 'NN_scale_GP':
-            self.models = [NN_scale_GP(self.dataset, layer_sizes=self.layer_sizes, activations=self.activations, l1=self.l1, l2=self.l2, bfgs_iter=self.bfgs_iter, debug=self.debug) for i in range(self.num_models)]
+            self.models = [NN_GP(self.dataset, layer_sizes=self.layer_sizes, activations=self.activations, l1=self.l1, l2=self.l2, bfgs_iter=self.bfgs_iter, debug=self.debug, is_scale=True) for i in range(self.num_models)]
         else:
             print('There is no such gaussian process models as', self.name)
             sys.exit(1)

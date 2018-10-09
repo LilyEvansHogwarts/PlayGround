@@ -1,73 +1,54 @@
 import autograd.numpy as np
 from autograd import grad
-from .NN import NN
 from scipy.optimize import fmin_l_bfgs_b
 import traceback
 import sys
+from .NN import NN
 from .activations import *
-
-def scale_x(log_lscale, x):
-    lscale = np.exp(log_lscale)
-    return (x.T/lscale).T
 
 def chol_inv(L, y):
     v = np.linalg.solve(L, y)
     return np.linalg.solve(L.T, v)
 
 class NN_GP:
-    def __init__(self, dataset, layer_sizes, activations, l1=0, l2=0, bfgs_iter=100, debug=True, is_scale=True):
+    def __init__(self, dataset, layer_sizes, activations, l1=0, l2=0, bfgs_iter=100, debug=True):
         self.train_x = dataset['train_x']
         self.train_y = dataset['train_y']
         self.nn = NN(layer_sizes, activations)
+        self.dim = self.train_x.shape[0]
+        self.num_train = self.train_x.shape[1]
+        self.m = self.nn.layer_sizes[-1]
         self.l1 = l1
         self.l2 = l2
         self.bfgs_iter = bfgs_iter
         self.debug = debug
-        self.dim = self.train_x.shape[0]
-        self.num_train = self.train_x.shape[1]
-        self.m = self.nn.layer_sizes[-1]
-        self.is_scale = is_scale
-        self.num_param = 2 + self.nn.num_param(self.dim)
-        if self.is_scale:
-            self.num_param += self.dim
+        self.num_param = 2+self.nn.num_param(self.dim)
         self.train_y = self.train_y.reshape(-1)
 
     def rand_theta(self, scale):
         theta = scale * np.random.randn(self.num_param)
         theta[0] = np.log(np.std(self.train_y)/2)
         theta[1] = np.log(np.std(self.train_y))
-        if self.is_scale:
-            for i in range(self.dim):
-                theta[2+i] = np.maximum(-100, np.log(0.5*(self.train_x[i].max() - self.train_x[i].min())))
         return theta
 
     def split_theta(self, theta):
         sn2 = np.exp(2 * theta[0])
         sp2 = np.exp(2 * theta[1])
-        ws = theta[2:]
-        return sn2, sp2, ws
-
-    def calc_Phi(self, w, x):
-        if self.is_scale:
-            log_lscale = w[:self.dim]
-            w = w[self.dim:]
-            Phi = self.nn.predict(w, scale_x(log_lscale, x))
-        else:
-            Phi = self.nn.predict(w, x)
-        return w, Phi
+        w = theta[2:]
+        return sn2, sp2, w
 
     def neg_likelihood(self, theta):
         sn2, sp2, w = self.split_theta(theta)
-        w, Phi = self.calc_Phi(w, self.train_x)
-        Phi_y = np.dot(Phi, self.train_y.T)
+        Phi = self.nn.predict(w, self.train_x)
         A = np.dot(Phi, Phi.T) + self.m * sn2 / sp2 * np.eye(self.m)
         LA = np.linalg.cholesky(A)
 
-        logDetA = 2*np.log(np.diag(LA)).sum()
+        Phi_y = np.dot(Phi, self.train_y.T)
         datafit = (np.dot(self.train_y, self.train_y.T) - np.dot(Phi_y.T, chol_inv(LA, Phi_y)))/sn2
-        neg_likelihood = 0.5*(datafit + logDetA + self.num_train*np.log(2*np.pi*sn2) - self.m*np.log(self.m*sn2/sp2))
+        logDetA = np.sum(np.log(np.diag(LA)))
+        neg_likelihood = 0.5*datafit + logDetA + 0.5 * self.num_train * np.log(2*np.pi*sn2) - 0.5 * self.m * np.log(self.m * sn2 / sp2)
         neg_likelihood = neg_likelihood.sum()
-        if np.isnan(neg_likelihood):
+        if(np.isnan(neg_likelihood)):
             neg_likelihood = np.inf
 
         w_nobias = self.nn.w_nobias(w, self.dim)
@@ -117,15 +98,15 @@ class NN_GP:
             sys.exit(1)
 
         sn2, sp2, w = self.split_theta(self.theta)
-        w, Phi = self.calc_Phi(w, self.train_x)
-        self.alpha = chol_inv(self.LA, np.dot(Phi, self.train_y.T))
+        Phi = self.nn.predict(w, self.train_x)
+        Phi_y = np.dot(Phi, self.train_y.T)
+        self.alpha = chol_inv(self.LA, Phi_y)
 
     def predict(self, test_x):
         sn2, sp2, w = self.split_theta(self.theta)
-        w, phi = self.calc_Phi(w, test_x)
-        py = np.dot(phi.T, self.alpha)
+        phi = self.nn.predict(w, test_x)
+        py = np.dot(phi.T, self.alpha) 
         ps2 = sn2 + sn2 * np.dot(phi.T, chol_inv(self.LA, phi))
         return py, ps2
-
 
 

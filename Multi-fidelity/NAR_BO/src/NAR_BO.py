@@ -3,7 +3,7 @@ from autograd import grad
 from scipy.optimize import fmin_l_bfgs_b
 import traceback
 import sys
-from .NAR_GP import NAR_GP
+from .NAR_Bagging import NAR_Bagging
 
 class NAR_BO:
     def __init__(self, num_models, dataset, scale, bfgs_iter, debug=True):
