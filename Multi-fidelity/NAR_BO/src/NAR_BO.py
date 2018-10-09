@@ -76,7 +76,7 @@ class NAR_BO:
     def EI(self, x, is_high=1):
         x = x.reshape(self.dim, int(x.size/self.dim))
         if is_high:
-            py, ps2 = self.models[0].predict(x)
+            _, _, py, ps2 = self.models[0].predict(x)
         else:
             py, ps2 = self.models[0].predict_low(x)
         ps = np.sqrt(np.diag(ps2))
@@ -91,7 +91,7 @@ class NAR_BO:
         PI = 1.0
         for i in range(1,self.outdim):
             if is_high:
-                py, ps2 = self.models[i].predict(x)
+                _, _, py, ps2 = self.models[i].predict(x)
             else:
                 py, ps2 = self.models[i].predict_low(x)
             ps = np.sqrt(np.diag(ps2))
@@ -111,30 +111,20 @@ class NAR_BO:
     def predict(self, test_x):
         test_x = ((test_x.T - self.in_mean)/self.in_std).T
         num_test = test_x.shape[1]
+        py1 = np.zeros((self.outdim, num_test))
+        ps21 = np.zeros((self.outdim, num_test))
         py = np.zeros((self.outdim, num_test))
         ps2 = np.zeros((self.outdim, num_test))
         for i in range(self.outdim):
-            tmp_py, tmp_ps2 = self.models[i].predict(test_x)
+            tmp_py1, tmp_ps21, tmp_py, tmp_ps2 = self.models[i].predict(test_x)
+            py1[i] = tmp_py1
+            ps21[i] = np.diag(tmp_ps21)
             py[i] = tmp_py
             ps2[i] = np.diag(tmp_ps2)
+        py1 = (py1.T*self.low_std + self.low_mean).T
+        ps21 = ps21 * (self.low_std**2)
         py = (py.T*self.out_std + self.out_mean).T
         ps2 = ps2 * (self.out_std**2)
-        return py, ps2
-
-    def predict_low(self, test_x):
-        test_x = ((test_x.T - self.in_mean)/self.in_std).T
-        num_test = test_x.shape[1]
-        py = np.zeros((self.outdim, num_test))
-        ps2 = np.zeros((self.outdim, num_test))
-        for i in range(self.outdim):
-            tmp_py, tmp_ps2 = self.models[i].predict_low(test_x)
-            py[i] = tmp_py
-            ps2[i] = np.diag(tmp_ps2)
-        py = (py.T*self.low_std + self.low_mean).T
-        ps2 = ps2 * (self.low_std**2)
-        return py, ps2
-
-
-
+        return py1, ps21, py, ps2
 
 

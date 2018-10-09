@@ -43,7 +43,8 @@ class NAR_Bagging:
 
         py = tmp_m.mean(axis=0)
         ps2 = tmp_v + tmp_m.var(axis=0)
-        return py, ps2
+        return py1, ps21, py, ps2
 
     def predict_low(self, test_x):
         return self.model1.predict(test_x)
+
