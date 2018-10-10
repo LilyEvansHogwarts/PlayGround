@@ -39,8 +39,15 @@ stand_print(py, ps2, test_y)
 '''
 x = model.rand_x()
 print('x',x)
+x = ((x.T - model.in_mean)/model.in_std).T
 _, _, py, ps2 = model.models[0].predict(x)
 print('py', py)
 print('ps2',ps2)
+x = x.flatten()
 new_x = fit(x, model)
+new_x = new_x.reshape(-1,1)
+new_x = (new_x.T * model.in_std + model.in_mean).T
 print('new_x',new_x)
+_, _, py, ps2 = model.models[0].predict(new_x)
+print('py', py)
+print('ps2',ps2)

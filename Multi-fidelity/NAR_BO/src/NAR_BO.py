@@ -79,7 +79,7 @@ class NAR_BO:
         x = np.zeros((self.dim,1))
         for i in range(self.dim):
             x[i,0] = random.uniform(self.bounds[i,0], self.bounds[i,1])
-        x = ((x.T - self.in_mean)/self.in_std).T
+        # x = ((x.T - self.in_mean)/self.in_std).T
         return x
 
     # x.size >= self.dim

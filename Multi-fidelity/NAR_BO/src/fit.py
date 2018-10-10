@@ -41,7 +41,7 @@ def fit(x, model):
             best_x = np.copy(x)
         return tmp_loss
 
-    xopt, es = cma.fmin2(loss, x0, 0.25, options={'maxfevals':20})
+    xopt, es = cma.fmin2(loss, x0, 0.25, options={'maxfevals':50})
     return xopt
     
     
