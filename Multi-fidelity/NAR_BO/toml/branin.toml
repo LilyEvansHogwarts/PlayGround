@@ -1,0 +1,6 @@
+funct = 'branin'
+num = [500,100]
+bounds = [[-5,10],[0,15]]
+num_models = 5
+scale = [0.4]
+bfgs_iter = [100]

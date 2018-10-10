@@ -50,5 +50,8 @@ class NAR_GP:
         ps2 = tmp_v + tmp_m.var(axis=0)
         return py1, ps21, py, ps2
 
+    def predict_low(self, test_x):
+        return self.model1.predict(test_x)
+
 
 

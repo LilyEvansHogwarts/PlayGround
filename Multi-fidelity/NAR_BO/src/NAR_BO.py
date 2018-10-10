@@ -5,12 +5,14 @@ import traceback
 import sys
 from .NAR_Bagging import NAR_Bagging
 from .activations import *
+import random
 
 class NAR_BO:
-    def __init__(self, num_models, dataset, scale, bfgs_iter, debug=True):
+    def __init__(self, num_models, dataset, scale, bounds, bfgs_iter, debug=True):
         self.num_models = num_models
         self.dataset = dataset
         self.scale = scale
+        self.bounds = np.copy(bounds)
         self.bfgs_iter = bfgs_iter
         self.debug = debug
         self.standardization()
@@ -73,6 +75,13 @@ class NAR_BO:
                 self.best_y[is_high] = y[:,i]
                 self.best_x[is_high] = x[:,i]
 
+    def rand_x(self):
+        x = np.zeros((self.dim,1))
+        for i in range(self.dim):
+            x[i,0] = random.uniform(self.bounds[i,0], self.bounds[i,1])
+        return x
+
+    # x.size >= self.dim
     def EI(self, x, is_high=1):
         x = x.reshape(self.dim, int(x.size/self.dim))
         if is_high:
@@ -86,6 +95,7 @@ class NAR_BO:
             EI = ps*(tmp*cdf(tmp)+pdf(tmp))
         return EI
 
+    # x.size >= self.dim
     def PI(self, x, is_high=1):
         x = x.reshape(self.dim, int(x.size/self.dim))
         PI = 1.0
@@ -97,16 +107,23 @@ class NAR_BO:
             ps = np.sqrt(np.diag(ps2))
             PI = PI*cdf(-py/ps)
         return PI
-
+    
+    # x.size >= self.dim
     def wEI(self, x, is_high=1):
         x = x.reshape(self.dim, int(x.size/self.dim))
-        EI = self.EI(x, is_high=is_high)
-        PI = self.PI(x, is_high=is_high)
-        loss = -EI*PI
-        if loss < self.loss:
-            self.loss = loss
-            self.x = np.copy(x)
-        return loss
+        if is_high:
+            _, _, py, ps2 = self.predict(x)
+        else:
+            py, ps2 = self.predict_low(x)
+        ps = np.sqrt(ps2)
+        EI = 1.0
+        if self.best_constr[is_high] <= 0:
+            tmp = -(py[0] - self.best_y[is_high,0])/ps[0]
+            EI = ps[0]*(tmp*cdf(tmp)+pdf(tmp))
+        PI = 1.0
+        for i in range(1,self.outdim):
+            PI = PI*cdf(-py[i]/ps[i])
+        return EI*PI
 
     def predict(self, test_x):
         test_x = ((test_x.T - self.in_mean)/self.in_std).T
@@ -126,5 +143,18 @@ class NAR_BO:
         py = (py.T*self.out_std + self.out_mean).T
         ps2 = ps2 * (self.out_std**2)
         return py1, ps21, py, ps2
+
+    def predict_low(self, test_x):
+        test_x = ((test_x.T - self.in_mean)/self.in_std).T
+        num_test = test_x.shape[1]
+        py = np.zeros((self.outdim, num_test))
+        ps2 = np.zeros((self.outdim, num_test))
+        for i in range(self.outdim):
+            tmp_py, tmp_ps2 = self.models[i].predict_low(test_x)
+            py[i] = tmp_py
+            ps2[i] = np.diag(tmp_ps2)
+        py = (py.T*self.low_std + self.low_mean).T
+        ps2 = ps2 * (self.low_std**2)
+        return py, ps2
 
 
