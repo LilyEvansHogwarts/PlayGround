@@ -5,6 +5,7 @@ from autograd import grad
 from scipy.optimize import fmin_l_bfgs_b
 from .activations import *
 from .NAR_BO import NAR_BO
+import cma
 
 # tmp_loss is scalar
 def fit(x, model):
@@ -17,7 +18,6 @@ def fit(x, model):
         nonlocal best_loss
         x = x.reshape(model.dim, int(x.size/model.dim))
         EI = 1.0
-        print('start EI')
         if model.best_constr[1] <= 0:
             _, _, py, ps2 = model.models[0].predict(x)
             py = py.sum()
@@ -39,9 +39,13 @@ def fit(x, model):
         if tmp_loss < best_loss:
             best_loss = tmp_loss
             best_x = np.copy(x)
-        print('tmp_loss',tmp_loss)
         return tmp_loss
 
+    xopt, es = cma.fmin2(loss, x0, 0.25, options={'maxfevals':20})
+    return xopt
+    
+    
+    '''
     gloss = grad(loss)
     
     try:
@@ -64,7 +68,7 @@ def fit(x, model):
         sys.exit(1)
 
     return best_x
-
+    '''
 
 
 
