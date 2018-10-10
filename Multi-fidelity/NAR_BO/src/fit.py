@@ -17,8 +17,9 @@ def fit(x, model):
         nonlocal best_loss
         x = x.reshape(model.dim, int(x.size/model.dim))
         EI = 1.0
+        print('start EI')
         if model.best_constr[1] <= 0:
-            py, ps2 = model.models[0].predict(x)
+            _, _, py, ps2 = model.models[0].predict(x)
             py = py.sum()
             ps = np.sqrt(ps2.sum())
             tmp = (model.best_y[1,0] - py)/ps
@@ -30,7 +31,7 @@ def fit(x, model):
                 EI = np.log(ps)-tmp2/2-np.log(tmp2-1)
         PI = 1.0
         for i in range(1,model.outdim):
-            py, ps2 = model.models[i].predict(x)
+            _, _, py, ps2 = model.models[i].predict(x)
             py = py.sum()
             ps = np.sqrt(ps2.sum())
             PI = PI + logphi(-py/ps)
@@ -38,6 +39,7 @@ def fit(x, model):
         if tmp_loss < best_loss:
             best_loss = tmp_loss
             best_x = np.copy(x)
+        print('tmp_loss',tmp_loss)
         return tmp_loss
 
     gloss = grad(loss)
