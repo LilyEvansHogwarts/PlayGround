@@ -53,7 +53,6 @@ def fit_test(x, model):
         EI = np.zeros((x.shape[1]))
         if model.best_constr[1] <= 0:
             _, _, py, ps2 = model.models[0].predict(x)
-            print('ps2', np.diag(ps2))
             ps = np.sqrt(np.diag(ps2))
             tmp = -(py - model.best_y[1,0])/ps
             idx = (tmp > -40)
@@ -69,7 +68,7 @@ def fit_test(x, model):
         loss = -EI-PI
         return loss.min()
 
-    xopt, es = cma.fmin2(loss, x0, 0.25, options={'maxiter':2, 'bounds':[-0.5,0.5]})
+    xopt, es = cma.fmin2(loss, x0, 0.1, options={'maxiter':1, 'bounds':[-0.5,0.5]})
     # xopt = anneal(loss, x0, maxiter=50, lower=-10, upper=10, disp=True)
     return xopt.reshape(model.dim, int(xopt.size/model.dim))
     

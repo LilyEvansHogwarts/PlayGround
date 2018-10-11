@@ -77,8 +77,8 @@ class NAR_BO:
         tmp = np.random.uniform(0,1,(n))
         idx = (tmp < 0.2)
         x = np.random.uniform(-0.5, 0.5, (self.dim,n))
-        x[:,idx] = (0.01*np.random.uniform(0,1,(self.dim,idx.sum())).T + self.best_x[1]).T
-        x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,tmp<0.2]))
+        x[:,idx] = (0.05*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x[1]).T
+        x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))
         return x
 
     def EI(self, x, is_high=1):

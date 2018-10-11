@@ -30,7 +30,7 @@ class NAR_GP:
         self.model2 = model2
 
     def predict(self, test_x):
-        nsamples = 500
+        nsamples = 100
         num_test = test_x.shape[1]
         py1, ps21 = self.model1.predict(test_x)
         Z = np.random.multivariate_normal(py1, ps21, nsamples)
@@ -41,6 +41,7 @@ class NAR_GP:
         
         tmp_m = np.zeros((nsamples, num_test))
         tmp_v = np.zeros((num_test, num_test))
+        
         for j in range(nsamples):
             py2, ps22 = self.model2.predict(np.concatenate((test_x, Z[j].reshape(1,-1))))
             tmp_m[j] = py2

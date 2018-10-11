@@ -26,7 +26,7 @@ class NAR_Bagging:
         self.model2.train(scale=scale)
 
     def predict(self, test_x):
-        nsamples = 500
+        nsamples = 100
         num_test = test_x.shape[1]
         py1, ps21 = self.model1.predict(test_x)
         Z = np.random.multivariate_normal(py1, ps21, nsamples)
