@@ -3,12 +3,13 @@ from autograd import grad
 from scipy.optimize import fmin_l_bfgs_b
 import traceback
 import sys
-from .NAR_GP import NAR_GP
+from .NAR_Bagging import NAR_Bagging
 from .activations import *
 import random
 
-class NAR_BO:
-    def __init__(self, dataset, scale, bounds, bfgs_iter, debug=True):
+class NAR_BO_Bagging:
+    def __init__(self, num_models, dataset, scale, bounds, bfgs_iter, debug=True):
+        self.num_models = num_models
         self.dataset = {}
         self.dataset['low_x'] = np.copy(dataset['low_x'])
         self.dataset['low_y'] = np.copy(dataset['low_y'])
@@ -58,7 +59,7 @@ class NAR_BO:
         for i in range(self.outdim):
             dataset['low_y'] = self.dataset['low_y'][i]
             dataset['high_y'] = self.dataset['high_y'][i]
-            self.models.append(NAR_GP(dataset, bfgs_iter=self.bfgs_iter[i], debug=self.debug))
+            self.models.append(NAR_Bagging(self.num_models, dataset, bfgs_iter=self.bfgs_iter[i], debug=self.debug))
             self.models[i].train(scale=self.scale[i])
 
     def get_best_y(self, x, y, is_high=1):
