@@ -121,5 +121,6 @@ class GP:
         tmp = self.kernel(test_x, self.train_x, hyp)
         py = np.dot(tmp, self.alpha)
         ps2 = sn2 + self.kernel(test_x, test_x, hyp) - np.dot(tmp, chol_inv(self.L, tmp.T))
+        ps2 = np.abs(ps2)
         return py, ps2
     
