@@ -34,6 +34,9 @@ dataset = init_dataset(funct, num, bounds)
 for i in dataset.keys():
     print(i, dataset[i].shape)
 
+
+
+
 for i in range(iteration):
     print('********************************************************************')
     print('iteration',i)
@@ -44,35 +47,45 @@ for i in range(iteration):
     print('best_x', best_x)
     print('best_y', best_y)
 
-    test_x = model.rand_x(n=K)
-    new_x = np.zeros((model.dim,K))
-    # py1, ps21, py, ps2 = model.predict(test_x)
-    # stand_print(test_x, py, ps2, funct[1](test_x, bounds))
-    
-    p = 10
-    for j in range(int(test_x.shape[1]/p)):
-        x = test_x[:,p*j:(j+1)*p]
-        new_x[:,p*j:p*(j+1)] = fit_test(x,model)
-    
-    # x = test_x.flatten()
-    # new_x = fit_test(x, model)
-    wEI_tmp = model.wEI(new_x)
-    py1, ps21 = model.predict_low(new_x)
-    # stand_print(new_x, py, ps2, funct[1](new_x, bounds))
-    
-    ps21 = ps21.sum(axis=0)
-    idx = np.argsort(ps21)[-num_points:]
+    p = 20
+    def task(tmp):
+        x0 = model.rand_x(p)
+        x0 = fit_test(x0, model)
+        wEI_tmp = model.wEI(x0)
+        return x0, wEI_tmp
+
+    pool = multiprocessing.Pool(processes=5)
+    results = pool.map(task, range(int(K/p)))
+    pool.close()
+    pool.join()
+
+    new_x = results[0][0]
+    wEI_tmp = results[1][1]
+    for i in range(1, int(K/p)):
+        new_x = np.concatenate((new_x.T, results[i][0].T)).T
+        wEI_tmp = np.concatenate((wEI_tmp, results[i][1].T)).T
+    print('new_x', new_x.shape)
+    print('wEI_tmp', wEI_tmp.shape)
+
+    py, ps2 = model.predict_low(new_x)
+    ps2 = ps2.sum(axis=0)
+    idx = np.argsort(ps2)[-num_points:]
     print('idx',idx)
     print('low_x',new_x[:,idx])
     print('low_y', funct[0](new_x[:,idx],bounds))
     dataset['low_x'] = np.concatenate((dataset['low_x'].T, new_x[:,idx].T)).T
     dataset['low_y'] = np.concatenate((dataset['low_y'].T, funct[0](new_x[:,idx], bounds).T)).T
+
     idx = np.argsort(wEI_tmp)[-1:]
-    print('idx',idx)
+    print('idx', idx)
     print('high_x',new_x[:,idx])
     print('high_y', funct[1](new_x[:,idx], bounds))
     dataset['high_x'] = np.concatenate((dataset['high_x'].T, new_x[:,idx].T)).T
     dataset['high_y'] = np.concatenate((dataset['high_y'].T, funct[1](new_x[:,idx], bounds).T)).T
+
+
+
+
 
 
 
