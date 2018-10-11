@@ -48,15 +48,16 @@ for i in range(iteration):
     new_x = np.zeros((model.dim,K))
     # py1, ps21, py, ps2 = model.predict(test_x)
     # stand_print(test_x, py, ps2, funct[1](test_x, bounds))
-    '''
-    for j in range(test_x.shape[1]):
-        x = test_x[:,j]
-        new_x[:,j:j+1] = fit_test(x,model)
-    '''
-    x = test_x.flatten()
-    new_x = fit_test(x, model)
+    
+    p = 10
+    for j in range(int(test_x.shape[1]/p)):
+        x = test_x[:,p*j:(j+1)*p]
+        new_x[:,p*j:p*(j+1)] = fit_test(x,model)
+    
+    # x = test_x.flatten()
+    # new_x = fit_test(x, model)
     wEI_tmp = model.wEI(new_x)
-    py1, ps21, py, ps2 = model.predict(new_x)
+    py1, ps21 = model.predict_low(new_x)
     # stand_print(new_x, py, ps2, funct[1](new_x, bounds))
     
     ps21 = ps21.sum(axis=0)

@@ -38,7 +38,19 @@ class NAR_GP:
             print('Z.shape',Z.shape)
             print('Z[0,:].shape', Z[0,:].shape)
             print('Z[0,:][None,:].shape', Z[0,:][None,:].shape)
-        
+
+        x = np.tile(test_x, nsamples)
+        x = np.concatenate((x, Z.reshape(1,-1)))
+        py, ps2 = self.model2.predict(x)
+        py = py.reshape(-1,num_test)
+        ps2 = np.diag(ps2).reshape(-1,num_test).mean(axis=0) + py.var(axis=0)
+        ps2 = np.abs(ps2)
+        py = py.mean(axis=0)
+        return py1, ps21, py, ps2
+
+
+
+        '''
         tmp_m = np.zeros((nsamples, num_test))
         tmp_v = np.zeros((num_test, num_test))
         
@@ -51,6 +63,7 @@ class NAR_GP:
         ps2 = tmp_v + tmp_m.var(axis=0)
         ps2 = np.abs(ps2)
         return py1, ps21, py, ps2
+        '''
 
     def predict_low(self, test_x):
         return self.model1.predict(test_x)

@@ -53,7 +53,7 @@ def fit_test(x, model):
         EI = np.zeros((x.shape[1]))
         if model.best_constr[1] <= 0:
             _, _, py, ps2 = model.models[0].predict(x)
-            ps = np.sqrt(np.diag(ps2))
+            ps = np.sqrt(ps2)
             tmp = -(py - model.best_y[1,0])/ps
             idx = (tmp > -40)
             EI[idx] = ps[idx]*(tmp[idx]*cdf(tmp[idx])+pdf(tmp[idx]))
@@ -63,7 +63,7 @@ def fit_test(x, model):
         PI = np.zeros((x.shape[1]))
         for i in range(1,model.outdim):
             _, _, py, ps2 = model.models[i].predict(x)
-            ps = np.sqrt(np.diag(ps2))
+            ps = np.sqrt(ps2)
             PI = logphi(-py/ps) + PI
         loss = -EI-PI
         return loss.min()
