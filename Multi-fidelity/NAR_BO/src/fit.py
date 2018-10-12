@@ -20,8 +20,8 @@ def fit(x, model):
         EI = np.ones((x.shape[1]))
         if model.best_constr[1] <= 0:
             py, ps2 = model.models[0].model1.predict(x)
-            ps = np.sqrt(np.diag(ps2))
-            ps = np.maximum(0.000001,ps)
+            ps = np.abs(np.sqrt(np.diag(ps2))) + 0.000001
+            # ps = np.maximum(0.000001,ps)
             tmp = -(py - model.best_y[0,0])/ps
             EI = ps*(tmp*cdf(tmp)+pdf(tmp))
         PI = np.ones((x.shape[1]))
@@ -41,20 +41,20 @@ def fit(x, model):
     try:
         fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5,0.5]]*x.size, maxiter=100, m=100, iprint=model.debug)
     except np.linalg.LinAlgError:
-        print('Increase noise term and re-optimization')
+        print('Fit. Increase noise term and re-optimization')
         x0 = np.copy(best_x)
         x0[0] += 0.01
         try:
             fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5,0.5]]*model.dim, maxiter=100, m=10, iprint=model.debug)
         except:
-            print('Exception caught, L-BFGS early stopping...')
+            print('Fit. Exception caught, L-BFGS early stopping...')
             print(traceback.format_exc())
     except:
-        print('Exception caught, L-BFGS early stopping...')
+        print('Fit. Exception caught, L-BFGS early stopping...')
         print(traceback.format_exc())
 
     if(np.isnan(best_loss) or np.isinf(best_loss)):
-        print('Fail to buildGP model')
+        print('Fit. Fail to buildGP model')
         sys.exit(1)
 
     return best_x

@@ -56,6 +56,7 @@ class NAR_BO:
             dataset['high_y'] = self.dataset['high_y'][i]
             self.models.append(NAR_GP(dataset, bfgs_iter=self.bfgs_iter[i], debug=self.debug))
             self.models[i].train(scale=self.scale[i])
+        print('NAR_BO. Finish model constructing')
 
     def get_best_y(self, x, y, is_high=1):
         for i in range(y.shape[1]):

@@ -24,6 +24,7 @@ class NAR_GP:
         model2 = GP(dataset, bfgs_iter=self.bfgs_iter, debug=self.debug, k=1)
         model2.train(scale=scale)
         self.model2 = model2
+        print('NAR_GP. Finish training process.')
 
     def predict(self, test_x):
         nsamples = 100

@@ -18,8 +18,8 @@ def fit(x, model):
         EI = np.zeros((x.shape[1]))
         if model.best_constr <= 0:
             py, ps2 = model.models[0].predict(x)
-            ps = np.sqrt(np.diag(ps2))
-            ps = np.maximum(0.000001, ps)
+            ps = np.sqrt(np.diag(ps2)) + 0.000001
+            # ps = np.maximum(0.000001, ps)
             tmp = -(py - model.best_y[0])/ps
             EI = ps*(tmp*cdf(tmp)+pdf(tmp))
             '''

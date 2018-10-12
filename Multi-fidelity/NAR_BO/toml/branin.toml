@@ -5,5 +5,5 @@ num_models = 5
 scale = [0.4]
 bfgs_iter = [100]
 iteration = 50
-K = 500
+K = 100
 num_points = 5
