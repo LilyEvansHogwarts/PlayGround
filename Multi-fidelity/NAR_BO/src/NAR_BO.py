@@ -1,11 +1,7 @@
-import autograd.numpy as np
-from autograd import grad
-from scipy.optimize import fmin_l_bfgs_b
-import traceback
-import sys
 from .NAR_GP import NAR_GP
 from .activations import *
 import random
+import numpy as np
 
 class NAR_BO:
     def __init__(self, dataset, scale, bounds, bfgs_iter, debug=True):
@@ -77,7 +73,7 @@ class NAR_BO:
         tmp = np.random.uniform(0,1,(n))
         idx = (tmp < 0.2)
         x = np.random.uniform(-0.5, 0.5, (self.dim,n))
-        x[:,idx] = (0.05*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x[1]).T
+        x[:,idx] = (0.1*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x[1]).T
         x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))
         return x
 

@@ -42,6 +42,7 @@ class GP:
             active_dims = np.arange(self.dim)
         output_scale = np.exp(hyp[0])
         lengthscales = np.exp(hyp[1:])
+        lengthscales = np.maximum(0.000001, lengthscales)
         diffs = np.expand_dims((x[active_dims].T/lengthscales).T, 2) - np.expand_dims((xp[active_dims].T/lengthscales).T, 1)
         return output_scale * np.exp(-0.5*np.sum(diffs**2, axis=0))
     

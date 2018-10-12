@@ -1,6 +1,5 @@
 from .Bagging import Bagging
-import autograd.numpy as np
-import numpy as origin_np
+import numpy as np
 
 class NAR_Bagging:
     def __init__(self, num_models, dataset, bfgs_iter=100, debug=True):

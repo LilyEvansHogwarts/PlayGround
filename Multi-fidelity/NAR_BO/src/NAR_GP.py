@@ -1,9 +1,5 @@
-import autograd.numpy as np
-from autograd import grad
-from scipy.optimize import fmin_l_bfgs_b
-import traceback
-import sys
 from .GP import GP
+import numpy as np
 
 class NAR_GP:
     def __init__(self, dataset, bfgs_iter=100, debug=True):

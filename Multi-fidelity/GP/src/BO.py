@@ -1,8 +1,4 @@
-import autograd.numpy as np
-from autograd import grad
-from scipy.optimize import fmin_l_bfgs_b
-import traceback
-import sys
+import numpy as np
 from .GP import GP
 from .activations import *
 import random
