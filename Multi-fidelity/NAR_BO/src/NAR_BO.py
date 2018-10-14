@@ -1,7 +1,7 @@
+import autograd.numpy as np
 from .NAR_GP import NAR_GP
 from .activations import *
 import random
-import numpy as np
 
 class NAR_BO:
     def __init__(self, dataset, scale, bounds, bfgs_iter, debug=True):
@@ -56,7 +56,7 @@ class NAR_BO:
             dataset['high_y'] = self.dataset['high_y'][i]
             self.models.append(NAR_GP(dataset, bfgs_iter=self.bfgs_iter[i], debug=self.debug))
             self.models[i].train(scale=self.scale[i])
-        print('NAR_BO. Finish model constructing')
+        print('NAR_BO. Finish constructing model.')
 
     def get_best_y(self, x, y, is_high=1):
         for i in range(y.shape[1]):
@@ -72,9 +72,9 @@ class NAR_BO:
 
     def rand_x(self, n=1):
         tmp = np.random.uniform(0,1,(n))
-        idx = (tmp < 0.2)
+        idx = (tmp < 0.4)
         x = np.random.uniform(-0.5, 0.5, (self.dim,n))
-        x[:,idx] = (0.1*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x[1]).T
+        x[:,idx] = (0.05*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x[1]).T
         x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))
         return x
 
@@ -82,10 +82,9 @@ class NAR_BO:
         x = x.reshape(self.dim, int(x.size/self.dim))
         if is_high:
             _, _, py, ps2 = model.models[0].predict(x)
-            ps = np.sqrt(ps2)
         else:
             py, ps2 = model.models[0].predict_low(x)
-            ps = np.sqrt(np.diag(ps2))
+        ps = np.sqrt(np.abs(np.diag(ps2))) + 0.000001
         EI = np.ones((x.shape[1]))
         if self.best_constr[is_high] <= 0:
             tmp = -(py - self.best_y[is_high,0])/ps
@@ -98,10 +97,9 @@ class NAR_BO:
         for i in range(1,self.outdim):
             if is_high:
                 _, _, py, ps2 = model.models[i].predict(x)
-                ps = np.sqrt(ps2)
             else:
                 py, ps2 = model.models[i].predict_low(x)
-                ps = np.sqrt(np.diag(ps2))
+            ps = np.sqrt(np.abs(np.diag(ps2))) + 0.000001
             PI = cdf(-py/ps2) * PI
         return PI
 
@@ -109,10 +107,9 @@ class NAR_BO:
         x = x.reshape(self.dim, int(x.size/self.dim))
         if is_high:
             _, _, py, ps2 = self.predict(x)
-            ps = np.sqrt(ps2)
         else:
             py, ps2 = self.predict_low(x)
-            ps = np.sqrt(np.diag(ps2))
+        ps = np.sqrt(ps2) + 0.000001
         EI = np.ones((x.shape[1]))
         if self.best_constr[is_high] <= 0:
             tmp = -(py[0] - self.best_y[is_high,0])/ps[0]
@@ -133,7 +130,7 @@ class NAR_BO:
             py1[i] = tmp_py1
             ps21[i] = np.diag(tmp_ps21)
             py[i] = tmp_py
-            ps2[i] = tmp_ps2# np.diag(tmp_ps2)
+            ps2[i] = np.diag(tmp_ps2)
         py1 = (py1.T * self.low_std + self.low_mean).T
         ps21 = ps21 * (self.low_std**2)
         py = (py.T * self.out_std + self.out_mean).T

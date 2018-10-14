@@ -1,4 +1,4 @@
-import numpy as np
+import autograd.numpy as np
 from .NAR_Bagging import NAR_Bagging
 from .activations import *
 import random

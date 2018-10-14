@@ -5,7 +5,7 @@ from src.activations import *
 from src.fit import *
 import multiprocessing
 from get_dataset import *
-import numpy as np
+import autograd.numpy as np
 
 def stand_print(x, py, ps2, true):
     print('x', x)
