@@ -1,3 +1,4 @@
+import autograd.numpy as np
 import sys
 import toml
 from src.NAR_BO import NAR_BO
@@ -5,7 +6,6 @@ from src.activations import *
 from src.fit import *
 import multiprocessing
 from get_dataset import *
-import autograd.numpy as np
 
 def stand_print(x, py, ps2, true):
     print('x', x)
@@ -36,6 +36,7 @@ for i in dataset.keys():
 
 
 
+
 i = 0
 while (dataset['high_y'].shape[1] - num[1]) < iteration:
 # for i in range(iteration):
@@ -48,22 +49,21 @@ while (dataset['high_y'].shape[1] - num[1]) < iteration:
     best_x = model.best_x[1].reshape(-1,1)
     best_y = model.best_y[1].reshape(-1,1)
     best_y = model.re_standard(best_y)
-    print('best_x', best_x)
+    print('best_x', best_x.T)
     print('best_y', best_y)
 
-    p = 1
+    p = 5
     def task(x0):
         x0 = fit(x0, model)
         x0 = fit_test(x0, model)
         wEI_tmp = model.wEI(x0)
         return x0, wEI_tmp
 
-    
     pool = multiprocessing.Pool(processes=5)
-    di = []
+    x0_list = []
     for j in range(int(K/p)):
-        di.append(model.rand_x(p))
-    results = pool.map(task, di)
+        x0_list.append(model.rand_x(p))
+    results = pool.map(task, x0_list)
     pool.close()
     pool.join()
 
@@ -72,38 +72,24 @@ while (dataset['high_y'].shape[1] - num[1]) < iteration:
     for j in range(1, int(K/p)):
         new_x = np.concatenate((new_x.T, results[j][0].T)).T
         wEI_tmp = np.concatenate((wEI_tmp, results[j][1].T)).T
-    
+
     idx = np.argsort(wEI_tmp)[-1:]
-    print('idx',idx)
-    print('x',new_x[:,idx])
-    py, ps2 = model.predict_low(new_x[:,idx])
+    print('idx', idx)
+    print('x', new_x[:, idx].T)
+    py, ps2 = model.predict_low(new_x[:, idx])
     if (ps2.T > model.gamma).sum() > 0:
-        new_y = funct[0](new_x[:,idx], bounds)
-        print('low_y',new_y)
+        new_y = funct[0](new_x[:, idx], bounds)
+        print('low_y', new_y)
         dataset['low_x'] = np.concatenate((dataset['low_x'].T, new_x[:,idx].T)).T
         dataset['low_y'] = np.concatenate((dataset['low_y'].T, new_y.T)).T
     else:
-        new_y = funct[1](new_x[:,idx], bounds)
-        print('high_y',new_y)
+        new_y = funct[1](new_x[:, idx], bounds)
+        print('high_y', new_y)
         dataset['high_x'] = np.concatenate((dataset['high_x'].T, new_x[:,idx].T)).T
         dataset['high_y'] = np.concatenate((dataset['high_y'].T, new_y.T)).T
 
 
-    '''
-    idx = np.argsort(wEI_tmp)[-num_points-1:-1]
-    print('idx',idx)
-    print('low_x',new_x[:,idx])
-    print('low_y', funct[0](new_x[:,idx],bounds))
-    dataset['low_x'] = np.concatenate((dataset['low_x'].T, new_x[:,idx].T)).T
-    dataset['low_y'] = np.concatenate((dataset['low_y'].T, funct[0](new_x[:,idx], bounds).T)).T
 
-    idx = np.argsort(wEI_tmp)[-1:]
-    print('idx', idx)
-    print('high_x',new_x[:,idx])
-    print('high_y', funct[1](new_x[:,idx], bounds))
-    dataset['high_x'] = np.concatenate((dataset['high_x'].T, new_x[:,idx].T)).T
-    dataset['high_y'] = np.concatenate((dataset['high_y'].T, funct[1](new_x[:,idx], bounds).T)).T
-    '''
 
 
 

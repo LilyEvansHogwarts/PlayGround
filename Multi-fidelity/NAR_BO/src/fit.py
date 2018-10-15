@@ -19,14 +19,14 @@ def fit(x, model):
         EI = np.ones((x.shape[1]))
         if model.best_constr[1] <= 0:
             py, ps2 = model.models[0].predict_low(x)
-            ps = np.sqrt(np.diag(ps2)) + 0.000001
+            ps = np.sqrt(np.abs(np.diag(ps2))) + 0.000001
             # ps = np.maximum(0.000001, ps)
             tmp = -(py - model.best_y[0, 0])/ps
             EI = ps*(tmp*cdf(tmp)+pdf(tmp))
         PI = np.zeros((x.shape[1]))
         for i in range(1, model.outdim):
             py,  ps2 = model.models[i].predict_low(x)
-            ps = np.sqrt(np.diag(ps2)) + 0.000001
+            ps = np.sqrt(np.abs(np.diag(ps2))) + 0.000001
             PI = PI*cdf(-py/ps)
         tmp_loss = -EI*PI
         tmp_loss = tmp_loss.sum()

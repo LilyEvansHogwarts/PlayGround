@@ -104,6 +104,7 @@ class NAR_BO:
             PI = cdf(-py/ps2) * PI
         return PI
 
+    
     def wEI(self, x, is_high=1):
         x = x.reshape(self.dim, int(x.size/self.dim))
         if is_high:
@@ -119,6 +120,7 @@ class NAR_BO:
         for i in range(1,self.outdim):
             PI = PI*cdf(-py[i]/ps[i])
         return EI*PI
+    
 
     def predict(self, test_x):
         num_test = test_x.shape[1]

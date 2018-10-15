@@ -32,8 +32,9 @@ class NAR_GP:
         py,  ps2 = self.model2.predict(x)
         return py1, ps21, py, ps2
 
+
     def predict_for_wEI(self, test_x):
-        nsamples = 100
+        nsamples = 200
         num_test = test_x.shape[1]
         py1, ps21 = self.model1.predict(test_x)
         Z = np.random.multivariate_normal(py1, ps21, nsamples)
@@ -51,6 +52,7 @@ class NAR_GP:
         py = py.mean(axis=0)
         return py1, ps21, py, ps2
         
+
 
     def predict_low(self, test_x):
         return self.model1.predict(test_x)

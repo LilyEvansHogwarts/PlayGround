@@ -93,27 +93,26 @@ class GP:
         try:
             fmin_l_bfgs_b(loss, theta0, gloss, maxiter=self.bfgs_iter, m = 100, iprint=self.debug)
         except np.linalg.LinAlgError:
-            print('Increase noise term and re-optimization')
+            print('GP. Increase noise term and re-optimization')
             theta0 = np.copy(self.theta)
             theta0[0] += np.log(10)
             try:
                 fmin_l_bfgs_b(loss, theta0, gloss, maxiter=self.bfgs_iter, m=10, iprint=self.debug)
             except:
-                print('Exception caught, L-BFGS early stopping...')
+                print('GP. Exception caught, L-BFGS early stopping...')
                 if self.debug:
                     print(traceback.format_exc())
         except:
-            print('Exception caught, L-BFGS early stopping...')
+            print('GP. Exception caught, L-BFGS early stopping...')
             if self.debug:
                 print(traceback.format_exc())
 
         if(np.isinf(self.loss) or np.isnan(self.loss)):
-            print('Fail to build GP model')
+            print('GP. Fail to build GP model')
             sys.exit(1)
 
         self.alpha = chol_inv(self.L, self.train_y.T)
-        if self.debug:
-            print('Finished training process')
+        print('GP. Finished training process')
 
     def predict(self, test_x):
         sn2 = np.exp(self.theta[0])

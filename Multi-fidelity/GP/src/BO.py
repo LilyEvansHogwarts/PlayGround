@@ -1,4 +1,8 @@
-import numpy as np
+import autograd.numpy as np
+from autograd import grad
+from scipy.optimize import fmin_l_bfgs_b
+import traceback
+import sys
 from .GP import GP
 from .activations import *
 import random
@@ -38,6 +42,7 @@ class BO:
             dataset['train_y'] = self.train_y[i:i+1]
             self.models.append(GP(dataset, bfgs_iter=self.bfgs_iter[i], debug=self.debug))
             self.models[i].train(scale=self.scale[i])
+        print('BO. Finish constructing model.')
 
     def get_best_y(self, x, y):
         for i in range(y.shape[1]):
@@ -55,7 +60,7 @@ class BO:
         tmp = np.random.uniform(0,1,(n))
         idx = (tmp < 0.1)
         x = np.random.uniform(-0.5, 0.5, (self.dim,n))
-        x[:,idx] = (0.05*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x).T
+        x[:,idx] = (0.1*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x).T
         x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))
         return x
 
