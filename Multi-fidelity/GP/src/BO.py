@@ -53,7 +53,7 @@ class BO:
 
     def rand_x(self,n=1):
         tmp = np.random.uniform(0,1,(n))
-        idx = (tmp < 0.2)
+        idx = (tmp < 0.1)
         x = np.random.uniform(-0.5, 0.5, (self.dim,n))
         x[:,idx] = (0.05*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x).T
         x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))

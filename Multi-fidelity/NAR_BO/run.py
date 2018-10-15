@@ -36,10 +36,14 @@ for i in dataset.keys():
 
 
 
-
-for i in range(iteration):
+i = 0
+while (dataset['high_y'].shape[1] - num[1]) < iteration:
+# for i in range(iteration):
     print('********************************************************************')
     print('iteration',i)
+    i = i+1
+    for j in dataset.keys():
+        print(j, dataset[j].shape)
     model = NAR_BO(dataset, scale, bounds, bfgs_iter=bfgs_iter, debug=False)
     best_x = model.best_x[1].reshape(-1,1)
     best_y = model.best_y[1].reshape(-1,1)
@@ -47,7 +51,7 @@ for i in range(iteration):
     print('best_x', best_x)
     print('best_y', best_y)
 
-    p = 20
+    p = 1
     def task(x0):
         x0 = fit(x0, model)
         x0 = fit_test(x0, model)
@@ -69,9 +73,22 @@ for i in range(iteration):
         new_x = np.concatenate((new_x.T, results[j][0].T)).T
         wEI_tmp = np.concatenate((wEI_tmp, results[j][1].T)).T
     
-    '''
-    py, ps2 = model.predict_low(new_x)
-    ps2 = ps2.sum(axis=0)
+    idx = np.argsort(wEI_tmp)[-1:]
+    print('idx',idx)
+    print('x',new_x[:,idx])
+    py, ps2 = model.predict_low(new_x[:,idx])
+    if (ps2.T > model.gamma).sum() > 0:
+        new_y = funct[0](new_x[:,idx], bounds)
+        print('low_y',new_y)
+        dataset['low_x'] = np.concatenate((dataset['low_x'].T, new_x[:,idx].T)).T
+        dataset['low_y'] = np.concatenate((dataset['low_y'].T, new_y.T)).T
+    else:
+        new_y = funct[1](new_x[:,idx], bounds)
+        print('high_y',new_y)
+        dataset['high_x'] = np.concatenate((dataset['high_x'].T, new_x[:,idx].T)).T
+        dataset['high_y'] = np.concatenate((dataset['high_y'].T, new_y.T)).T
+
+
     '''
     idx = np.argsort(wEI_tmp)[-num_points-1:-1]
     print('idx',idx)
@@ -86,7 +103,7 @@ for i in range(iteration):
     print('high_y', funct[1](new_x[:,idx], bounds))
     dataset['high_x'] = np.concatenate((dataset['high_x'].T, new_x[:,idx].T)).T
     dataset['high_y'] = np.concatenate((dataset['high_y'].T, funct[1](new_x[:,idx], bounds).T)).T
-
+    '''
 
 
 

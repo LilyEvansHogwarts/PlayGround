@@ -10,6 +10,7 @@ class NAR_BO:
         self.dataset['low_y'] = np.copy(dataset['low_y'])
         self.dataset['high_x'] = np.copy(dataset['high_x'])
         self.dataset['high_y'] = np.copy(dataset['high_y'])
+        self.gamma = 0.005*(self.dataset['low_y'].max(axis=1) - self.dataset['low_y'].min(axis=1))
         self.scale = scale
         self.bounds = np.copy(bounds)
         self.bfgs_iter = bfgs_iter
@@ -72,7 +73,7 @@ class NAR_BO:
 
     def rand_x(self, n=1):
         tmp = np.random.uniform(0,1,(n))
-        idx = (tmp < 0.4)
+        idx = (tmp < 0.5)
         x = np.random.uniform(-0.5, 0.5, (self.dim,n))
         x[:,idx] = (0.05*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x[1]).T
         x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))
@@ -126,11 +127,11 @@ class NAR_BO:
         py = np.zeros((self.outdim, num_test))
         ps2 = np.zeros((self.outdim, num_test))
         for i in range(self.outdim):
-            tmp_py1, tmp_ps21, tmp_py, tmp_ps2 = self.models[i].predict(test_x)
+            tmp_py1, tmp_ps21, tmp_py, tmp_ps2 = self.models[i].predict_for_wEI(test_x)
             py1[i] = tmp_py1
             ps21[i] = np.diag(tmp_ps21)
             py[i] = tmp_py
-            ps2[i] = np.diag(tmp_ps2)
+            ps2[i] = tmp_ps2
         py1 = (py1.T * self.low_std + self.low_mean).T
         ps21 = ps21 * (self.low_std**2)
         py = (py.T * self.out_std + self.out_mean).T

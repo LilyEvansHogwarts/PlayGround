@@ -89,13 +89,13 @@ def fit_test(x, model):
     gloss = grad(loss)
 
     try:
-        fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5, 0.5]]*x.size, maxiter=100, m=100, iprint=model.debug)
+        fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5, 0.5]]*x.size, maxiter=500, m=100, iprint=model.debug)
     except np.linalg.LinAlgError:
         print('Fit test. Increase noise term and re-optimization')
         x0 = np.copy(best_x).reshape(-1)
         x0[0] += 0.01
         try:
-            fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5, 0.5]]*x.size, maxiter=100, m=10, iprint=model.debug)
+            fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5, 0.5]]*x.size, maxiter=500, m=10, iprint=model.debug)
         except:
             print('Fit test. Exception caught,  L-BFGS early stopping...')
             print(traceback.format_exc())

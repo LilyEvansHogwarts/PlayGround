@@ -1,9 +1,9 @@
 funct = 'branin'
-num = [50,10]
+num = [10,3]
 bounds = [[-5,10],[0,15]]
 num_models = 5
 scale = [0.4]
-bfgs_iter = [100]
-iteration = 50
-K = 100
+bfgs_iter = [500]
+iteration = 20
+K = 30
 num_points = 5
