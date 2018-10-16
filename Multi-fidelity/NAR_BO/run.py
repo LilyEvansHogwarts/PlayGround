@@ -6,6 +6,7 @@ from src.activations import *
 from src.fit import *
 import multiprocessing
 from get_dataset import *
+import pickle
 
 def stand_print(x, py, ps2, true):
     print('x', x)
@@ -33,12 +34,12 @@ K = conf['K']
 dataset = init_dataset(funct, num, bounds)
 for i in dataset.keys():
     print(i, dataset[i].shape)
-
-
+with open('dataset.pickle', 'wb') as f:
+    pickle.dump(dataset, f)
 
 
 i = 0
-while (dataset['high_y'].shape[1] - num[1]) < iteration:
+while (dataset['high_y'].shape[1] - num[1]) <= iteration:
 # for i in range(iteration):
     print('********************************************************************')
     print('iteration',i)
@@ -87,6 +88,9 @@ while (dataset['high_y'].shape[1] - num[1]) < iteration:
         print('high_y', new_y)
         dataset['high_x'] = np.concatenate((dataset['high_x'].T, new_x[:,idx].T)).T
         dataset['high_y'] = np.concatenate((dataset['high_y'].T, new_y.T)).T
+    
+    with open('dataset.pickle', 'wb') as f:
+        pickle.dump(dataset, f)
 
 
 

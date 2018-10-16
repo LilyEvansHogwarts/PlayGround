@@ -134,10 +134,12 @@ class NAR_BO:
             ps21[i] = np.diag(tmp_ps21)
             py[i] = tmp_py
             ps2[i] = tmp_ps2
+        '''
         py1 = (py1.T * self.low_std + self.low_mean).T
         ps21 = ps21 * (self.low_std**2)
         py = (py.T * self.out_std + self.out_mean).T
         ps2 = ps2 * (self.out_std**2)
+        '''
         return py1, ps21, py, ps2
 
     def predict_low(self, test_x):

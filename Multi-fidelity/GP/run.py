@@ -6,7 +6,7 @@ from src.BO import BO
 from src.fit import *
 import multiprocessing
 from get_dataset import *
-
+import pickle
 
 argv = sys.argv[1:]
 conf = toml.load(argv[0])
@@ -23,6 +23,9 @@ data = init_dataset(funct, num, bounds)
 dataset = {}
 dataset['train_x'] = data['high_x']
 dataset['train_y'] = data['high_y']
+with open('dataset.pickle', 'wb') as f:
+    pickle.dump(dataset, f)
+
 
 for i in range(iteration):
     print('********************************************************************')
@@ -44,6 +47,8 @@ for i in range(iteration):
     print('y',funct[1](new_x[:,idx], bounds))
     dataset['train_x'] = np.concatenate((dataset['train_x'].T, new_x[:,idx].T)).T
     dataset['train_y'] = np.concatenate((dataset['train_y'].T, funct[1](new_x[:,idx], bounds).T)).T
+    with open('dataset.pickle', 'wb') as f:
+        pickle.dump(dataset, f)
 
     
 
