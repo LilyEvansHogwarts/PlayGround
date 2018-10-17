@@ -4,6 +4,7 @@
 
 * add `neg_likelihood.sum()` can greatly improve the precision of model construction
 * compute fit process with both model1 and model2 works convergences much faster. The maxiter of model1 is less than that of model2.
+* there is no need to re_standardize output for both GP and NAR_BO. the prediction function is only used for fitting and wEI to query the next x0, not for predict the real value.
 
 ### NAR_GP.py predict function
 

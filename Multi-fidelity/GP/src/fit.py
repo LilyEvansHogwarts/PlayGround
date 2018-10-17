@@ -24,10 +24,8 @@ def fit(x, model):
         PI = np.ones((x.shape[1]))
         for i in range(1,model.outdim):
             py, ps2 = model.models[i].predict(x)
-            ps = np.sqrt(np.diag(ps2))
-            # PI = PI + logphi(-py/ps)
+            ps = np.sqrt(np.diag(ps2)) + 0.000001
             PI = PI*cdf(-py/ps)
-        # tmp_loss = -EI-PI
         tmp_loss = -EI*PI
         tmp_loss = tmp_loss.sum()
         if tmp_loss < best_loss:

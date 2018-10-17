@@ -18,6 +18,10 @@ class GP:
         self.dim = self.train_x.shape[0]
         self.num_train = self.train_x.shape[1]
         self.train_y = self.train_y.reshape(-1)
+        self.mean = self.train_y.mean()
+        self.std = self.train_y.std()
+        self.train_y = (self.train_y - self.mean)/self.std
+
 
     def rand_theta(self, scale):
         if self.k: # kernel2
@@ -121,5 +125,7 @@ class GP:
         py = np.dot(tmp, self.alpha)
         ps2 = sn2 + self.kernel(test_x, test_x, hyp) - np.dot(tmp, chol_inv(self.L, tmp.T))
         ps2 = np.abs(ps2)
+        py = py * self.std + self.mean
+        ps2 = ps2 * (self.std**2)
         return py, ps2
     

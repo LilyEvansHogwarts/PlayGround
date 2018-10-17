@@ -83,13 +83,26 @@ def circuit1_high(x, bounds):
             line[2] = 23.00 - float(line[2])
             ret[:, p] = line
     return ret
-                    
+ 
+def testcase(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:, 1] - bounds[:, 0]
+    x = (x.T * delta + mean).T
+    y = np.zeros((3, x.shape[1]))
+    y[0] = np.exp(x[0]) * (4*(x[1]**2) + 2*(x[1]**2) + 4*x[0]*x[1] + 2*x[1] + 1)
+    y[1] = 1.5 + x[0]*x[1] - x[0] - x[1]
+    y[2] = x[1]*x[0] + 10
+    return y
+
 def get_funct(funct):
     if funct == 'branin':
         return [branin_low, branin_high]
     elif funct == 'circuit1':
         return [circuit1_low, circuit1_high]
+    elif funct == 'testcase':
+        return [branin_low, testcase]
     else:
         return [branin_low, branin_high]
     
+
 

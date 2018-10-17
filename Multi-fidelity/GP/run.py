@@ -33,7 +33,7 @@ for i in range(iteration):
     model = BO(dataset, scale, bounds, bfgs_iter, debug=False)
     best_x = model.best_x
     best_y = model.best_y
-    best_y = model.re_standard(best_y)
+    # best_y = model.re_standard(best_y)
     print('best_x', best_x)
     print('best_y', best_y)
 
@@ -42,11 +42,12 @@ for i in range(iteration):
     wEI_tmp = model.wEI(new_x)
 
     idx = np.argsort(wEI_tmp)[-1:]
+    new_y = funct[1](new_x[:, idx], bounds)
     print('idx',idx)
-    print('x',new_x[:,idx])
-    print('y',funct[1](new_x[:,idx], bounds))
+    print('x',new_x[:,idx].T)
+    print('y',new_y.T)
     dataset['train_x'] = np.concatenate((dataset['train_x'].T, new_x[:,idx].T)).T
-    dataset['train_y'] = np.concatenate((dataset['train_y'].T, funct[1](new_x[:,idx], bounds).T)).T
+    dataset['train_y'] = np.concatenate((dataset['train_y'].T, new_y.T)).T
     with open('dataset.pickle', 'wb') as f:
         pickle.dump(dataset, f)
 

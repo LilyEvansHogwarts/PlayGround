@@ -40,7 +40,6 @@ with open('dataset.pickle', 'wb') as f:
 
 i = 0
 while (dataset['high_y'].shape[1] - num[1]) <= iteration:
-# for i in range(iteration):
     print('********************************************************************')
     print('iteration',i)
     i = i+1
@@ -49,13 +48,12 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
     model = NAR_BO(dataset, scale, bounds, bfgs_iter=bfgs_iter, debug=False)
     best_x = model.best_x[1].reshape(-1,1)
     best_y = model.best_y[1].reshape(-1,1)
-    best_y = model.re_standard(best_y)
     print('best_x', best_x.T)
-    print('best_y', best_y)
+    print('best_y', best_y.T)
 
     p = 5
     def task(x0):
-        x0 = fit(x0, model)
+        # x0 = fit(x0, model)
         x0 = fit_test(x0, model)
         wEI_tmp = model.wEI(x0)
         return x0, wEI_tmp
@@ -80,12 +78,12 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
     py, ps2 = model.predict_low(new_x[:, idx])
     if (ps2.T > model.gamma).sum() > 0:
         new_y = funct[0](new_x[:, idx], bounds)
-        print('low_y', new_y)
+        print('low_y', new_y.T)
         dataset['low_x'] = np.concatenate((dataset['low_x'].T, new_x[:,idx].T)).T
         dataset['low_y'] = np.concatenate((dataset['low_y'].T, new_y.T)).T
     else:
         new_y = funct[1](new_x[:, idx], bounds)
-        print('high_y', new_y)
+        print('high_y', new_y.T)
         dataset['high_x'] = np.concatenate((dataset['high_x'].T, new_x[:,idx].T)).T
         dataset['high_y'] = np.concatenate((dataset['high_y'].T, new_y.T)).T
     
