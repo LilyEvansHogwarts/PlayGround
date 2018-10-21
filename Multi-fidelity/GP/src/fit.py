@@ -107,7 +107,7 @@ def fit_py(x, model, name):
     if name == 'circuit1':
         constr = ({'type':'ineq', 'fun':get_py(1), 'jac':grad(get_py(1))}, {'type':'ineq', 'fun':get_py(2), 'jac':grad(get_py(2))})
         data = minimize(get_py(0), x0, jac=grad(get_py(0)), constraints=constr, bounds=[[-0.5, 0.5]]*model.dim, method='SLSQP')
-    elif name == 'branin':
+    elif name == 'branin' or name == 'hartmann3d':
         data = minimize(get_py(0), x0, jac=grad(get_py(0)), bounds=[[-0.5, 0.5]]*model.dim, method='SLSQP')
     
     if np.isnan(data.x[0]):

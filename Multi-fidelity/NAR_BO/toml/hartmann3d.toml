@@ -1,0 +1,9 @@
+funct = 'hartmann3d'
+num = [10,3]
+bounds = [[0,1],[0,1],[0,1]]
+num_models = 1
+scale = [0.2]
+bfgs_iter = [500]
+iteration = 100
+K = 10
+num_points = 1

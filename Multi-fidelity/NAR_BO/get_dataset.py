@@ -83,12 +83,44 @@ def circuit1_high(x, bounds):
             line[2] = 23.00 - float(line[2])
             ret[:, p] = line
     return ret
-                    
+ 
+def hartmann3d_high(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:,1] - bounds[:,0]
+    x = (x.T * delta + mean).T
+    A = np.array([[3,10,30],[0.1,10,35],[3,10,30],[0.1,10,35]])
+    P = np.array([[3689,1170,2673],[4699,4387,7470],[1091,8732,5547],[381,5743,8828]])*0.0001
+    alpha = np.array([1.0,1.2,3.0,4.2])
+    ret = np.zeros((1,x.shape[1]))
+    for i in range(x.shape[1]):
+        tmp = A*(x[:,i] - P)**2
+        tmp = tmp.sum(axis=1)
+        ret[0,i] = np.dot(alpha, np.exp(-tmp))
+    return ret
+
+def hartmann3d_low(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:,1] - bounds[:,0]
+    x = (x.T * delta + mean).T
+    A = np.array([[3,10,30],[0.1,10,35],[3,10,30],[0.1,10,35]])
+    P = np.array([[3689,1170,2673],[4699,4387,7470],[1091,8732,5547],[381,5743,8828]])*0.0001
+    alpha = np.array([1.0,1.2,3.0,4.2])
+    theta = np.array([0.01,-0.01,-0.1,0.1])
+    alpha = alpha + 2*theta
+    ret = np.zeros((1,x.shape[1]))
+    for i in range(x.shape[1]):
+        tmp = A*(x[:,i] - P)**2
+        tmp = tmp.sum(axis=1)
+        ret[0,i] = np.dot(alpha, np.exp(-tmp))
+    return ret
+
 def get_funct(funct):
     if funct == 'branin':
         return [branin_low, branin_high]
     elif funct == 'circuit1':
         return [circuit1_low, circuit1_high]
+    elif funct == 'hartmann3d':
+        return [hartmann3d_low, hartmann3d_high]
     else:
         return [branin_low, branin_high]
     

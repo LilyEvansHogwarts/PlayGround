@@ -78,7 +78,7 @@ def logphi_vector(x):
     # phi3
     phi3 = np.log(0.5*np.maximum(0.000001,(1.0-erf(-x/np.sqrt(2)))))
 
-    phi = phi1 * (x**2 < 0.0492) + phi2 * (x < -11.3137) + phi3 * (x >= -11.3137 or x**2 >= 0.0492)
+    phi = phi1 * (x**2 < 0.0492) + phi2 * (x < -11.3137) + phi3 * ((x >= -11.3137) | (x**2 >= 0.0492))
     return phi
 
 def get_act_f(act):

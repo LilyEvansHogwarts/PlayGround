@@ -18,6 +18,10 @@ class GP:
         self.dim = self.train_x.shape[0]
         self.num_train = self.train_x.shape[1]
         self.train_y = self.train_y.reshape(-1)
+        self.mean = self.train_y.mean()
+        self.std = self.train_y.std()
+        self.train_y = (self.train_y - self.mean)/self.std
+
 
     def rand_theta(self, scale):
         if self.k: # kernel2
@@ -42,6 +46,7 @@ class GP:
             active_dims = np.arange(self.dim)
         output_scale = np.exp(hyp[0])
         lengthscales = np.exp(hyp[1:])
+        lengthscales = lengthscales + 0.000001
         diffs = np.expand_dims((x[active_dims].T/lengthscales).T, 2) - np.expand_dims((xp[active_dims].T/lengthscales).T, 1)
         return output_scale * np.exp(-0.5*np.sum(diffs**2, axis=0))
     
@@ -93,26 +98,26 @@ class GP:
         try:
             fmin_l_bfgs_b(loss, theta0, gloss, maxiter=self.bfgs_iter, m = 100, iprint=self.debug)
         except np.linalg.LinAlgError:
-            print('Increase noise term and re-optimization')
+            print('GP. Increase noise term and re-optimization')
             theta0 = np.copy(self.theta)
             theta0[0] += np.log(10)
             try:
                 fmin_l_bfgs_b(loss, theta0, gloss, maxiter=self.bfgs_iter, m=10, iprint=self.debug)
             except:
-                print('Exception caught, L-BFGS early stopping...')
+                print('GP. Exception caught, L-BFGS early stopping...')
                 if self.debug:
                     print(traceback.format_exc())
         except:
-            print('Exception caught, L-BFGS early stopping...')
+            print('GP. Exception caught, L-BFGS early stopping...')
             if self.debug:
                 print(traceback.format_exc())
 
         if(np.isinf(self.loss) or np.isnan(self.loss)):
-            print('Fail to build GP model')
+            print('GP. Fail to build GP model')
             sys.exit(1)
 
         self.alpha = chol_inv(self.L, self.train_y.T)
-        print('Finished training process')
+        print('GP. Finished training process')
 
     def predict(self, test_x):
         sn2 = np.exp(self.theta[0])
@@ -120,5 +125,8 @@ class GP:
         tmp = self.kernel(test_x, self.train_x, hyp)
         py = np.dot(tmp, self.alpha)
         ps2 = sn2 + self.kernel(test_x, test_x, hyp) - np.dot(tmp, chol_inv(self.L, tmp.T))
+        ps2 = np.abs(ps2)
+        py = py * self.std + self.mean
+        ps2 = ps2 * (self.std**2)
         return py, ps2
     
