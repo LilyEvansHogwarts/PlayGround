@@ -36,7 +36,15 @@ for i in dataset.keys():
     print(i, dataset[i].shape)
 with open('dataset.pickle', 'wb') as f:
     pickle.dump(dataset, f)
-
+'''
+with open('node02.pickle', 'rb') as f:
+    data = pickle.load(f)
+dataset = {}
+dataset['low_x'] = data['low_x'][:, :20]
+dataset['low_y'] = data['low_y'][:, :20]
+dataset['high_x'] = data['high_x'][:, :10]
+dataset['high_y'] = data['high_y'][:, :10]
+'''
 
 i = 0
 while (dataset['high_y'].shape[1] - num[1]) <= iteration:
@@ -54,13 +62,17 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
     p = 5
     def task(x0):
         x0 = fit(x0, model)
+        for i in range(x0.shape[1]):
+            x0[:, i] = fit_py(x0[:, i], model)
         x0 = fit_test(x0, model)
         return x0
 
     pool = multiprocessing.Pool(processes=5)
+    x0 = model.rand_x(K)
+    # x0 = fit(x0, model)
     x0_list = []
     for j in range(int(K/p)):
-        x0_list.append(model.rand_x(p))
+        x0_list.append(x0[:, p*j:p*(j+1)])
     results = pool.map(task, x0_list)
     pool.close()
     pool.join()

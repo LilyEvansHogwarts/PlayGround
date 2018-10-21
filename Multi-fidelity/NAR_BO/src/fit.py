@@ -47,10 +47,10 @@ def fit(x, model):
         if model.best_constr[1] <= 0:
             py, ps2 = model.models[0].predict_low(x)
             ps = np.sqrt(np.abs(np.diag(ps2))) + 0.000001
-            tmp = -(py - model.best_y[1,0])/ps
+            tmp = -(py - model.best_y[0, 0])/ps
             # tmp > -40
-            tmp1 = np.maximum(-40,tmp)
-            EI1 = ps * (tmp1*cdf(tmp1)+pdf(tmp1))
+            tmp1 = np.maximum(-40, tmp)
+            EI1 = ps*(tmp1*cdf(tmp1)+pdf(tmp1))
             EI1 = np.log(np.maximum(0.000001, EI1))
             # tmp <= -40
             tmp2 = np.minimum(-40, tmp)**2
@@ -58,7 +58,7 @@ def fit(x, model):
             # EI
             EI = EI1*(tmp > -40) + EI2*(tmp <= -40)
         PI = np.zeros((x.shape[1]))
-        for i in range(1,model.outdim):
+        for i in range(1, model.outdim):
             py, ps2 = model.models[i].predict_low(x)
             ps = np.sqrt(np.abs(np.diag(ps2))) + 0.000001
             PI = PI + logphi_vector(-py/ps)
@@ -68,17 +68,17 @@ def fit(x, model):
             best_loss = tmp_loss
             best_x = np.copy(x)
         return tmp_loss
-
+    
     gloss = grad(loss)
     
     try:
-        fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5,0.5]]*x.size, maxiter=100, m=100, iprint=model.debug)
+        fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5,0.5]]*x.size, maxiter=500, m=100, iprint=model.debug)
     except np.linalg.LinAlgError:
         print('fit, Increase noise term and re-optimization')
         x0 = np.copy(best_x).reshape(-1)
         x0[0] += 0.01
         try:
-            fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5,0.5]]*model.dim, maxiter=100, m=10, iprint=model.debug)
+            fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5,0.5]]*model.dim, maxiter=500, m=10, iprint=model.debug)
         except:
             print('fit, Exception caught, L-BFGS early stopping...')
             print(traceback.format_exc())
@@ -121,7 +121,7 @@ def fit_test(x, model):
             best_x = np.copy(x)
         return tmp_loss
     '''
-
+    
     # loss log
     def loss(x):
         nonlocal best_x
@@ -129,20 +129,20 @@ def fit_test(x, model):
         x = x.reshape(model.dim, int(x.size/model.dim))
         EI = np.zeros((x.shape[1]))
         if model.best_constr[1] <= 0:
-            _, _, py, ps2 = model.models[0].predict(x)
+            _,  _,  py, ps2 = model.models[0].predict(x)
             ps = np.sqrt(np.abs(np.diag(ps2))) + 0.000001
-            tmp = -(py - model.best_y[1,0])/ps
+            tmp = -(py - model.best_y[1, 0])/ps
             # tmp > -40
-            tmp1 = np.maximum(-40,tmp)
+            tmp1 = np.maximum(-40, tmp)
             EI1 = ps*(tmp1*cdf(tmp1)+pdf(tmp1))
-            EI1 = np.log(np.maximum(0.000001, EI1))
+            EI1 = np.log(np.maximum(0.000001, EI))
             # tmp <= -40
-            tmp2 = np.minimum(-40,tmp)**2
+            tmp2 = np.minimum(-40, tmp)**2
             EI2 = np.log(ps) - tmp2/2 - np.log(tmp2-1)
             # EI
-            EI = EI1*(tmp > -40) + EI2*(tmp <= -40)
+            EI = EI1 * (tmp > -40) + EI2 * (tmp <= -40)
         PI = np.zeros((x.shape[1]))
-        for i in range(1,model.outdim):
+        for i in range(1, model.outdim):
             _, _, py, ps2 = model.models[i].predict(x)
             ps = np.sqrt(np.abs(np.diag(ps2))) + 0.000001
             PI = PI + logphi_vector(-py/ps)
@@ -177,22 +177,33 @@ def fit_test(x, model):
     return best_x
 
 def fit_py(x, model):
-    best_loss = np.inf
-    best_x = np.copy(x)
     x0 = np.copy(x).reshape(-1)
 
     def get_py(idx):
         def loss(x0):
             x0 = x0.reshape(model.dim, int(x.size/model.dim))
-            py, ps2 = model.models[idx].predict(x0)
+            _, _, py, ps2 = model.models[idx].predict(x0)
             if idx == 0:
                 py = py.sum()
             else:
                 py = -py.sum()
             return py
         return loss
+    '''
+    # circuit1
+    constr = ({'type':'ineq', 'fun':get_py(1), 'jac':grad(get_py(1))}, {'type':'ineq', 'fun':get_py(2), 'jac':grad(get_py(2))})
+    data = minimize(get_py(0), x0, jac=grad(get_py(0)), constraints=constr, bounds=[[-0.5, 0.5]]*model.dim, method='SLSQP')
+    if np.isnan(data.x[0]):
+        return np.zeros(x0.shape)
+    else:
+        return data.x
+    '''
 
-    constr = ({'type':'ineq','fun':get_py(1)}, {'type':'ineq','fun':get_py(2)})
+    # branin
+    data = minimize(get_py(0), x0, jac=grad(get_py(0)), bounds=[[-0.5, 0.5]]*model.dim, method='SLSQP')
+    if np.isnan(data.x[0]):
+        return np.zeros(x0.shape)
+    else:
+        return data.x
 
-    x0 = minimize(get_py(0), x0, constraints=constr, bounds=[[-0.5,0.5]]*model.dim, methods='SLSQP')
-    return x0
+

@@ -58,28 +58,27 @@ class NAR_BO:
         x = np.random.uniform(-0.5, 0.5, (self.dim,n))
         x[:,idx] = (0.05*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x[1]).T
         x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))
+        
         idx = (tmp < 0.5) * (tmp > 0.4)
         x[:,idx] = (0.05*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x[0]).T
         x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))
+        
         return x
 
     
-    def wEI(self, x, is_high=1):
+    def wEI(self, x):
         x = x.reshape(self.dim, int(x.size/self.dim))
-        if is_high:
-            _, _, py, ps2 = self.predict(x)
-        else:
-            py, ps2 = self.predict_low(x)
+        _, _, py, ps2 = self.predict(x)
         ps = np.sqrt(ps2) + 0.000001
         EI = np.zeros((x.shape[1]))
-        if self.best_constr[is_high] <= 0:
-            tmp = -(py[0] - self.best_y[is_high,0])/ps[0]
+        if self.best_constr[1] <= 0:
+            tmp = -(py[0] - self.best_y[1,0])/ps[0]
             idx = (tmp > -40)
-            EI[idx] = ps[0,idx]*(tmp[idx]*cdf(tmp[idx])+pdf(tmp[idx]))
-            EI[idx] = np.log(np.maximum(0.000001, EI[idx]))
+            EI[idx] = ps[0, idx]*(tmp[idx]*cdf(tmp[idx])+pdf(tmp[idx]))
+            EI[idx] = np.log(np.maximum(EI[idx], 0.000001))
             idx = (tmp <= -40)
             tmp[idx] = tmp[idx]**2
-            EI[idx] = np.log(ps[0,idx]) - tmp[idx]/2 - np.log(tmp[idx]-1)
+            EI[idx] = np.log(ps[0, idx]) - tmp[idx]/2 - np.log(tmp[idx]-1)
         PI = np.zeros((x.shape[1]))
         for i in range(1,self.outdim):
             PI = PI + logphi_vector(-py[i]/ps[i])
@@ -94,10 +93,12 @@ class NAR_BO:
         ps2 = np.zeros((self.outdim, num_test))
         for i in range(self.outdim):
             tmp_py1, tmp_ps21, tmp_py, tmp_ps2 = self.models[i].predict_for_wEI(test_x)
+            # tmp_py1, tmp_ps21, tmp_py, tmp_ps2 = self.models[i].predict(test_x)
             py1[i] = tmp_py1
             ps21[i] = np.diag(tmp_ps21)
             py[i] = tmp_py
             ps2[i] = tmp_ps2
+            # ps2[i] = np.diag(tmp_ps2)
         return py1, ps21, py, ps2
 
     def predict_low(self, test_x):

@@ -34,7 +34,7 @@ class NAR_GP:
 
 
     def predict_for_wEI(self, test_x):
-        nsamples = 200
+        nsamples = 100
         num_test = test_x.shape[1]
         py1, ps21 = self.model1.predict(test_x)
         Z = np.random.multivariate_normal(py1, ps21, nsamples)
