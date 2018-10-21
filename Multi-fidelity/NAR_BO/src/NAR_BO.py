@@ -54,9 +54,12 @@ class NAR_BO:
 
     def rand_x(self, n=1):
         tmp = np.random.uniform(0,1,(n))
-        idx = (tmp < 0.5)
+        idx = (tmp < 0.4)
         x = np.random.uniform(-0.5, 0.5, (self.dim,n))
         x[:,idx] = (0.05*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x[1]).T
+        x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))
+        idx = (tmp < 0.5) * (tmp > 0.4)
+        x[:,idx] = (0.05*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x[0]).T
         x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))
         return x
 
@@ -68,14 +71,19 @@ class NAR_BO:
         else:
             py, ps2 = self.predict_low(x)
         ps = np.sqrt(ps2) + 0.000001
-        EI = np.ones((x.shape[1]))
+        EI = np.zeros((x.shape[1]))
         if self.best_constr[is_high] <= 0:
             tmp = -(py[0] - self.best_y[is_high,0])/ps[0]
-            EI = ps[0]*(tmp*cdf(tmp)+pdf(tmp))
-        PI = np.ones((x.shape[1]))
+            idx = (tmp > -40)
+            EI[idx] = ps[0,idx]*(tmp[idx]*cdf(tmp[idx])+pdf(tmp[idx]))
+            EI[idx] = np.log(np.maximum(0.000001, EI[idx]))
+            idx = (tmp <= -40)
+            tmp[idx] = tmp[idx]**2
+            EI[idx] = np.log(ps[0,idx]) - tmp[idx]/2 - np.log(tmp[idx]-1)
+        PI = np.zeros((x.shape[1]))
         for i in range(1,self.outdim):
-            PI = PI*cdf(-py[i]/ps[i])
-        return EI*PI
+            PI = PI + logphi_vector(-py[i]/ps[i])
+        return EI + PI
     
 
     def predict(self, test_x):

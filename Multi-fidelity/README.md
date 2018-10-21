@@ -1,5 +1,18 @@
 # Multi-fidelity Gaussian Process
 
+### python nlopt installation
+
+```bash
+pip3 download nlopt
+tar -zxvf nlopt-2.4.2.post2.tar.gz
+cd nlopt-2.4.2.post2
+sudo python3 setup.py install
+```
+or
+```bash
+conda install -c conda-forge nlopt
+```
+
 ### codeing tricks
 
 * remember to standardize each output idx in GP.py

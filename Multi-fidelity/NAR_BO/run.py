@@ -53,10 +53,9 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
 
     p = 5
     def task(x0):
-        # x0 = fit(x0, model)
+        x0 = fit(x0, model)
         x0 = fit_test(x0, model)
-        wEI_tmp = model.wEI(x0)
-        return x0, wEI_tmp
+        return x0
 
     pool = multiprocessing.Pool(processes=5)
     x0_list = []
@@ -66,11 +65,10 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
     pool.close()
     pool.join()
 
-    new_x = results[0][0]
-    wEI_tmp = results[0][1]
+    new_x = results[0]
     for j in range(1, int(K/p)):
-        new_x = np.concatenate((new_x.T, results[j][0].T)).T
-        wEI_tmp = np.concatenate((wEI_tmp, results[j][1].T)).T
+        new_x = np.concatenate((new_x.T, results[j].T)).T
+    wEI_tmp = model.wEI(new_x)
 
     idx = np.argsort(wEI_tmp)[-1:]
     print('idx', idx)
