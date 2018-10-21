@@ -89,7 +89,7 @@ def fit(x, model):
     return best_x
 
 
-def fit_py(x, model):
+def fit_py(x, model, name):
     x0 = np.copy(x).reshape(-1)
 
     def get_py(idx):
@@ -103,23 +103,17 @@ def fit_py(x, model):
             return py
         return loss
     
-    '''
-    # circuit1
-    constr = ({'type':'ineq', 'fun':get_py(1), 'jac':grad(get_py(1))}, {'type':'ineq', 'fun':get_py(2), 'jac':grad(get_py(2))})
-    data = minimize(get_py(0), x0, jac=grad(get_py(0)), constraints=constr, bounds=[[-0.5, 0.5]]*model.dim, method='SLSQP')
-    if np.isnan(data.x[0]):
-        return np.zeros(x0.shape)
-    else:
-        return data.x
-    '''
-
-    # branin
-    data = minimize(get_py(0), x0, jac=grad(get_py(0)), bounds=[[-0.5, 0.5]]*model.dim, method='SLSQP')
-    if np.isnan(data.x[0]):
-        return np.zeros(x0.shape)
-    else:
-        return data.x
     
+    if name == 'circuit1':
+        constr = ({'type':'ineq', 'fun':get_py(1), 'jac':grad(get_py(1))}, {'type':'ineq', 'fun':get_py(2), 'jac':grad(get_py(2))})
+        data = minimize(get_py(0), x0, jac=grad(get_py(0)), constraints=constr, bounds=[[-0.5, 0.5]]*model.dim, method='SLSQP')
+    elif name == 'branin':
+        data = minimize(get_py(0), x0, jac=grad(get_py(0)), bounds=[[-0.5, 0.5]]*model.dim, method='SLSQP')
+    
+    if np.isnan(data.x[0]):
+        return np.zeros(x0.shape)
+    else:
+        return data.x
 
 
 

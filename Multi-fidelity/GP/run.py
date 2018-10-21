@@ -11,7 +11,8 @@ import pickle
 argv = sys.argv[1:]
 conf = toml.load(argv[0])
 
-funct = get_funct(conf['funct'])
+name = conf['funct']
+funct = get_funct(name)
 num = conf['num']
 bounds = np.array(conf['bounds'])
 scale = conf['scale']
@@ -38,15 +39,11 @@ for i in range(iteration):
     print('best_y', best_y)
 
     
-    '''
-    for i in range(K):
-        test_x[:, i] = fit_py(test_x[:, i], model)
-    '''
 
     p = 5
     def task(x0):
         for i in range(x0.shape[1]):
-            x0[:, i] = fit_py(x0[:, i], model)
+            x0[:, i] = fit_py(x0[:, i], model, name)
         x0 = fit(x0, model)
         return x0
 

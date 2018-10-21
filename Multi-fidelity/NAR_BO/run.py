@@ -20,7 +20,8 @@ def stand_print(x, py, ps2, true):
 argv = sys.argv[1:]
 conf = toml.load(argv[0])
 
-funct = get_funct(conf['funct'])
+name = conf['funct']
+funct = get_funct(name)
 num = conf['num']
 bounds = np.array(conf['bounds'])
 scale = conf['scale']
@@ -63,7 +64,7 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
     def task(x0):
         x0 = fit(x0, model)
         for i in range(x0.shape[1]):
-            x0[:, i] = fit_py(x0[:, i], model)
+            x0[:, i] = fit_py(x0[:, i], model, name)
         x0 = fit_test(x0, model)
         return x0
 
