@@ -91,7 +91,7 @@ def testcase(x, bounds):
     y = np.zeros((3, x.shape[1]))
     y[0] = np.exp(x[0]) * (4*(x[1]**2) + 2*(x[1]**2) + 4*x[0]*x[1] + 2*x[1] + 1)
     y[1] = 1.5 + x[0]*x[1] - x[0] - x[1]
-    y[2] = x[1]*x[0] + 10
+    y[2] = x[1]*x[0]
     return y
 
 def get_funct(funct):

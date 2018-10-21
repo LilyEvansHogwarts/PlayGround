@@ -37,8 +37,30 @@ for i in range(iteration):
     print('best_x', best_x)
     print('best_y', best_y)
 
-    test_x = model.rand_x(n=K)
-    new_x = fit(test_x, model)
+    
+    '''
+    for i in range(K):
+        test_x[:, i] = fit_py(test_x[:, i], model)
+    '''
+
+    p = 5
+    def task(x0):
+        for i in range(x0.shape[1]):
+            x0[:, i] = fit_py(x0[:, i], model)
+        x0 = fit(x0, model)
+        return x0
+
+    pool = multiprocessing.Pool(processes=5)
+    x0_list = []
+    for i in range(int(K/p)):
+        x0_list.append(model.rand_x(p))
+    results = pool.map(task, x0_list)
+    pool.close()
+    pool.join()
+
+    new_x = results[0]
+    for j in range(1, int(K/p)):
+        new_x = np.concatenate((new_x.T, results[j].T)).T
     wEI_tmp = model.wEI(new_x)
 
     idx = np.argsort(wEI_tmp)[-1:]

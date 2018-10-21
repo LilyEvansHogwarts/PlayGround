@@ -50,7 +50,7 @@ class BO:
 
     def rand_x(self,n=1):
         tmp = np.random.uniform(0,1,(n))
-        idx = (tmp < 0.1)
+        idx = (tmp < 0.4)
         x = np.random.uniform(-0.5, 0.5, (self.dim,n))
         x[:,idx] = (0.1*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x).T
         x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))
@@ -58,18 +58,26 @@ class BO:
 
     def wEI(self, x):
         x = x.reshape(self.dim, int(x.size/self.dim))
-        EI = np.ones((x.shape[1]))
+        EI = np.zeros((x.shape[1]))
         if self.best_constr <= 0:
             py, ps2 = self.models[0].predict(x)
-            ps = np.sqrt(np.diag(ps2))
-            tmp = -(py[0] - self.best_y[0])/ps[0]
-            EI = ps[0]*(tmp*cdf(tmp)+pdf(tmp))
-        PI = np.ones((x.shape[1]))
-        for i in range(1,self.outdim):
+            ps = np.sqrt(np.abs(np.diag(ps2))) + 0.000001
+            tmp = -(py - self.best_y[0])/ps
+            # tmp > -40
+            tmp1 = np.maximum(-40, tmp)
+            EI1 = ps*(tmp1*cdf(tmp1)+pdf(tmp1))
+            EI1 = np.log(np.maximum(0.000001, EI1))
+            # tmp <= -40
+            tmp2 = np.minimum(-40, tmp)
+            EI2 = np.log(ps) - tmp2/2 - np.log(tmp2-1)
+            # EI
+            EI = EI1*(tmp > -40) + EI2*(tmp <= -40)
+        PI = np.zeros((x.shape[1]))
+        for i in range(1, self.outdim):
             py, ps2 = self.models[i].predict(x)
-            ps = np.sqrt(np.diag(ps2))
-            PI = PI*cdf(-py[i]/ps[i])
-        return EI*PI
+            ps = np.sqrt(np.abs(np.diag(ps2))) + 0.000001
+            PI = PI + logphi_vector(-py/ps)
+        return EI+PI
 
     def predict(self, test_x):
         num_test = test_x.shape[1]
