@@ -1,0 +1,9 @@
+funct = 'branin'
+num = [10,3]
+bounds = [[-5,10],[0,15]]
+num_models = 1
+scale = [0.4]
+bfgs_iter = [500]
+iteration = 20
+K = 50
+num_points = 5

@@ -1,0 +1,9 @@
+num = [10,  3]
+bounds = [[0, 5], [0, 5]]
+funct = 'testcase'
+num_models = 1
+scale = [0.4, 0.4, 0.4]
+bfgs_iter = [100, 100, 100]
+iteration = 50
+K = 30
+num_points = 5
