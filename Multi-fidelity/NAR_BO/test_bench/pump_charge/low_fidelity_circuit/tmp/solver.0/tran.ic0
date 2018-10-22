@@ -1,0 +1,40 @@
+* "simulator" "HSPICE" 
+* "version" "D-2010.03 64-BIT"
+* "format" "HSP"
+* "rundate" "22:48:14 10/22/2018 "
+* "netlist" "/export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pump_charge/low_fidelity_circuit/tmp/worker.1/tran.sp "
+* "runtitle" "* msp generated netlist file"
+* time =    0.            
+* temperature =   25.0000        
+*** BEGIN: Saved Operating Point ***                     
+.option 
++ gmindc=  10.0000f       
+.nodeset
++ dn_net =   0.            
++ dnb_net =   0.            
++ i10u_net =   1.6138        
++ i5u_net = 873.1548m       
++ up_net =   0.            
++ upb_net =   0.            
++ vcp_net =   2.2000        
++ vdd33_net =   3.3000        
++ xi0.nb2 = 751.4612m       
++ xi0.net0119 = 150.6581m       
++ xi0.net0124 = 153.3515m       
++ xi0.net0149 = 751.4612m       
++ xi0.net0153 = 751.4612m       
++ xi0.net35 =   3.2732        
++ xi0.net47 =   3.2731        
++ xi0.net58 = 152.9161m       
++ xi0.net62 = 153.1690m       
++ xi0.net78 =   0.            
++ xi0.net79 =   3.3000        
++ xi0.net91 =   2.1029        
++ xi0.net98 =   2.2708        
++ xi0.pb1 =   2.6007        
++ xi0.pb2 =   2.3797        
++ xi0.quench =   2.1779        
++ xi0.xi40.n78 =   1.6364        
++ xi0.xi40.n79 = 111.3482m       
++ xi0.xi40.net18 =   2.9391        
+***   END: Saved Operating Point ***                     

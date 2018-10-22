@@ -190,16 +190,26 @@ def fit_py(x, model, name):
             return py
         return loss
     
+    
     if name == 'circuit1':
-        constr = ({'type':'ineq', 'fun':get_py(1), 'jac':grad(get_py(1))}, {'type':'ineq', 'fun':get_py(2), 'jac':grad(get_py(2))})
+        constr = ({'type':'ineq', 'fun':get_py(1), 'jac':grad(get_py(1))},\
+                {'type':'ineq', 'fun':get_py(2), 'jac':grad(get_py(2))})
         data = minimize(get_py(0), x0, jac=grad(get_py(0)), constraints=constr, bounds=[[-0.5, 0.5]]*model.dim, method='SLSQP')
-    elif name == 'branin' or name == 'hartmann3d':
+    elif name == 'branin' or name == 'hartmann3d' or name == 'hartmann6d':
         data = minimize(get_py(0), x0, jac=grad(get_py(0)), bounds=[[-0.5, 0.5]]*model.dim, method='SLSQP')
+    elif name == 'pump_charge':
+        constr = ({'type':'ineq', 'fun':get_py(1), 'jac':grad(get_py(1))},\
+                {'type':'ineq', 'fun':get_py(2), 'jac':grad(get_py(2))},\
+                {'type':'ineq', 'fun':get_py(3), 'jac':grad(get_py(3))},\
+                {'type':'ineq', 'fun':get_py(4), 'jac':grad(get_py(4))},\
+                {'type':'ineq', 'fun':get_py(5), 'jac':grad(get_py(5))})
+        data = minimize(get_py(0), x0, jac=grad(get_py(0)), constraints=constr, bounds=[[-0.5, 0.5]]*model.dim, method='SLSQP')
+        
     
     if np.isnan(data.x[0]):
         return np.zeros(x0.shape)
     else:
         return data.x
-
+    
 
 

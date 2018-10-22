@@ -49,7 +49,7 @@ def logphi_vector(x):
         den = -x[idx]*den/np.sqrt(2)+q[i]
     y[idx] = np.log(0.5*np.maximum(0.000001,num/den))-0.5*(x[idx]**2)
     
-    idx = (x >= -11.3137)
+    idx = (x >= -11.3137 or x**2 >= 0.0492)
     y[idx] = np.log(0.5*np.maximum(0.000001,(1.0-erf(-x[idx]/np.sqrt(2)))))
     return y
 '''
@@ -77,8 +77,10 @@ def logphi_vector(x):
 
     # phi3
     phi3 = np.log(0.5*np.maximum(0.000001,(1.0-erf(-x/np.sqrt(2)))))
-
-    phi = phi1 * (x**2 < 0.0492) + phi2 * (x < -11.3137) + phi3 * ((x >= -11.3137) | (x**2 >= 0.0492))
+    
+    # phi
+    x2 = x**2
+    phi = phi1 * (x2 < 0.0492) + phi2 * (x < -11.3137) + phi3 * ((x >= -11.3137) | (x2 >= 0.0492))
     return phi
 
 def get_act_f(act):

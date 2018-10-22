@@ -1,0 +1,39 @@
+***** HSPICE -- D-2010.03 64-BIT (Feb 23 2010) linux ******
+ Input File: /export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pum
+ lic:
+ lic: FLEXlm: v8.5b
+ lic: USER:   wllv                 HOSTNAME: console
+ lic: HOSTID: 3440b5b102f4         PID:      35534
+ lic: Using FLEXlm license file:
+ lic: /export/home/wllv/mysoft/hspice/license.dat
+ lic: Checkout 1 hspice
+ lic: License/Maintenance for hspice will expire on 31-dec-2020/2007.9
+ lic: NODE LOCKED license on hostid 3440b5b102f4
+ lic:
+ init: begin read circuit files,  cpu clock=  1.40E-01
+       option gmindc   =    1.000E-14
+       option scale    =    0.900
+       option scale    =    0.900
+ init: end read circuit files,  cpu clock=  1.50E-01 memory=       178 kb
+ init: begin check errors,  cpu clock=  1.50E-01
+ init: end check errors,  cpu clock=  2.40E-01 memory=       900 kb
+ init: begin setup matrix, pivot=     0 cpu clock=  2.40E-01
+       establish matrix -- done,  cpu clock=  2.40E-01 memory=       954 kb
+       re-order matrix -- done,  cpu clock=  2.40E-01 memory=       965 kb
+ init: end setup matrix,  cpu clock=  2.40E-01 memory=      1011 kb
+ dcop: begin dcop,  cpu clock=  2.40E-01
+ dcop: end dcop,  cpu clock=  3.60E-01 memory=      1011 kb  tot_iter=     252
+ sweep: tran tran0    begin, stop_t=  2.00E-07 #sweeps=**** cpu clock=  3.60E-01
+ tran: time= 2.0005E-08 tot_iter=     139 conv_iter=      56 cpu clock= 4.20E-01
+ tran: time= 4.0005E-08 tot_iter=     307 conv_iter=     121 cpu clock= 5.00E-01
+ tran: time= 6.0000E-08 tot_iter=     473 conv_iter=     185 cpu clock= 5.80E-01
+ tran: time= 8.0005E-08 tot_iter=     643 conv_iter=     251 cpu clock= 6.60E-01
+ tran: time= 1.0001E-07 tot_iter=     811 conv_iter=     316 cpu clock= 7.30E-01
+ tran: time= 1.2000E-07 tot_iter=     980 conv_iter=     381 cpu clock= 8.10E-01
+ tran: time= 1.4000E-07 tot_iter=    1149 conv_iter=     446 cpu clock= 8.80E-01
+ tran: time= 1.6000E-07 tot_iter=    1318 conv_iter=     511 cpu clock= 9.50E-01
+ tran: time= 1.8000E-07 tot_iter=    1487 conv_iter=     576 cpu clock= 1.04E+00
+ sweep: tran tran0    end,  cpu clock=  1.11E+00 memory=      1014 kb
+ **error** stop simulation by signal SIGINT = 2
+
+ lic: Release hspice token(s)

@@ -1,0 +1,414 @@
+
+ =========================================
+ folder info start : 
+ src dir : /export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pump_charge/low_fidelity_circuit/circuit
+ tmp dir : /export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pump_charge/low_fidelity_circuit/tmp
+ out dir : /export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pump_charge/low_fidelity_circuit/out
+ bak dir : /export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pump_charge/low_fidelity_circuit/bak
+ log dir : /export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pump_charge/low_fidelity_circuit/log
+ process root : /export/home/svnhome/process/smic.40/
+
+ =========================================
+ file info start : 
+ csv file : out.csv
+ cmp file : 
+ res file : 
+
+  -------------------------------------- 
+   spec param file : charge_pump_param
+             genre : hspice
+
+    const :
+        lc1 => str : 7e-6 exp 
+        lc2 => str : 7e-6 exp 
+        lc3 => str : 5e-6 exp 
+        vcp => str : 2.2 exp 
+        vdd33 => str : 3.3 exp 
+        wc1 => str : 7e-6 exp 
+        wc2 => str : 10e-6 exp 
+        wc3 => str : 10e-6 exp 
+
+    var   :
+        #28 lb1 => ( 2.23942e-06 ~ 6.71826e-06 ) [ ic : 4.47884e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #30 lb2 => ( 2.15405e-06 ~ 6.46216e-06 ) [ ic : 4.30811e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #32 lb3 => ( 7.67115e-07 ~ 2.30135e-06 ) [ ic : 1.53423e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #34 lb4 => ( 4.13527e-07 ~ 1.24058e-06 ) [ ic : 8.27054e-07 vr : 3 jt : 0.1 mod : 0 ]
+        #26 li10 => ( 2.10172e-06 ~ 6.30516e-06 ) [ ic : 4.20344e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #20 ln4 => ( 4.49328e-07 ~ 1.34799e-06 ) [ ic : 8.98657e-07 vr : 3 jt : 0.1 mod : 0 ]
+        #22 lnsupp => ( 4.59257e-07 ~ 1.37777e-06 ) [ ic : 9.18513e-07 vr : 3 jt : 0.1 mod : 0 ]
+        #24 lnsupp2 => ( 5.96724e-07 ~ 1.79017e-06 ) [ ic : 1.19345e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #18 lp4 => ( 3.51601e-07 ~ 1.0548e-06 ) [ ic : 7.03203e-07 vr : 3 jt : 0.1 mod : 0 ]
+        #10 lpdbin => ( 2.80241e-07 ~ 8.40723e-07 ) [ ic : 5.60482e-07 vr : 3 jt : 0.1 mod : 0 ]
+        #12 lpdin => ( 5.35516e-07 ~ 1.60655e-06 ) [ ic : 1.07103e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #16 lumid => ( 3.70479e-07 ~ 1.11144e-06 ) [ ic : 7.40958e-07 vr : 3 jt : 0.1 mod : 0 ]
+        #14 luumid => ( 3.48973e-07 ~ 1.04692e-06 ) [ ic : 6.97946e-07 vr : 3 jt : 0.1 mod : 0 ]
+        #4 q_lc => ( 8.99064e-07 ~ 2.69719e-06 ) [ ic : 1.79813e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #0 q_llower => ( 4.06266e-06 ~ 1.2188e-05 ) [ ic : 8.12533e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #8 q_lq => ( 1.80161e-06 ~ 5.40483e-06 ) [ ic : 3.60322e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #6 q_lref => ( 6.02894e-07 ~ 1.80868e-06 ) [ ic : 1.20579e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #2 q_lupper => ( 8.18684e-07 ~ 2.45605e-06 ) [ ic : 1.63737e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #5 q_wc => ( 6.91642e-06 ~ 2.07493e-05 ) [ ic : 1.38328e-05 vr : 3 jt : 0.1 mod : 0 ]
+        #1 q_wlower => ( 8.98874e-07 ~ 2.69662e-06 ) [ ic : 1.79775e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #9 q_wq => ( 6.46769e-06 ~ 1.94031e-05 ) [ ic : 1.29354e-05 vr : 3 jt : 0.1 mod : 0 ]
+        #7 q_wref => ( 2.88478e-06 ~ 8.65435e-06 ) [ ic : 5.76957e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #3 q_wupper => ( 9.72451e-06 ~ 2.91735e-05 ) [ ic : 1.9449e-05 vr : 3 jt : 0.1 mod : 0 ]
+        #29 wb1 => ( 7.24673e-06 ~ 2.17402e-05 ) [ ic : 1.44935e-05 vr : 3 jt : 0.1 mod : 0 ]
+        #31 wb2 => ( 1.31201e-06 ~ 3.93603e-06 ) [ ic : 2.62402e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #33 wb3 => ( 2.72661e-06 ~ 8.17982e-06 ) [ ic : 5.45321e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #35 wb4 => ( 5.73052e-06 ~ 1.71915e-05 ) [ ic : 1.1461e-05 vr : 3 jt : 0.1 mod : 0 ]
+        #27 wi10 => ( 9.1022e-07 ~ 2.73066e-06 ) [ ic : 1.82044e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #21 wn4 => ( 1.44453e-06 ~ 4.33358e-06 ) [ ic : 2.88905e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #23 wnsupp => ( 1.211e-06 ~ 3.63299e-06 ) [ ic : 2.422e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #25 wnsupp2 => ( 9.09911e-07 ~ 2.72973e-06 ) [ ic : 1.81982e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #19 wp4 => ( 1.1401e-06 ~ 3.42031e-06 ) [ ic : 2.28021e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #11 wpdbin => ( 5.24687e-06 ~ 1.57406e-05 ) [ ic : 1.04937e-05 vr : 3 jt : 0.1 mod : 0 ]
+        #13 wpdin => ( 1.10116e-06 ~ 3.30347e-06 ) [ ic : 2.20232e-06 vr : 3 jt : 0.1 mod : 0 ]
+        #17 wumid => ( 8.35024e-06 ~ 2.50507e-05 ) [ ic : 1.67005e-05 vr : 3 jt : 0.1 mod : 0 ]
+        #15 wuumid => ( 3.9882e-06 ~ 1.19646e-05 ) [ ic : 7.9764e-06 vr : 3 jt : 0.1 mod : 0 ]
+
+ -----------------------------------
+
+
+
+  -------------------------------------- 
+   spec proc file : charge_pump_process
+
+
+    pll_temp -> (125,-40)
+    pll_temp_simple -> (25)
+
+    -----------------------------------
+    corner : FF
+      file    : /hspice/v1p4/l0040ll_v1p4_1r.lib
+      section : $$
+
+      file    : /hspice/v1p4/l0040ll_v1p4_1r.lib
+      section : RES_$$
+
+    -----------------------------------
+    corner : FNSP
+      file    : /hspice/v1p4/l0040ll_v1p4_1r.lib
+      section : $$
+
+      file    : /hspice/v1p4/l0040ll_v1p4_1r.lib
+      section : RES_TT
+
+    -----------------------------------
+    corner : SNFP
+      file    : /hspice/v1p4/l0040ll_v1p4_1r.lib
+      section : $$
+
+      file    : /hspice/v1p4/l0040ll_v1p4_1r.lib
+      section : RES_TT
+
+    -----------------------------------
+    corner : SS
+      file    : /hspice/v1p4/l0040ll_v1p4_1r.lib
+      section : $$
+
+      file    : /hspice/v1p4/l0040ll_v1p4_1r.lib
+      section : RES_$$
+
+    -----------------------------------
+    corner : TT
+      file    : /hspice/v1p4/l0040ll_v1p4_1r.lib
+      section : $$
+
+      file    : /hspice/v1p4/l0040ll_v1p4_1r.lib
+      section : RES_$$
+
+
+   -----------------------------------
+
+
+
+
+ =========================================
+  Spec Simulation dump start :
+      Simulation_Name : charge_pump
+
+      Default_Tool    : 
+      Default_Run     : 
+      Default_Corner  :
+      Default_Temp    :
+      Default_Depend  : 
+      Default_Param   : 
+      Default_Proc    : 
+
+
+-------------------------------------- 
+     Spec Netlist : 
+             Name : net
+              Src : tran.sp
+             Tool : hspice64
+           Run_Op : 
+              Sim : 
+           Mc_Num : 
+           Sim_Op : 
+           Corner :
+                    charge_pump_process :: TT
+
+             Temp :
+                    charge_pump_process :: pll_temp_simple
+
+         Proc_Rel : MUL
+           Depend : netlist
+            Param : charge_pump_param
+             Proc : charge_pump_process
+           Script :
+
+          Extract : 
+
+                 File : tran.mt0
+                   ------------
+                   Extract : lo_iavg as lo_iavg
+                       Idx : 0
+                    Scalar : true
+                   Measure : (0) [  ]
+                     Start : 
+                       End : 
+                   ------------
+                   Extract : lo_imax as lo_imax
+                       Idx : 0
+                    Scalar : true
+                   Measure : (0) [  ]
+                     Start : 
+                       End : 
+                   ------------
+                   Extract : lo_imin as lo_imin
+                       Idx : 0
+                    Scalar : true
+                   Measure : (0) [  ]
+                     Start : 
+                       End : 
+                   ------------
+                   Extract : up_iavg as up_iavg
+                       Idx : 0
+                    Scalar : true
+                   Measure : (0) [  ]
+                     Start : 
+                       End : 
+                   ------------
+                   Extract : up_imax as up_imax
+                       Idx : 0
+                    Scalar : true
+                   Measure : (0) [  ]
+                     Start : 
+                       End : 
+                   ------------
+                   Extract : up_imin as up_imin
+                       Idx : 0
+                    Scalar : true
+                   Measure : (0) [  ]
+                     Start : 
+                       End : 
+
+-------------------------------------- 
+
+ =========================================
+
+
+
+ =========================================
+  Spec Specification dump start : charge_pump #0
+ -----------------------------------------
+ Netlists : 
+   up_imin
+ # of Parameters : 36
+ -----------------------------------------
+ Vars : 
+   Var #11 : deviation
+   Var #9 : diff_lodn
+   Var #8 : diff_loup
+   Var #7 : diff_updn
+   Var #6 : diff_upup
+   Var #4 : lo_iavg
+   Var #5 : lo_imax
+   Var #3 : lo_imin
+   Var #10 : sum_diff
+   Var #12 : target
+   Var #1 : up_iavg
+   Var #2 : up_imax
+   Var #0 : up_imin
+
+ -----------------------------------------
+ Const Vars : 
+   ConstVar : std_i : 40
+
+ -----------------------------------------
+ Fom : 
+   Fom : target , stb: 1 , lmt: 0
+ Fom calc : 
+    v[ S : 12 ]
+ -----------------------------------------
+ Constraints : 
+  Constraint #4, #11 : deviation.lt < 5 stab : 1 ( cons_type : hard )
+  Constraint #3, #9 : diff_lodn.lt < 5 stab : 1 ( cons_type : hard )
+  Constraint #2, #8 : diff_loup.lt < 5 stab : 1 ( cons_type : hard )
+  Constraint #1, #7 : diff_updn.lt < 20 stab : 1 ( cons_type : hard )
+  Constraint #0, #6 : diff_upup.lt < 20 stab : 1 ( cons_type : hard )
+
+ -----------------------------------------
+ Probes : 
+  Probe : name : up_imin(VS) (0)
+  Probe : name : up_iavg(VS) (1)
+  Probe : name : up_imax(VS) (2)
+  Probe : name : lo_imin(VS) (3)
+  Probe : name : lo_iavg(VS) (4)
+  Probe : name : lo_imax(VS) (5)
+  Probe : name : diff_upup(VS) (6)
+  Probe : name : diff_updn(VS) (7)
+  Probe : name : diff_loup(VS) (8)
+  Probe : name : diff_lodn(VS) (9)
+  Probe : name : sum_diff(VS) (10)
+  Probe : name : deviation(VS) (11)
+
+ -----------------------------------------
+ Calc Table : 
+0:
+   v[ S : 0 ]
+   v[ EX : 5 ]
+   v[ CP : 1e+06 ]
+   o[ MUL 0, 2 ]
+   o[ ASS 0, 2 ]
+
+1:
+   v[ S : 1 ]
+   v[ EX : 3 ]
+   v[ CP : 1e+06 ]
+   o[ MUL 0, 2 ]
+   o[ ASS 0, 2 ]
+
+2:
+   v[ S : 2 ]
+   v[ EX : 4 ]
+   v[ CP : 1e+06 ]
+   o[ MUL 0, 2 ]
+   o[ ASS 0, 2 ]
+
+3:
+   v[ S : 3 ]
+   v[ EX : 2 ]
+   v[ CP : 1e+06 ]
+   o[ MUL 0, 2 ]
+   o[ ASS 0, 2 ]
+
+4:
+   v[ S : 4 ]
+   v[ EX : 0 ]
+   v[ CP : 1e+06 ]
+   o[ MUL 0, 2 ]
+   o[ ASS 0, 2 ]
+
+5:
+   v[ S : 5 ]
+   v[ EX : 1 ]
+   v[ CP : 1e+06 ]
+   o[ MUL 0, 2 ]
+   o[ ASS 0, 2 ]
+
+6:
+   v[ S : 6 ]
+   v[ S : 2 ]
+   v[ S : 1 ]
+   o[ ADD 1, 2 ]
+   o[ POST 460, 1 ]
+   o[ ASS 0, 2 ]
+
+7:
+   v[ S : 7 ]
+   v[ S : 1 ]
+   v[ S : 0 ]
+   o[ ADD 1, 2 ]
+   o[ POST 460, 1 ]
+   o[ ASS 0, 2 ]
+
+8:
+   v[ S : 8 ]
+   v[ S : 5 ]
+   v[ S : 4 ]
+   o[ ADD 1, 2 ]
+   o[ POST 460, 1 ]
+   o[ ASS 0, 2 ]
+
+9:
+   v[ S : 9 ]
+   v[ S : 4 ]
+   v[ S : 3 ]
+   o[ ADD 1, 2 ]
+   o[ POST 460, 1 ]
+   o[ ASS 0, 2 ]
+
+10:
+   v[ S : 10 ]
+   v[ S : 6 ]
+   v[ S : 7 ]
+   o[ ADD 0, 2 ]
+   v[ S : 8 ]
+   o[ ADD 0, 2 ]
+   v[ S : 9 ]
+   o[ ADD 0, 2 ]
+   o[ ASS 0, 2 ]
+
+11:
+   v[ S : 11 ]
+   v[ S : 1 ]
+   v[ C : 40 ]
+   o[ ADD 1, 2 ]
+   o[ POST 465, 1 ]
+   o[ POST 460, 1 ]
+   v[ S : 4 ]
+   v[ C : 40 ]
+   o[ ADD 1, 2 ]
+   o[ POST 465, 1 ]
+   o[ POST 460, 1 ]
+   o[ ADD 0, 2 ]
+   o[ ASS 0, 2 ]
+
+12:
+   v[ S : 12 ]
+   v[ S : 10 ]
+   v[ CP : 0.3 ]
+   o[ MUL 0, 2 ]
+   v[ S : 11 ]
+   v[ CP : 0.5 ]
+   o[ MUL 0, 2 ]
+   o[ ADD 0, 2 ]
+   o[ ASS 0, 2 ]
+
+
+
+
+
+========================================= 
+ opt info start : 
+ opt name : charge_pump_opt
+
+   max iter    : 1
+   max solver  : 1
+   init num    : 0
+   refresh int : 45
+   timeout     : 1000us
+   stat option : pf
+   mute        : false
+   force log   : false
+
+   prob dimen  : 36
+   opt times   : 1
+   prob name   : Circuit
+
+   supp switch : false
+
+   Strategy option : #1
+     use : first varify : false
+     use : multi check  : false
+     use : suggest      : true
+     use : init check   : false
+     use : gauss reject : false
+     use : radius est   : false
+
+   Strategy    : #1 Test Cluster
+
+   Algorithm   : #1 SLSQP
+
+

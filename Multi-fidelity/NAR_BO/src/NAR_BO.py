@@ -10,7 +10,7 @@ class NAR_BO:
         self.dataset['low_y'] = np.copy(dataset['low_y'])
         self.dataset['high_x'] = np.copy(dataset['high_x'])
         self.dataset['high_y'] = np.copy(dataset['high_y'])
-        self.gamma = 0.01*(self.dataset['low_y'].max(axis=1) - self.dataset['low_y'].min(axis=1))
+        self.gamma = self.dataset['high_y'].shape[0]*0.01*(self.dataset['low_y'].max(axis=1) - self.dataset['low_y'].min(axis=1))
         self.scale = scale
         self.bounds = np.copy(bounds)
         self.bfgs_iter = bfgs_iter

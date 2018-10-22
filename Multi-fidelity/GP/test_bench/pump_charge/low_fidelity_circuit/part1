@@ -1,0 +1,4 @@
+folder::abs_process_root is "/export/home/svnhome/process/smic.40/";
+file::parameter is "charge_pump_param"      # here dcdc_param is the parameter file
+{
+    param_file_genre = "hspice";

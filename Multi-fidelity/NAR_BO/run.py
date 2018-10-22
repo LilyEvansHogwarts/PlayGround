@@ -38,7 +38,7 @@ for i in dataset.keys():
 with open('dataset.pickle', 'wb') as f:
     pickle.dump(dataset, f)
 '''
-with open('node02.pickle', 'rb') as f:
+with open('dataset.pickle', 'rb') as f:
     data = pickle.load(f)
 dataset = {}
 dataset['low_x'] = data['low_x'][:, :20]
@@ -66,11 +66,11 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
         for i in range(x0.shape[1]):
             x0[:, i] = fit_py(x0[:, i], model, name)
         x0 = fit_test(x0, model)
-        return x0
+        wEI_tmp = model.wEI(x0)
+        return x0, wEI_tmp
 
     pool = multiprocessing.Pool(processes=5)
     x0 = model.rand_x(K)
-    # x0 = fit(x0, model)
     x0_list = []
     for j in range(int(K/p)):
         x0_list.append(x0[:, p*j:p*(j+1)])
@@ -78,10 +78,12 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
     pool.close()
     pool.join()
 
-    new_x = results[0]
+    new_x = results[0][0]
+    wEI_tmp = results[0][1]
     for j in range(1, int(K/p)):
-        new_x = np.concatenate((new_x.T, results[j].T)).T
-    wEI_tmp = model.wEI(new_x)
+        new_x = np.concatenate((new_x.T, results[j][0].T)).T
+        wEI_tmp = np.concatenate((wEI_tmp.T, results[j][1].T)).T
+    # wEI_tmp = model.wEI(new_x)
 
     idx = np.argsort(wEI_tmp)[-1:]
     print('idx', idx)

@@ -1,0 +1,39 @@
+ round : -1
+ optimize name  : charge_pump_opt
+ opt id         : 0
+ prob catalog   : 0
+ prob cata name : Circuit
+ opt status     : END
+ opt calc status: RET
+
+ total opt lvl  : 1
+ mute           : false
+ force log      : false
+
+ supp switch    : false
+
+ iter counts    : 1
+ time ticks     : 8
+ ETF            : 0
+ T-reg counts   : 0
+ N-reg counts   : 0
+ Act-Collition  : 0
+ collition cnts : 0
+ nlopt failures : 0
+ best answer    : not found.
+ problem imax   : 1
+ problem imin   : 1
+ given global minimum   : not determined.
+
+ first varify     : false
+ multi check      : false
+ suggest varify   : true
+ initial stable   : false
+ gauss reject     : false
+ radius estimate  : false
+ reject threshold : 8
+ fom limit        : 0
+ init number      : 0
+ init stablizer   : 1, 1, 1, 1, 1, 1
+ stat option      : pf
+ related algo     : SLSQP

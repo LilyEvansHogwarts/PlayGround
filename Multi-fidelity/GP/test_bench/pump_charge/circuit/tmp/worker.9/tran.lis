@@ -1,0 +1,79 @@
+ ****** HSPICE -- D-2010.03 64-BIT (Feb 23 2010) linux ******                   
+  Copyright (C) 2010 Synopsys, Inc. All Rights Reserved.                        
+  Unpublished-rights reserved under US copyright laws.
+  This program is protected by law and is subject to the 
+  terms and conditions of the license agreement from Synopsys.
+  Use of this program is your acceptance to be bound by the 
+  license agreement. HSPICE is the trademark of Synopsys, Inc.
+  Input File: /export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pu
+ lic:  
+ lic: FLEXlm: v8.5b 
+ lic: USER:   wllv                 HOSTNAME: console 
+ lic: HOSTID: 3440b5b102f4         PID:      23115 
+ lic: Using FLEXlm license file: 
+ lic: /export/home/wllv/mysoft/hspice/license.dat 
+ lic: Checkout 1 hspice 
+ lic: License/Maintenance for hspice will expire on 31-dec-2020/2007.9 
+ lic: NODE LOCKED license on hostid 3440b5b102f4 
+ lic:   
+  **warning** (/export/home/svnhome/process/smic.40//hspice/v1p4/l0040ll_v1p4_1r.mdl:1050) Model nod33ll_ckt device geometries will not be checked against the limits set by lmin, lmax, wmin and wmax. To enable this check, add a period(.) to the model name(i.e. enable model selector).
+  **error** 
+ Undefined function definition lpdin not declared for l. Please enter a defined 
+ name.
+
+          ***** job aborted
+1****** HSPICE -- D-2010.03 64-BIT (Feb 23 2010) linux ******                   
+ ******  
+ * msp generated netlist file
+
+  ******  job statistics summary tnom=  25.000 temp=  25.000 *****
+ 
+ 
+ ******  Machine Information  ******
+ CPU:
+ model name	: Intel(R) Xeon(R) CPU E7- 8837  @ 2.67GHz
+ cpu MHz	: 2661.000
+ 
+ OS:
+ Linux version 2.6.32-220.el6.x86_64 (mockbuild@x86-004.build.bos.redhat.com) (g
+ cc version 4.4.5 20110214 (Red Hat 4.4.5-6) (GCC) ) #1 SMP Wed Nov 9 08:03:13 E
+ ST 2011
+
+
+  ******  HSPICE Threads Information  ******
+
+  Command Line Threads Count                  :     1
+  Available CPU Count                         :    64
+  Actual Model Evaluation(Load) Threads Count :     1
+  Actual Solver Threads Count                 :     1
+
+
+  ******  Circuit Statistics  ******
+  # nodes       =       0 # elements   =      51
+  # resistors   =       0 # capacitors =       1 # inductors   =       0
+  # mutual_inds =       0 # vccs       =       0 # vcvs        =       0
+  # cccs        =       0 # ccvs       =       0 # volt_srcs   =       7
+  # curr_srcs   =       2 # diodes     =       0 # bjts        =       0
+  # jfets       =       0 # mosfets    =      41 # U elements  =       0
+  # T elements  =       0 # W elements =       0 # B elements  =       0
+  # S elements  =       0 # P elements =       0 # va device   =       0
+
+
+  ******  Runtime Statistics (seconds)  ******
+
+  analysis           time    # points   tot. iter  conv.iter
+  op point           0.00           1           0
+  readin             0.13
+  errchk             0.00
+  setup              0.00
+  output             0.00
+
+
+           total memory used                710 kbytes
+           total cpu time            0.14 seconds
+           total elapsed time        0.24 seconds
+           job started at     20:23:32 10/22/2018
+           job ended   at     20:23:33 10/22/2018
+
+
+ lic: Release hspice token(s) 

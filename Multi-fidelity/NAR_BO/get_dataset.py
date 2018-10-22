@@ -84,18 +84,61 @@ def circuit1_high(x, bounds):
             ret[:, p] = line
     return ret
  
+def pump_charge_low(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:, 1] - bounds[:, 0]
+    x = (x.T * delta + mean).T
+    param_file = './test_bench/pump_charge/low_fidelity_circuit/param'
+    result_file = './test_bench/pump_charge/low_fidelity_circuit/result.po'
+    name = ['q_llower', 'q_wlower', 'q_lupper', 'q_wupper', 'q_lc', 'q_wc', 'q_lref', 'q_wref', 'q_lq', 'q_wq', 'lpdbin', 'wpdbin', 'lpdin', 'wpdin', 'luumid', 'wuumid', 'lumid', 'wumid', 'lp4', 'wp4', 'ln4', 'wn4', 'lnsupp', 'wnsupp', 'lnsupp2', 'wnsupp2', 'li10', 'wi10', 'lb1', 'wb1', 'lb2', 'wb2', 'lb3', 'wb3', 'lb4', 'wb4']
+    ret = np.zeros((6, x.shape[1]))
+    for p in range(x.shape[1]):
+        with open(param_file, 'w') as f:
+            for i in range(len(name)):
+                f.write('.param '+name[i]+' = '+str(x[i, p])+'\n')
+
+        os.system('bash ./bash_file/pump_charge_low.sh')
+
+        with open(result_file, 'r') as f:
+            line = f.readline().strip().split(' ')
+            for i in range(len(line)):
+                ret[i, p] = float(line[i])
+    return ret
+
+def pump_charge_high(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:, 1] - bounds[:, 0]
+    x = (x.T * delta + mean).T
+    param_file = './test_bench/pump_charge/circuit/param'
+    result_file = './test_bench/pump_charge/circuit/result.po'
+    name = ['q_llower', 'q_wlower', 'q_lupper', 'q_wupper', 'q_lc', 'q_wc', 'q_lref', 'q_wref', 'q_lq', 'q_wq', 'lpdbin', 'wpdbin', 'lpdin', 'wpdin', 'luumid', 'wuumid', 'lumid', 'wumid', 'lp4', 'wp4', 'ln4', 'wn4', 'lnsupp', 'wnsupp', 'lnsupp2', 'wnsupp2', 'li10', 'wi10', 'lb1', 'wb1', 'lb2', 'wb2', 'lb3', 'wb3', 'lb4', 'wb4']
+    ret = np.zeros((6, x.shape[1]))
+    for p in range(x.shape[1]):
+        with open(param_file, 'w') as f:
+            for i in range(len(name)):
+                f.write('.param '+name[i]+' = '+str(x[i, p])+'\n')
+
+        os.system('bash ./bash_file/pump_charge_high.sh')
+
+        with open(result_file, 'r') as f:
+            line = f.readline().strip().split(' ')
+            for i in range(len(line)):
+                ret[i, p] = float(line[i])
+    return ret
+    
+
 def hartmann3d_high(x, bounds):
     mean = bounds.mean(axis=1)
     delta = bounds[:,1] - bounds[:,0]
     x = (x.T * delta + mean).T
     A = np.array([[3,10,30],[0.1,10,35],[3,10,30],[0.1,10,35]])
     P = np.array([[3689,1170,2673],[4699,4387,7470],[1091,8732,5547],[381,5743,8828]])*0.0001
-    alpha = np.array([1.0,1.2,3.0,4.2])
+    alpha = np.array([1.0,1.2,3.0,3.2])
     ret = np.zeros((1,x.shape[1]))
     for i in range(x.shape[1]):
         tmp = A*(x[:,i] - P)**2
         tmp = tmp.sum(axis=1)
-        ret[0,i] = np.dot(alpha, np.exp(-tmp))
+        ret[0,i] = -np.dot(alpha, np.exp(-tmp))
     return ret
 
 def hartmann3d_low(x, bounds):
@@ -104,14 +147,44 @@ def hartmann3d_low(x, bounds):
     x = (x.T * delta + mean).T
     A = np.array([[3,10,30],[0.1,10,35],[3,10,30],[0.1,10,35]])
     P = np.array([[3689,1170,2673],[4699,4387,7470],[1091,8732,5547],[381,5743,8828]])*0.0001
-    alpha = np.array([1.0,1.2,3.0,4.2])
+    alpha = np.array([1.0,1.2,3.0,3.2])
     theta = np.array([0.01,-0.01,-0.1,0.1])
     alpha = alpha + 2*theta
     ret = np.zeros((1,x.shape[1]))
     for i in range(x.shape[1]):
         tmp = A*(x[:,i] - P)**2
         tmp = tmp.sum(axis=1)
-        ret[0,i] = np.dot(alpha, np.exp(-tmp))
+        ret[0,i] = -np.dot(alpha, np.exp(-tmp))
+    return ret
+
+def hartmann6d_high(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:,1] - bounds[:,0]
+    x = (x.T * delta + mean).T
+    alpha = np.array([1.0, 1.2, 3.0, 3.2])
+    A = np.array([[10, 3, 17, 3.5, 1.7, 8], [0.05, 10, 17, 0.1, 8, 14], [3, 3.5, 1.7, 10, 17, 8], [17, 8, 0.05, 10, 0.1, 14]])
+    P = np.array([[1312, 1696, 5569, 124, 8283, 5886], [2329, 4135, 8307, 3736, 1004, 9991], [2348, 1451, 3522, 2883, 3047, 6650], [4047, 8828, 8732, 5743, 1091, 381]])*0.0001
+    ret = np.zeros((1, x.shape[1]))
+    for i in range(x.shape[1]):
+        tmp = A*(x[:, i]-P)**2
+        tmp = tmp.sum(axis=1)
+        ret[0, i] = -np.dot(alpha, np.exp(-tmp))
+    return ret
+
+def hartmann6d_low(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:,1] - bounds[:,0]
+    x = (x.T * delta + mean).T
+    alpha = np.array([1.0, 1.2, 3.0, 3.2])
+    theta = np.array([0.01,-0.01,-0.1,0.1])
+    alpha = alpha + 2*theta
+    A = np.array([[10, 3, 17, 3.5, 1.7, 8], [0.05, 10, 17, 0.1, 8, 14], [3, 3.5, 1.7, 10, 17, 8], [17, 8, 0.05, 10, 0.1, 14]])
+    P = np.array([[1312, 1696, 5569, 124, 8283, 5886], [2329, 4135, 8307, 3736, 1004, 9991], [2348, 1451, 3522, 2883, 3047, 6650], [4047, 8828, 8732, 5743, 1091, 381]])*0.0001
+    ret = np.zeros((1, x.shape[1]))
+    for i in range(x.shape[1]):
+        tmp = A*(x[:, i]-P)**2
+        tmp = tmp.sum(axis=1)
+        ret[0, i] = -np.dot(alpha, np.exp(-tmp))
     return ret
 
 def get_funct(funct):
@@ -121,6 +194,10 @@ def get_funct(funct):
         return [circuit1_low, circuit1_high]
     elif funct == 'hartmann3d':
         return [hartmann3d_low, hartmann3d_high]
+    elif funct == 'hartmann6d':
+        return [hartmann6d_low, hartmann6d_high]
+    elif funct == 'pump_charge':
+        return [pump_charge_low, pump_charge_high]
     else:
         return [branin_low, branin_high]
     

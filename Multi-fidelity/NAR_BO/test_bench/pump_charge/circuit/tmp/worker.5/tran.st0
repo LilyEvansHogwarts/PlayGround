@@ -1,0 +1,20 @@
+***** HSPICE -- D-2010.03 64-BIT (Feb 23 2010) linux ******
+ Input File: /export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pum
+ lic:
+ lic: FLEXlm: v8.5b
+ lic: USER:   wllv                 HOSTNAME: console
+ lic: HOSTID: 3440b5b102f4         PID:      23103
+ lic: Using FLEXlm license file:
+ lic: /export/home/wllv/mysoft/hspice/license.dat
+ lic: Checkout 1 hspice
+ lic: License/Maintenance for hspice will expire on 31-dec-2020/2007.9
+ lic: NODE LOCKED license on hostid 3440b5b102f4
+ lic:
+ init: begin read circuit files,  cpu clock=  1.40E-01
+       option gmindc   =    1.000E-14
+       option scale    =    0.900
+       option scale    =    0.900
+ init: end read circuit files,  cpu clock=  1.60E-01 memory=       178 kb
+ init: begin check errors,  cpu clock=  1.60E-01
+>error          ***** hspice job aborted
+ lic: Release hspice token(s)
