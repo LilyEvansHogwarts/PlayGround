@@ -30,13 +30,13 @@ class NAR_GP:
         py1, ps21 = self.model1.predict(test_x)
         x = np.concatenate((test_x, py1.reshape(1, -1)))
         py,  ps2 = self.model2.predict(x)
-        return py1, ps21, py, ps2
+        return py, ps2
 
 
     def predict_for_wEI(self, test_x):
         nsamples = 100
         num_test = test_x.shape[1]
-        py1, ps21 = self.model1.predict(test_x)
+        py1, ps21 = self.model1.predict(test_x, is_diag=0)
         Z = np.random.multivariate_normal(py1, ps21, nsamples)
         if self.debug:
             print('Z.shape',Z.shape)
@@ -47,10 +47,9 @@ class NAR_GP:
         x = np.concatenate((x, Z.reshape(1,-1)))
         py, ps2 = self.model2.predict(x)
         py = py.reshape(-1,num_test)
-        ps2 = np.diag(ps2).reshape(-1,num_test).mean(axis=0) + py.var(axis=0)
-        ps2 = np.abs(ps2)
+        ps2 = ps2.reshape(-1,num_test).mean(axis=0) + py.var(axis=0)
         py = py.mean(axis=0)
-        return py1, ps21, py, ps2
+        return py, ps2
         
 
 

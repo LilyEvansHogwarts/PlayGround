@@ -117,16 +117,32 @@ class GP:
             sys.exit(1)
 
         self.alpha = chol_inv(self.L, self.train_y.T)
+        if self.k:
+            self.for_diag = np.exp(self.theta[1]) * np.exp(self.theta[3]) + np.exp(self.theta[3+self.dim])
+        else:
+            self.for_diag = np.exp(self.theta[1])
         print('GP. Finished training process')
 
-    def predict(self, test_x):
+    def predict(self, test_x, is_diag=1):
         sn2 = np.exp(self.theta[0])
         hyp = self.theta[1:]
         tmp = self.kernel(test_x, self.train_x, hyp)
         py = np.dot(tmp, self.alpha)
+        '''
         ps2 = sn2 + self.kernel(test_x, test_x, hyp) - np.dot(tmp, chol_inv(self.L, tmp.T))
+        if is_diag:
+            ps2 = np.diag(ps2)
+        '''
+        ps2 = -np.dot(tmp, chol_inv(self.L, tmp.T)) + sn2
+        # self.kernel(test_x, test_x, hyp) for np.diag() is fixed
+        if is_diag:
+                ps2 = np.diag(ps2) + self.for_diag
+        else:
+            ps2 = ps2 + self.kernel(test_x, test_x, hyp)
         ps2 = np.abs(ps2)
         py = py * self.std + self.mean
         ps2 = ps2 * (self.std**2)
         return py, ps2
+
+
     

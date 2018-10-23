@@ -60,6 +60,7 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
     print('best_x', best_x.T)
     print('best_y', best_y.T)
 
+    
     p = 5
     def task(x0):
         x0 = fit(x0, model)

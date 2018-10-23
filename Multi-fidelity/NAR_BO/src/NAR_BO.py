@@ -68,7 +68,7 @@ class NAR_BO:
     
     def wEI(self, x):
         x = x.reshape(self.dim, int(x.size/self.dim))
-        _, _, py, ps2 = self.predict(x)
+        py, ps2 = self.predict(x)
         ps = np.sqrt(ps2) + 0.000001
         EI = np.zeros((x.shape[1]))
         if self.best_constr[1] <= 0:
@@ -87,28 +87,18 @@ class NAR_BO:
 
     def predict(self, test_x):
         num_test = test_x.shape[1]
-        py1 = np.zeros((self.outdim, num_test))
-        ps21 = np.zeros((self.outdim, num_test))
         py = np.zeros((self.outdim, num_test))
         ps2 = np.zeros((self.outdim, num_test))
         for i in range(self.outdim):
-            tmp_py1, tmp_ps21, tmp_py, tmp_ps2 = self.models[i].predict_for_wEI(test_x)
-            # tmp_py1, tmp_ps21, tmp_py, tmp_ps2 = self.models[i].predict(test_x)
-            py1[i] = tmp_py1
-            ps21[i] = np.diag(tmp_ps21)
-            py[i] = tmp_py
-            ps2[i] = tmp_ps2
-            # ps2[i] = np.diag(tmp_ps2)
-        return py1, ps21, py, ps2
+            py[i], ps2[i] = self.models[i].predict_for_wEI(test_x)
+        return py, ps2
 
     def predict_low(self, test_x):
         num_test = test_x.shape[1]
         py = np.zeros((self.outdim, num_test))
         ps2 = np.zeros((self.outdim, num_test))
         for i in range(self.outdim):
-            tmp_py, tmp_ps2 = self.models[i].predict_low(test_x)
-            py[i] = tmp_py
-            ps2[i] = np.diag(tmp_ps2)
+            py[i], ps2[i] = self.models[i].predict_low(test_x)
         return py, ps2
 
 
