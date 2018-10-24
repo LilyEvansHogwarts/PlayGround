@@ -40,12 +40,14 @@ for i in range(iteration):
 
     
 
-    p = 5
+    p = np.minimum(int(K/5), 5)
     def task(x0):
-        for i in range(x0.shape[1]):
-            x0[:, i] = fit_py(x0[:, i], model, name)
+        # for i in range(x0.shape[1]):
+        #     x0[:, i] = fit_py(x0[:, i], model, name)
+        x0 = fit_new_py(x0, model)
         x0 = fit(x0, model)
-        return x0
+        wEI_tmp = model.wEI(x0)
+        return x0, wEI_tmp
 
     pool = multiprocessing.Pool(processes=5)
     x0_list = []
@@ -55,10 +57,12 @@ for i in range(iteration):
     pool.close()
     pool.join()
 
-    new_x = results[0]
+    new_x = results[0][0]
+    wEI_tmp = results[0][1]
     for j in range(1, int(K/p)):
-        new_x = np.concatenate((new_x.T, results[j].T)).T
-    wEI_tmp = model.wEI(new_x)
+        new_x = np.concatenate((new_x.T, results[j][0].T)).T
+        wEI_tmp = np.concatenate((wEI_tmp.T, results[j][1].T)).T
+    # wEI_tmp = model.wEI(new_x)
 
     idx = np.argsort(wEI_tmp)[-1:]
     new_y = funct[1](new_x[:, idx], bounds)

@@ -29,7 +29,7 @@ bfgs_iter = conf['bfgs_iter']
 iteration = conf['iteration']
 num_points = conf['num_points']
 K = conf['K']
-
+gamma = conf['gamma']
 
 
 dataset = init_dataset(funct, num, bounds)
@@ -54,18 +54,22 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
     i = i+1
     for j in dataset.keys():
         print(j, dataset[j].shape)
-    model = NAR_BO(dataset, scale, bounds, bfgs_iter=bfgs_iter, debug=False)
+    model = NAR_BO(dataset, gamma, scale, bounds, bfgs_iter=bfgs_iter, debug=False)
     best_x = model.best_x[1].reshape(-1,1)
     best_y = model.best_y[1].reshape(-1,1)
     print('best_x', best_x.T)
     print('best_y', best_y.T)
+    # py, ps2 = model.models[0].predict_for_wEI(best_x)
+    # print('py', py.T)
+    # print('ps2', np.sqrt(ps2.T))
 
-    
-    p = 5
+    p = np.minimum(int(K/5), 5)
     def task(x0):
         x0 = fit(x0, model)
-        for i in range(x0.shape[1]):
-            x0[:, i] = fit_py(x0[:, i], model, name)
+        # for i in range(x0.shape[1]):
+        #     x0[:, i:i+1] = fit_py(x0[:, i:i+1], model, name)
+        # x0 = fit_py(x0, model, name)
+        x0 = fit_new_py(x0, model)
         x0 = fit_test(x0, model)
         wEI_tmp = model.wEI(x0)
         return x0, wEI_tmp
@@ -92,7 +96,9 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
     py, ps2 = model.predict_low(new_x[:, idx])
     if (ps2.T > model.gamma).sum() > 0:
         new_y = funct[0](new_x[:, idx], bounds)
+        py,  ps2 = model.models[0].predict_low(new_x[:, idx])
         print('low_y', new_y.T)
+        # print('ps2', ps2.T)
         dataset['low_x'] = np.concatenate((dataset['low_x'].T, new_x[:,idx].T)).T
         dataset['low_y'] = np.concatenate((dataset['low_y'].T, new_y.T)).T
     else:

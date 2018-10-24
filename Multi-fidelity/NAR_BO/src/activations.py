@@ -80,7 +80,8 @@ def logphi_vector(x):
     
     # phi
     x2 = x**2
-    phi = phi1 * (x2 < 0.0492) + phi2 * (x < -11.3137) + phi3 * ((x >= -11.3137) | (x2 >= 0.0492))
+    tmp = ((x2 < 0.0492) | (x < -11.3137))
+    phi = phi1 * (x2 < 0.0492) + phi2 * (x < -11.3137) + phi3 * (~tmp)
     return phi
 
 def get_act_f(act):

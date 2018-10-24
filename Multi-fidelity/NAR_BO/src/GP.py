@@ -21,6 +21,8 @@ class GP:
         self.mean = self.train_y.mean()
         self.std = self.train_y.std()
         self.train_y = (self.train_y - self.mean)/self.std
+        self.idx1 = [self.dim-1]
+        self.idx2 = np.arange(self.dim-1)
 
 
     def rand_theta(self, scale):
@@ -41,20 +43,24 @@ class GP:
         theta[0] = np.log(np.std(self.train_y)) # sn2
         return theta
     
-    def kernel1(self, x, xp, hyp, active_dims=None):
-        if active_dims is None:
-            active_dims = np.arange(self.dim)
+    def kernel1(self, x, xp, hyp):
+        # if active_dims is None:
+        #     active_dims = np.arange(self.dim)
         output_scale = np.exp(hyp[0])
-        lengthscales = np.exp(hyp[1:])
-        lengthscales = lengthscales + 0.000001
-        diffs = np.expand_dims((x[active_dims].T/lengthscales).T, 2) - np.expand_dims((xp[active_dims].T/lengthscales).T, 1)
-        return output_scale * np.exp(-0.5*np.sum(diffs**2, axis=0))
+        lengthscales = np.exp(hyp[1:]) + 0.000001
+        # lengthscales = lengthscales + 0.000001
+        # diffs = np.expand_dims((x[active_dims].T/lengthscales).T, 2) - np.expand_dims((xp[active_dims].T/lengthscales).T, 1)
+        # return output_scale * np.exp(-0.5*np.sum(diffs**2, axis=0))
+        x = (x.T/lengthscales).T
+        xp = (xp.T/lengthscales).T
+        diffs = (x**2).sum(axis=0)[:, None] + (xp**2).sum(axis=0) - 2*np.dot(x.T, xp)
+        return output_scale * np.exp(-0.5*diffs)
     
     def kernel2(self, x, xp, hyp):
         hyp1 = hyp[:2]
         hyp2 = hyp[2:2+self.dim]
         hyp3 = hyp[2+self.dim:]
-        return self.kernel1(x, xp, hyp1, active_dims=[self.dim-1]) * self.kernel1(x, xp, hyp2, active_dims=np.arange(self.dim-1)) + self.kernel1(x, xp, hyp3, active_dims=np.arange(self.dim-1))
+        return self.kernel1(x[self.idx1], xp[self.idx1], hyp1) * self.kernel1(x[self.idx2], xp[self.idx2], hyp2) + self.kernel1(x[self.idx2], xp[self.idx2], hyp3)
 
     def kernel(self, x, xp, hyp):
         if self.k: 
@@ -131,18 +137,16 @@ class GP:
         '''
         ps2 = sn2 + self.kernel(test_x, test_x, hyp) - np.dot(tmp, chol_inv(self.L, tmp.T))
         if is_diag:
-            ps2 = np.diag(ps2)
+            ps2 =np.diag(ps2)
         '''
-        ps2 = -np.dot(tmp, chol_inv(self.L, tmp.T)) + sn2
-        # self.kernel(test_x, test_x, hyp) for np.diag() is fixed
+        tmp1 = chol_inv(self.L, tmp.T)
+        # ps2 = -np.dot(tmp, chol_inv(self.L, tmp.T)) 
         if is_diag:
-                ps2 = np.diag(ps2) + self.for_diag
+            ps2 = self.for_diag + sn2 - (tmp*tmp1.T).sum(axis=1)
         else:
-            ps2 = ps2 + self.kernel(test_x, test_x, hyp)
+            ps2 = sn2 - np.dot(tmp, tmp1) + self.kernel(test_x, test_x, hyp)
         ps2 = np.abs(ps2)
         py = py * self.std + self.mean
         ps2 = ps2 * (self.std**2)
         return py, ps2
-
-
     

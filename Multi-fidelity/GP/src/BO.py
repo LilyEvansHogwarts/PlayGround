@@ -61,21 +61,21 @@ class BO:
         EI = np.zeros((x.shape[1]))
         if self.best_constr <= 0:
             py, ps2 = self.models[0].predict(x)
-            ps = np.sqrt(np.abs(np.diag(ps2))) + 0.000001
+            ps = np.sqrt(ps2) + 0.000001
             tmp = -(py - self.best_y[0])/ps
             # tmp > -40
-            tmp1 = np.maximum(-40, tmp)
-            EI1 = ps*(tmp1*cdf(tmp1)+pdf(tmp1))
+            # tmp1 = np.maximum(-40, tmp)
+            EI1 = ps*(tmp*cdf(tmp)+pdf(tmp))
             EI1 = np.log(np.maximum(0.000001, EI1))
             # tmp <= -40
-            tmp2 = np.minimum(-40, tmp)
+            tmp2 = np.minimum(-40, tmp)**2
             EI2 = np.log(ps) - tmp2/2 - np.log(tmp2-1)
             # EI
             EI = EI1*(tmp > -40) + EI2*(tmp <= -40)
         PI = np.zeros((x.shape[1]))
         for i in range(1, self.outdim):
             py, ps2 = self.models[i].predict(x)
-            ps = np.sqrt(np.abs(np.diag(ps2))) + 0.000001
+            ps = np.sqrt(ps2) + 0.000001
             PI = PI + logphi_vector(-py/ps)
         return EI+PI
 
@@ -84,9 +84,7 @@ class BO:
         py = np.zeros((self.outdim, num_test))
         ps2 = np.zeros((self.outdim, num_test))
         for i in range(self.outdim):
-            tmp_py, tmp_ps2 = self.models[i].predict(test_x)
-            py[i] = tmp_py
-            ps2[i] = np.diag(tmp_ps2)
+            py[i], ps2[i] = self.models[i].predict(test_x)
         return py, ps2
         
         

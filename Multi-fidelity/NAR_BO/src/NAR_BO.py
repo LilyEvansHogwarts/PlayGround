@@ -4,13 +4,13 @@ from .activations import *
 import random
 
 class NAR_BO:
-    def __init__(self, dataset, scale, bounds, bfgs_iter, debug=True):
+    def __init__(self, dataset, gamma, scale, bounds, bfgs_iter, debug=True):
         self.dataset = {}
         self.dataset['low_x'] = np.copy(dataset['low_x'])
         self.dataset['low_y'] = np.copy(dataset['low_y'])
         self.dataset['high_x'] = np.copy(dataset['high_x'])
         self.dataset['high_y'] = np.copy(dataset['high_y'])
-        self.gamma = self.dataset['high_y'].shape[0]*0.01*(self.dataset['low_y'].max(axis=1) - self.dataset['low_y'].min(axis=1))
+        self.gamma = self.dataset['high_y'].shape[0]*gamma*(self.dataset['low_y'].max(axis=1) - self.dataset['low_y'].min(axis=1))
         self.scale = scale
         self.bounds = np.copy(bounds)
         self.bfgs_iter = bfgs_iter
@@ -73,15 +73,22 @@ class NAR_BO:
         EI = np.zeros((x.shape[1]))
         if self.best_constr[1] <= 0:
             tmp = -(py[0] - self.best_y[1,0])/ps[0]
-            idx = (tmp > -40)
+            idx = (tmp > -6)
             EI[idx] = ps[0, idx]*(tmp[idx]*cdf(tmp[idx])+pdf(tmp[idx]))
             EI[idx] = np.log(np.maximum(EI[idx], 0.000001))
-            idx = (tmp <= -40)
+            idx = (tmp <= -6)
             tmp[idx] = tmp[idx]**2
             EI[idx] = np.log(ps[0, idx]) - tmp[idx]/2 - np.log(tmp[idx]-1)
         PI = np.zeros((x.shape[1]))
         for i in range(1,self.outdim):
             PI = PI + logphi_vector(-py[i]/ps[i])
+            '''
+            tmp = -py[i]/ps[i]
+            idx = (tmp > -6)
+            PI[idx] = PI[idx] + np.log(cdf(tmp))
+            idx = (tmp <= -6)
+            PI[idx] = PI[idx] - 0.5*tmp[idx]**2 - np.log(-tmp[idx]) - 0.5*np.log(2*np.pi)
+            '''
         return EI + PI
     
 
@@ -92,7 +99,7 @@ class NAR_BO:
         for i in range(self.outdim):
             py[i], ps2[i] = self.models[i].predict_for_wEI(test_x)
         return py, ps2
-
+    
     def predict_low(self, test_x):
         num_test = test_x.shape[1]
         py = np.zeros((self.outdim, num_test))
