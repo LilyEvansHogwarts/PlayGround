@@ -89,7 +89,7 @@ def fit(x, model):
     return best_x
 
 
-def fit_py(x, model, name):
+def sqp(x, model, name):
     x0 = np.copy(x).reshape(-1)
 
     def get_py(idx):
@@ -125,7 +125,7 @@ def fit_py(x, model, name):
         return data.x
     
     
-def fit_new_py(x, model):
+def fit_py(x, model):
     x0 = np.copy(x).reshape(-1)
     best_x = np.copy(x)
     best_loss = np.inf
