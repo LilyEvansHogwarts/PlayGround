@@ -13,14 +13,14 @@
  supp switch    : false
 
  iter counts    : 1
- time ticks     : 8
+ time ticks     : 9
  ETF            : 0
  T-reg counts   : 0
  N-reg counts   : 0
  Act-Collition  : 0
  collition cnts : 0
  nlopt failures : 0
- best answer    : not found.
+ best answer    : 11.381
  problem imax   : 1
  problem imin   : 1
  given global minimum   : not determined.

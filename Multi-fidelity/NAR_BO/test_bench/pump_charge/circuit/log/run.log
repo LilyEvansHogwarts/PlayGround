@@ -1608,3 +1608,528 @@
  given global minimum   : not determined.
  fom limit              : 0
 
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 7
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 7
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 3
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 3
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 2
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 2
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 2
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 2
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 2
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 3
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 3
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 3
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 2
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 3.40282e+37
+ average optimal result : 3.40282e+37
+ maximum optimal result : 3.40282e+37
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 3
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+
+ optimization start : 1 rounds
+ strategy used      : TC
+ algorithm related  : SLSQP
+
+ running time : 1
+0
+
+ total optimization completed 
+ optimization start     : 1 rounds
+ strategy used          : TC
+ option used            : 0
+ stat option used       : pf
+ algorithm related      : SLSQP
+ problem No.            : 0
+ problem Name           : Circuit
+ problem dimension      : 36
+ minimum optimal result : 11.381
+ average optimal result : 11.381
+ maximum optimal result : 11.381
+ average iter rounds    : 1
+ average iter counts    : 1
+ max iter counts        : 1
+ average time ticks     : 9
+ max time ticks         : 0
+ average T-reject cnts  : 0
+ average N-reject cnts  : 0
+ average A-Collitions   : 0
+ average collition cnts : 0
+ average nlopt fails    : 0
+ match variable         : 0
+ exact match time       : 0
+ total_variable         : 36
+ given global minimum   : not determined.
+ fom limit              : 0
+

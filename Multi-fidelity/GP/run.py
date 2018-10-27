@@ -43,8 +43,8 @@ for i in range(iteration):
     p = np.minimum(int(K/5), 5)
     def task(x0):
         # for i in range(x0.shape[1]):
-        #     x0[:, i] = sqp(x0[:, i], model, name)
-        x0 = fit_py(x0, model)
+        #     x0[:, i] = fit_py(x0[:, i], model, name)
+        x0 = fit_new_py(x0, model)
         x0 = fit(x0, model)
         wEI_tmp = model.wEI(x0)
         return x0, wEI_tmp

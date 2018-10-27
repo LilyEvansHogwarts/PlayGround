@@ -1,5 +1,5 @@
- constraint deviation.lt : 0.13
- constraint diff_lodn.lt : 0.54
- constraint diff_loup.lt : 0.33
- constraint diff_updn.lt : 5.47
- constraint diff_upup.lt : 5.98
+ constraint deviation.lt : 0.08
+ constraint diff_lodn.lt : 1.73
+ constraint diff_loup.lt : 1.17
+ constraint diff_updn.lt : 6.06
+ constraint diff_upup.lt : 6.59

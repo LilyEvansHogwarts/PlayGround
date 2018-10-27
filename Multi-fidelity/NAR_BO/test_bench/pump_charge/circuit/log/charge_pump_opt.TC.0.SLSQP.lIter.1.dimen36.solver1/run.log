@@ -14,13 +14,13 @@
  problem No.            : 0
  problem Name           : Circuit
  problem dimension      : 36
- minimum optimal result : 3.40282e+37
- average optimal result : 3.40282e+37
- maximum optimal result : 3.40282e+37
+ minimum optimal result : 11.381
+ average optimal result : 11.381
+ maximum optimal result : 11.381
  average iter rounds    : 1
  average iter counts    : 1
  max iter counts        : 1
- average time ticks     : 8
+ average time ticks     : 9
  max time ticks         : 0
  average T-reject cnts  : 0
  average N-reject cnts  : 0

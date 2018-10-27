@@ -13,7 +13,7 @@
  supp switch    : false
 
  iter counts    : 1
- time ticks     : 1
+ time ticks     : 3
  ETF            : 0
  T-reg counts   : 0
  N-reg counts   : 0

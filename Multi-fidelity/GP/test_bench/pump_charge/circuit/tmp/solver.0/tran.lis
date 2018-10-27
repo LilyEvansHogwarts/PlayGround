@@ -8,13 +8,13 @@
   Input File: /export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pu
  lic:  
  lic: FLEXlm: v8.5b 
- lic: USER:   wllv                 HOSTNAME: console 
- lic: HOSTID: 3440b5b102f4         PID:      15610 
+ lic: USER:   wllv                 HOSTNAME: lnode14 
+ lic: HOSTID: 00e081d2b6ed         PID:      11270 
  lic: Using FLEXlm license file: 
  lic: /export/home/wllv/mysoft/hspice/license.dat 
  lic: Checkout 1 hspice 
  lic: License/Maintenance for hspice will expire on 31-dec-2020/2007.9 
- lic: NODE LOCKED license on hostid 3440b5b102f4 
+ lic: NODE LOCKED license on hostid 00e081d2b6ed 
  lic:   
   **warning** (/export/home/svnhome/process/smic.40//hspice/v1p4/l0040ll_v1p4_1r.mdl:1050) Model nod33ll_ckt device geometries will not be checked against the limits set by lmin, lmax, wmin and wmax. To enable this check, add a period(.) to the model name(i.e. enable model selector).
 1****** HSPICE -- D-2010.03 64-BIT (Feb 23 2010) linux ******                   
@@ -13738,8 +13738,8 @@ Model Name: pod33ll_ckt
     PKU0WE     = -8e-17 
  
 
-  **info** (/export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pump_charge/circuit/tmp/worker.6/netlist:739) DC voltage reset to initial transient source value              in source        0:vdn                 new dc=  0.0000D+00
-  **warning** (/export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pump_charge/circuit/tmp/worker.6/netlist:737) Capacitance of    1.000E+09 for c0 is too high. Please verify capacitance value.
+  **info** (/export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pump_charge/circuit/tmp/worker.5/netlist:739) DC voltage reset to initial transient source value              in source        0:vdn                 new dc=  0.0000D+00
+  **warning** (/export/home/wllv/shzhang/Multi-fidelity/code/NAR_BO/test_bench/pump_charge/circuit/tmp/worker.5/netlist:737) Capacitance of    1.000E+09 for c0 is too high. Please verify capacitance value.
  
       
  **info** set option symb=1 internally to help for convergence.
@@ -13763,15 +13763,15 @@ Model Name: pod33ll_ckt
  ***** operating point status is all       simulation time is     0.     
      node    =voltage       node    =voltage       node    =voltage
 
- + 0:dn_net  =   0.       0:dnb_net =   0.       0:i10u_net=   1.7971 
- + 0:i5u_net =   1.0313   0:up_net  =   0.       0:upb_net =   0.     
- + 0:vcp_net =   2.2000   0:vdd33_ne=   3.6300   1:nb2     = 802.4745m
- + 1:net0119 = 200.0758m  1:net0124 = 201.6964m  1:net0149 = 802.4745m
- + 1:net0153 = 802.4745m  1:net35   =   3.4787   1:net47   =   3.4781 
- + 1:net58   = 201.2284m  1:net62   = 201.7639m  1:net78   =   0.     
- + 1:net79   =   3.6300   1:net91   =   1.8685   1:net98   =   2.4513 
- + 1:pb1     =   2.6720   1:pb2     =   2.8090   1:quench  =   2.1802 
- + 2:n78     = 909.0902m  2:n79     =  32.2100m  2:net18   =   2.9732 
+ + 0:dn_net  =   0.       0:dnb_net =   0.       0:i10u_net=   1.9385 
+ + 0:i5u_net =   1.1599   0:up_net  =   0.       0:upb_net =   0.     
+ + 0:vcp_net =   2.2000   0:vdd33_ne=   3.6300   1:nb2     = 879.5795m
+ + 1:net0119 = 299.0768m  1:net0124 = 301.1743m  1:net0149 = 879.5795m
+ + 1:net0153 = 879.5795m  1:net35   =   3.4347   1:net47   =   3.4338 
+ + 1:net58   = 300.7149m  1:net62   = 301.2739m  1:net78   =   0.     
+ + 1:net79   =   3.6300   1:net91   =   2.0477   1:net98   =   2.3500 
+ + 1:pb1     =   2.6709   1:pb2     =   2.8278   1:quench  =   2.2124 
+ + 2:n78     = 965.1642m  2:n79     = 126.6320m  2:net18   =   2.9718 
 
 
  ****  voltage sources
@@ -13779,16 +13779,16 @@ Model Name: pod33ll_ckt
  subckt                                                              
  element   0:v0        0:vdn       0:vdnb      0:vupb      0:vup     
   volts       3.6300      0.          0.          0.          0.     
-  current  -113.9054u     0.          0.          0.          0.     
-  power     413.4766u     0.          0.          0.          0.     
+  current   -97.4118u     0.          0.          0.          0.     
+  power     353.6047u     0.          0.          0.          0.     
 
  subckt    xi0         xi0       
  element   1:vlower    1:vupper  
   volts       0.          0.     
-  current    40.0287u    40.1819u
+  current    40.0151u    40.1079u
   power       0.          0.     
 
-     total voltage source power dissipation=  413.4766u       watts
+     total voltage source power dissipation=  353.6047u       watts
 
 
 
@@ -13796,12 +13796,12 @@ Model Name: pod33ll_ckt
 
  subckt                          
  element   0:i10       0:i5      
-  volts       1.8329      2.5987 
+  volts       1.6915      2.4701 
   current    10.0000u     5.0000u
-  power     -18.3291u   -12.9935u
+  power     -16.9147u   -12.3503u
 
 
-     total current source power dissipation= -31.3226u       watts
+     total current source power dissipation= -29.2650u       watts
 
 
  **** mosfets
@@ -13811,26 +13811,26 @@ Model Name: pod33ll_ckt
  element   3:m1        4:m1        5:m1        6:m1        7:m1      
  model     3:nod33ll_  3:nod33ll_  5:pod33ll_  5:pod33ll_  7:pod33ll_
  region        Cutoff      Cutoff      Cutoff      Cutoff    Saturati
-  id        144.0980f   142.9211f    -4.3303f    -4.3065f   -10.0322u
-  ibs      -5.148e-24  -5.106e-24   1.349e-25   1.345e-25   431.7901a
-  ibd        -1.0313p  -802.4748f   985.7284f   841.8995f   305.1269f
-  vgs         0.          0.          0.          0.       -821.0009m
-  vds         1.0313    802.4745m  -958.0048m  -821.0009m  -151.2694m
+  id        102.7793f   101.9362f    -5.5030f    -5.4494f   -10.0206u
+  ibs      -4.993e-24  -4.952e-24   1.584e-25   1.571e-25   607.2139a
+  ibd        -1.1599p  -879.5799f   989.1950f   823.9308f   392.9050f
+  vgs         0.          0.          0.          0.       -802.2323m
+  vds         1.1599    879.5795m  -959.1478m  -802.2323m  -195.3218m
   vbs         0.          0.          0.          0.          0.     
-  vth       663.4726m   663.4727m  -671.9415m  -671.9415m  -677.7176m
-  vdsat      40.4646m    40.4646m   -44.6619m   -44.6619m  -179.4320m
-  vod      -663.4726m  -663.4727m   671.9415m   671.9415m  -143.2834m
-  beta        1.2966m     1.2966m   468.4211u   468.4211u   815.7847u
+  vth       659.7900m   659.7900m  -684.3400m  -684.3428m  -689.2750m
+  vdsat      40.2225m    40.2225m   -48.8498m   -48.8498m  -173.3307m
+  vod      -659.7900m  -659.7900m   684.3400m   684.3428m  -112.9574m
+  beta      831.3347u   831.3347u   789.8436u   789.8430u   974.1421u
   gam eff   638.0600m   638.0600m   600.0000m   600.0000m   600.0000m
-  gm          4.1059p     4.0723p   133.5755f   132.8425f    93.4408u
-  gds         4.6646f     5.7133f   169.6339a   177.5658a    21.3148u
-  gmb         1.5078p     1.4954p    42.3669f    42.1342f    25.7501u
-  cdtot       1.9298f     2.0604f     4.1796f     4.3399f    18.7850f
-  cgtot       7.6337f     7.7093f    18.0056f    18.0874f    48.0857f
-  cstot       3.1883f     3.1883f     6.4929f     6.4929f    54.6568f
-  cbtot       7.5039f     7.5588f    19.0834f    19.1618f    30.6870f
-  cgs         1.7435f     1.7435f     3.1259f     3.1259f    35.7408f
-  cgd       883.5761a   959.1921a     1.6798f     1.7616f     8.3852f
+  gm          2.9266p     2.9026p   172.0652f   170.3901f   113.3370u
+  gds         2.7196f     3.3551f   333.0092a   350.5599a     7.2129u
+  gmb         1.0785p     1.0696p    54.3249f    53.7959f    30.3944u
+  cdtot       1.5953f     1.7096f     4.3596f     4.5560f    10.9095f
+  cgtot       6.2115f     6.2710f    13.9439f    14.0467f    21.3028f
+  cstot       2.6390f     2.6390f     6.8235f     6.8235f    28.7538f
+  cbtot       6.5943f     6.6491f    14.7669f    14.8606f    21.8690f
+  cgs         1.2966f     1.2966f     3.3717f     3.3717f    15.0918f
+  cgd       631.7424a   691.2440a     1.8138f     1.9166f     4.1901f
 
 
 
@@ -13838,26 +13838,26 @@ Model Name: pod33ll_ckt
  element   8:m1        9:m1       10:m1       11:m1       12:m1      
  model     8:pod33ll_  9:pod33ll_ 10:pod33ll_ 11:pod33ll_ 11:pod33ll_
  region      Saturati    Saturati    Saturati      Linear      Linear
-  id        -40.1819u   -40.1819u   -10.0322u   -20.7073u   -19.3216u
-  ibs         1.7294f     1.2374p   308.0770f   256.4530f   275.9982f
-  ibd         1.2256p     9.8523p     1.6945p   579.8546f   580.1647f
-  vgs      -821.0009m  -806.1077m  -806.7354m    -2.2000     -2.1802 
-  vds      -151.8972m    -1.0268   -669.7315m  -331.5447m  -311.7416m
-  vbs         0.        151.8972m   151.2694m   251.3030m   271.1061m
-  vth      -677.7176m  -716.3055m  -716.1508m  -733.8459m  -738.3297m
-  vdsat    -179.4317m  -138.5652m  -139.1387m    -1.3303     -1.3098 
-  vod      -143.2833m   -89.8022m   -90.5846m    -1.4662     -1.4419 
-  beta        3.2631m     5.5011m     1.3752m    50.7372u    50.8530u
+  id        -40.1079u   -40.1079u   -10.0206u   -19.1855u   -20.8300u
+  ibs         2.4303f     1.6278p   405.0799f   155.9410f   143.9740f
+  ibd         1.5789p    11.2609p     1.7066p   297.0294f   296.5387f
+  vgs      -802.2323m  -762.9241m  -763.8260m    -2.2000     -2.2124 
+  vds      -196.2237m    -1.0838   -606.9105m  -152.2565m  -164.6940m
+  vbs         0.        196.2237m   195.3218m   150.0043m   137.5668m
+  vth      -689.2749m  -730.2011m  -729.9872m  -726.6308m  -723.9684m
+  vdsat    -173.3306m  -103.0401m  -103.7032m    -1.3426     -1.3538 
+  vod      -112.9575m   -32.7230m   -33.8388m    -1.4734     -1.4885 
+  beta        3.8966m    12.4352m     3.1087m    99.7458u    99.6022u
   gam eff   600.0000m   600.0000m   600.0000m   600.0000m   600.0000m
-  gm        374.8601u   530.5986u   132.1613u    12.8244u    12.1273u
-  gds        84.1007u     1.1711u   372.5824n    55.0588u    55.0829u
-  gmb       103.2913u   132.1414u    32.9240u     4.5562u     4.2473u
-  cdtot      74.7759f    48.7136f    14.6281f     7.6673f     7.7239f
-  cgtot     192.2381f   299.7108f    76.9840f     8.1357f     8.1403f
-  cstot     206.4200f   319.9252f    82.9607f     7.9285f     7.9211f
-  cbtot     110.5462f   142.1957f    38.9190f     2.8755f     2.8664f
-  cgs       142.9977f   238.6539f    59.7705f     4.5215f     4.4923f
-  cgd        33.3750f    25.6549f     8.3865f     3.5600f     3.5910f
+  gm        454.0246u   657.6810u   163.9862u    10.6692u    11.4858u
+  gds        28.2673u     1.4027u   465.8411n   127.8419u   127.7196u
+  gmb       121.7567u   159.7248u    39.8432u     3.8510u     4.1895u
+  cdtot      43.5473f    79.7377f    26.0152f     2.8902f     2.8816f
+  cgtot      85.1830f   497.4523f   129.7959f     2.6117f     2.6116f
+  cstot     102.8300f   500.5900f   127.5360f     2.7957f     2.7977f
+  cbtot      75.2833f   227.6379f    59.8963f     1.7605f     1.7664f
+  cgs        60.3714f   377.0427f    94.6295f     1.3034f     1.3074f
+  cgd        16.7207f    47.1118f    16.9161f     1.2593f     1.2555f
 
 
 
@@ -13865,26 +13865,26 @@ Model Name: pod33ll_ckt
  element  13:m1       14:m1       15:m1       16:m1       17:m1      
  model    11:pod33ll_ 11:pod33ll_ 15:nod33ll_ 15:nod33ll_ 15:nod33ll_
  region        Linear      Linear      Cutoff      Cutoff      Cutoff
-  id        -20.7843u   -19.3976u     0.          0.          0.     
-  ibs         4.6396f     4.3301f    -1.8685p    -2.2000p    -1.8685p
-  ibd       267.0375f   247.4932f    -2.2000p    -2.4513p    -2.1802p
-  vgs        -2.4513     -2.4513     -1.8685     -2.2000     -1.8685 
-  vds      -271.1061m  -251.3030m   331.5447m   251.3030m   311.7416m
-  vbs         0.          0.         -1.8685     -2.2000     -1.8685 
-  vth      -671.1708m  -671.0874m     1.1076      1.1693      1.1076 
-  vdsat      -1.5992     -1.5996     44.3824m    44.7880m    44.3824m
-  vod        -1.7801     -1.7802     -2.9760     -3.3693     -2.9760 
-  beta       49.2962u    49.2945u   513.4643u   510.4717u   513.4643u
+  id        -19.2313u   -20.8765u     0.          0.          0.     
+  ibs         5.7342f     6.2247f    -2.0477p    -2.2000p    -2.0477p
+  ibd       132.0258f   143.9922f    -2.2000p    -2.3500p    -2.2124p
+  vgs        -2.3500     -2.3500     -2.0477     -2.2000     -2.0477 
+  vds      -137.5668m  -150.0043m   152.2565m   150.0043m   164.6940m
+  vbs         0.          0.         -2.0477     -2.2000     -2.0477 
+  vth      -691.7183m  -691.8320m     1.1370      1.1653      1.1370 
+  vdsat      -1.4833     -1.4828     44.0900m    44.2759m    44.0900m
+  vod        -1.6583     -1.6582     -3.1848     -3.3653     -3.1848 
+  beta       97.9799u    97.9856u   176.4460u   176.1339u   176.4460u
   gam eff   600.0000m   600.0000m   638.0600m   638.0600m   638.0600m
-  gm          9.4035u     8.6940u     0.          0.          0.     
-  gds        71.9465u    73.0419u     0.          0.          0.     
-  gmb         4.4695u     4.1565u     0.          0.          0.     
-  cdtot       8.3873f     8.4584f   990.3492a   960.2129a   992.9059a
-  cgtot       8.2240f     8.2295f     6.0668f     6.0299f     6.0681f
-  cstot       8.3528f     8.3660f     1.0374f   990.3492a     1.0374f
-  cbtot       3.2071f     3.2222f     6.2271f     6.1872f     6.2284f
-  cgs         4.4431f     4.4188f   478.8987a   455.9287a   478.8987a
-  cgd         3.7924f     3.8227f   455.2446a   441.0277a   456.4655a
+  gm          9.0119u     9.8348u     0.          0.          0.     
+  gds       144.8705u   143.4548u     0.          0.          0.     
+  gmb         3.8605u     4.2003u     0.          0.          0.     
+  cdtot       2.9489f     2.9376f   756.6168a   743.8927a   755.5227a
+  cgtot       2.6188f     2.6183f     4.9897f     4.9795f     4.9893f
+  cstot       2.8659f     2.8631f   770.6405a   756.6168a   770.6405a
+  cbtot       1.8739f     1.8711f     5.5005f     5.4841f     5.4998f
+  cgs         1.3034f     1.3066f   257.3092a   251.8445a   257.3092a
+  cgd         1.2736f     1.2697f   251.2474a   246.4160a   250.8287a
 
 
 
@@ -13892,26 +13892,26 @@ Model Name: pod33ll_ckt
  element  18:m1       19:m1       20:m1       21:m1       22:m1      
  model    15:nod33ll_ 19:nod33ll_ 20:nod33ll_ 21:nod33ll_ 19:nod33ll_
  region        Cutoff    Saturati    Saturati    Saturati    Saturati
-  id          0.         10.0105u    40.0287u     5.0050u    10.0000u
-  ibs        -2.1802p  -403.9944f    -1.6117p  -201.9297f  -400.6177f
-  ibd        -2.4513p    -5.6175p   -14.9457p    -2.6717p    -1.6045p
-  vgs        -2.1802    829.5327m   830.0682m   829.6002m   831.2208m
-  vds       271.1061m     2.6072      1.6672      2.4703    602.3987m
-  vbs        -2.1802   -201.7639m  -201.2284m  -201.6964m  -200.0758m
-  vth         1.1657    715.1300m   714.9684m   715.1097m   714.6205m
-  vdsat      44.7653m   155.1927m   155.5976m   155.2437m   156.4706m
-  vod        -3.3459    114.4026m   115.0998m   114.4905m   116.6003m
-  beta      510.6364u   841.5844u     3.3662m   420.7902u   841.4847u
+  id          0.         10.0050u    40.0151u     5.0024u    10.0000u
+  ibs        -2.2124p  -603.1414f    -2.4081p  -301.4712f  -598.7470f
+  ibd        -2.3500p    -5.6549p   -16.3795p    -2.6705p    -1.7586p
+  vgs        -2.2124    858.6577m   859.2167m   858.7573m   860.8548m
+  vds       137.5668m     2.5265      1.7470      2.3697    580.5027m
+  vbs        -2.2124   -301.2739m  -300.7149m  -301.1743m  -299.0768m
+  vth         1.1676    745.4549m   745.2936m   745.4262m   744.8210m
+  vdsat      44.2906m   155.5624m   155.9816m   155.6370m   157.2127m
+  vod        -3.3801    113.2029m   113.9231m   113.3311m   116.0338m
+  beta      176.1094u   838.7982u     3.3550m   419.3958u   838.6513u
   gam eff   638.0600m   638.0600m   638.0600m   638.0600m   638.0600m
-  gm          0.         88.6294u   353.9015u    44.3059u    88.0196u
-  gds         0.         58.6385n   334.2590n    30.4649n   238.7954n
-  gmb         0.         26.4960u   105.8085u    13.2455u    26.3240u
-  cdtot     960.2129a     2.2329f    10.7365f     1.3854f     4.5122f
-  cgtot       6.0311f    51.0479f   205.5356f    25.5397f    52.9485f
-  cstot     992.9059a    57.1844f   226.6481f    28.5937f    57.2325f
-  cbtot       6.1885f    19.4730f    76.2608f     9.9911f    19.8986f
-  cgs       457.1555a    45.9723f   183.9943f    22.9877f    46.0860f
-  cgd       441.0277a     1.1582f     5.8963f   593.5998a     2.9797f
+  gm          0.         88.7004u   354.1920u    44.3375u    87.9413u
+  gds         0.         72.0781n   393.6948n    37.9015n   321.4108n
+  gmb         0.         25.4684u   101.7082u    12.7307u    25.2641u
+  cdtot     743.8927a     1.9156f     8.8724f     1.2674f     3.7229f
+  cgtot       4.9791f    32.2970f   130.0785f    16.1642f    33.7973f
+  cstot     755.5227a    36.2611f   142.5348f    18.1319f    36.3026f
+  cbtot       5.4834f    12.6797f    48.5255f     6.6350f    13.0225f
+  cgs       251.4227a    29.0496f   116.2629f    14.5262f    29.1328f
+  cgd       246.4160a   938.8374a     4.5961f   484.0757a     2.3802f
 
 
 
@@ -13919,26 +13919,26 @@ Model Name: pod33ll_ckt
  element  23:m1       24:m1       25:m1       26:m1       27:m1      
  model    23:nod33ll_ 24:nod33ll_ 25:nod33ll_ 23:nod33ll_ 27:nod33ll_
  region      Saturati    Saturati    Saturati    Saturati      Linear
-  id         10.0105u    40.0287u     5.0050u    10.0000u  -158.9692f
-  ibs      -600.6479a    -2.4018f  -300.3116a  -600.0204a  -802.4747f
-  ibd      -402.9242f    -1.6074p  -201.3949f  -399.5487f  -802.4747f
-  vgs       802.4745m   802.4745m   802.4745m   802.4745m   994.6166m
-  vds       201.7639m   201.2284m   201.6964m   200.0758m    -9.9918n
-  vbs         0.          0.          0.          0.       -802.4745m
-  vth       650.0545m   650.0545m   650.0545m   650.0544m   870.8725m
-  vdsat     174.9086m   174.9087m   174.9086m   174.9089m   165.9417m
-  vod       152.4200m   152.4200m   152.4200m   152.4201m   123.7441m
-  beta      656.9704u     2.6279m   328.4852u   656.9703u   107.4152u
+  id         10.0050u    40.0151u     5.0024u    10.0000u  -119.5249f
+  ibs        -1.2414f    -4.9649f  -620.6846a    -1.2408f  -879.5797f
+  ibd      -601.2965f    -2.4007p  -300.5490f  -596.9031f  -879.5797f
+  vgs       879.5795m   879.5795m   879.5795m   879.5795m     1.0590 
+  vds       301.2739m   300.7149m   301.1743m   299.0768m    -3.7064n
+  vbs         0.          0.          0.          0.       -879.5795m
+  vth       644.6045m   644.6045m   644.6045m   644.6044m   891.3218m
+  vdsat     226.6985m   226.6985m   226.6985m   226.6987m   195.2951m
+  vod       234.9750m   234.9750m   234.9750m   234.9751m   167.6317m
+  beta      357.2326u     1.4289m   178.6163u   357.2326u   179.3198u
   gam eff   638.0600m   638.0600m   638.0600m   638.0600m   638.0600m
-  gm         76.4869u   305.6953u    38.2395u    76.2854u   808.8691f
-  gds         6.0933u    24.6832u     3.0515u     6.3413u    15.9415u
-  gmb        24.9894u    99.8788u    12.4935u    24.9265u   203.9383f
-  cdtot      10.6040f    42.6662f     5.7147f    10.8031f    69.2861f
-  cgtot      43.7060f   174.8898f    21.8540f    43.7583f    72.7529f
-  cstot      46.5642f   183.3748f    23.2824f    46.5774f    73.1666f
-  cbtot      17.9476f    68.9053f     9.3828f    17.9581f    18.3342f
-  cgs        36.0533f   144.1911f    18.0263f    36.0357f    36.2562f
-  cgd         5.2217f    20.9941f     2.6125f     5.3072f    36.7281f
+  gm         62.9574u   251.7531u    31.4770u    62.8811u   531.4337f
+  gds         2.2667u     9.1428u     1.1350u     2.3428u    32.4216u
+  gmb        20.3450u    81.3564u    10.1720u    20.3215u   131.5380f
+  cdtot       3.8768f    15.5531f     2.3778f     3.9226f    24.5901f
+  cgtot      19.5157f    78.0758f     9.7582f    19.5285f    25.6777f
+  cstot      22.3384f    86.4267f    11.1692f    22.3403f    26.5460f
+  cbtot       9.6306f    35.5970f     5.2537f     9.6339f     6.6715f
+  cgs        16.7343f    66.9345f     8.3671f    16.7316f    12.7473f
+  cgd         1.7731f     7.1115f   886.9633a     1.7922f    13.0921f
 
 
 
@@ -13946,26 +13946,26 @@ Model Name: pod33ll_ckt
  element  28:m1       29:m1       30:m1       31:m1       32:m1      
  model    27:nod33ll_ 29:nod33ll_ 30:nod33ll_ 31:nod33ll_ 32:pod33ll_
  region        Linear      Linear    Saturati    Saturati    Saturati
-  id       -175.0254f     0.          5.0000u    10.0000u    -5.0109u
-  ibs      -802.4747f     0.       -350.6938a    -1.6062p   251.4379a
-  ibd      -802.4747f     0.         -1.0309p    -3.5929p   974.8732f
-  vgs       994.6166m   802.4745m     1.0313    994.6166m  -958.0048m
-  vds       -11.0010n     0.          1.0313    994.6166m  -958.0048m
-  vbs      -802.4745m     0.          0.       -802.4745m     0.     
-  vth       870.8725m   645.9954m   641.0361m   873.4346m  -654.9821m
-  vdsat     165.9417m   177.6272m   341.7453m   162.9141m  -279.8517m
-  vod       123.7441m   156.4791m   390.2605m   121.1820m  -303.0227m
-  beta      107.4152u   419.1401u    73.9051u   763.0095u   117.3349u
+  id       -137.1145f     0.          5.0000u    10.0000u    -5.0061u
+  ibs      -879.5797f     0.       -902.8004a    -1.7599p   336.7982a
+  ibd      -879.5797f     0.         -1.1590p    -3.8763p   971.5819f
+  vgs         1.0590    879.5795m     1.1599      1.0590   -959.1478m
+  vds        -4.2518n     0.          1.1599      1.0590   -959.1478m
+  vbs      -879.5795m     0.          0.       -879.5795m     0.     
+  vth       891.3218m   646.0026m   632.9686m   894.0008m  -659.0608m
+  vdsat     195.2951m   228.6780m   442.8682m   193.3813m  -284.0896m
+  vod       167.6317m   233.5769m   526.9630m   164.9527m  -300.0870m
+  beta      179.3198u   683.5968u    42.4485u   543.1485u   116.2651u
   gam eff   638.0600m   638.0600m   638.0600m   638.0600m   600.0000m
-  gm        890.5665f     0.         23.0192u    85.7817u    30.1049u
-  gds        15.9415u     0.         22.7876n   352.9906n    48.0644n
-  gmb       224.5364f     0.          7.2465u    20.6603u     7.8853u
-  cdtot      69.2861f   386.3473f     1.5094f     2.0330f     4.2503f
-  cgtot      72.7529f   359.3189f    65.0727f     9.0306f    55.3732f
-  cstot      73.1666f   369.0628f    74.4475f    10.1682f    61.0865f
-  cbtot      18.3342f   131.8827f    23.1793f     4.7138f    21.7602f
-  cgs        36.2562f   182.1936f    60.4791f     7.5353f    48.9928f
-  cgd        36.7281f   177.6739f   936.2668a     1.0528f     1.9515f
+  gm        609.6410f     0.         17.6539u    77.8444u    30.2521u
+  gds        32.4216u     0.         31.0479n   124.5887n    64.0023n
+  gmb       150.8954f     0.          5.4884u    18.6113u     7.9905u
+  cdtot      24.5901f   851.1557f   881.4099a     2.8900f     3.6619f
+  cgtot      25.6777f   801.7220f    18.4362f    37.2077f    31.7787f
+  cstot      26.5460f   815.9830f    21.2237f    39.7227f    35.7945f
+  cbtot       6.6715f   271.1235f     6.9808f    11.9245f    14.3288f
+  cgs        12.7473f   411.7960f    17.2532f    33.3459f    27.7767f
+  cgd        13.0921f   397.2308f   389.1742a     1.8569f     1.4617f
 
 
 
@@ -13973,26 +13973,26 @@ Model Name: pod33ll_ckt
  element  33:m1       34:m1       35:m1       36:m1       37:m1      
  model    33:nod33ll_ 34:pod33ll_ 35:nod33ll_ 36:pod33ll_ 36:pod33ll_
  region        Linear      Linear      Linear    Saturati    Saturati
-  id          0.          0.          0.         -7.8856u    -6.4070u
-  ibs         0.          0.          0.        394.7286a   320.7132a
-  ibd         0.          0.          0.          3.2203p    13.0244p
-  vgs         1.0313   -821.0009m     3.6300   -792.9941m  -773.1909m
-  vds         0.          0.          0.       -792.9941m    -2.9410 
+  id          0.          0.          0.         -4.1122u    -4.9154u
+  ibs         0.          0.          0.        237.3502a   283.7047a
+  ibd         0.          0.          0.          3.0762p    12.3552p
+  vgs         1.1599   -802.2323m     3.6300   -759.3203m  -771.7578m
+  vds         0.          0.          0.       -759.3203m    -2.8451 
   vbs         0.          0.          0.          0.          0.     
-  vth       644.6659m  -646.9443m   646.7545m  -661.7042m  -661.6992m
-  vdsat     340.3939m  -169.6199m     2.7734   -153.9496m  -139.5441m
-  vod       386.6307m  -174.0566m     2.9832   -131.2899m  -111.4917m
-  beta      201.7437u    74.7979u   932.8709u   737.0064u   738.5633u
+  vth       644.6659m  -646.9443m   646.7545m  -659.6210m  -659.6242m
+  vdsat     440.7168m  -156.1867m     2.7734   -129.4974m  -138.1616m
+  vod       515.2657m  -155.2881m     2.9832    -99.6992m  -112.1336m
+  beta      199.3642u    74.9512u   932.8709u   573.6967u   572.9710u
   gam eff   638.0600m   600.0000m   638.0600m   600.0000m   600.0000m
-  gm          0.          0.          0.         88.8166u    78.2640u
-  gds         0.          0.          0.        137.1914n    56.0409n
-  gmb         0.          0.          0.         23.8673u    21.0599u
-  cdtot     235.3485f   301.8328f     1.0185p    18.3751f    11.1728f
-  cgtot     218.2335f   281.3283f   937.8439f   137.8497f   130.6385f
-  cstot     224.6975f   280.1570f   969.3417f   156.8289f   153.1809f
-  cbtot      75.8698f    94.8195f   303.4010f    71.8234f    69.2005f
-  cgs       113.2962f   136.7300f   504.4019f   114.5160f   110.9211f
-  cgd       108.5792f   136.0063f   467.4610f     7.7904f     3.3079f
+  gm          0.          0.          0.         53.1731u    60.0562u
+  gds         0.          0.          0.         67.2359n    39.0820n
+  gmb         0.          0.          0.         14.2797u    16.1119u
+  cdtot     238.3757f   296.8977f     1.0185p    17.2254f    10.7381f
+  cgtot     220.5418f   277.4474f   937.8439f   128.4246f   126.5038f
+  cstot     227.3072f   275.7174f   969.3417f   146.1138f   148.8984f
+  cbtot      75.8115f    94.7239f   303.4010f    70.4381f    67.7895f
+  cgs       115.0580f   134.0014f   504.4019f   105.0751f   107.6150f
+  cgd       109.9833f   133.7712f   467.4610f     6.7725f     2.9117f
 
 
 
@@ -14000,26 +14000,26 @@ Model Name: pod33ll_ckt
  element  38:m1       39:m1       40:m1       41:m1       42:m1      
  model    38:nod33ll_ 39:nod33ll_ 40:pod33ll_ 41:pod33ll_ 42:pod33ll_
  region      Saturati      Linear      Linear    Saturati    Saturati
-  id          9.3470u     6.4091u     0.        -29.3827u   -14.2947u
-  ibs      -811.6973a  -556.5638a     0.          1.5444f   751.3726a
-  ibd        -4.3595p  -192.7040f     0.         29.5123p     3.3256p
-  vgs       909.0902m   909.0902m  -821.0009m  -821.0009m  -821.0009m
-  vds         2.1802     32.2100m     0.         -2.7209   -656.8091m
+  id          2.5133u     4.9164u     0.        -18.2474u    -9.0287u
+  ibs      -403.8836a  -790.0541a     0.        501.0594a   247.9208a
+  ibd        -4.4244p  -759.0006f     0.         30.7946p     3.3727p
+  vgs       965.1642m   965.1642m  -802.2323m  -802.2323m  -802.2323m
+  vds         2.2124    126.6320m     0.         -2.6648   -658.2422m
   vbs         0.          0.          0.          0.          0.     
-  vth       643.1450m   643.0406m  -653.8700m  -664.4389m  -664.4378m
-  vdsat     249.3014m   249.5849m  -172.5455m  -175.8768m  -175.8808m
-  vod       265.9451m   266.0495m  -167.1309m  -156.5620m  -156.5631m
-  beta      265.8752u   797.6063u   161.9918u     2.0025m     1.0012m
+  vth       632.7284m   632.7049m  -660.5550m  -650.8327m  -650.8326m
+  vdsat     296.3907m   296.4577m  -160.6361m  -157.5725m  -157.5729m
+  vod       332.4357m   332.4593m  -141.6774m  -151.3996m  -151.3998m
+  beta       49.7233u   149.1691u   482.7665u     1.4719m   735.9550u
   gam eff   638.0600m   638.0600m   600.0000m   600.0000m   600.0000m
-  gm         56.3065u    22.4496u     0.        295.8561u   144.3482u
-  gds        38.8426n   185.8684u     0.        276.0587n   320.5768n
-  gmb        18.0486u     7.6259u     0.         79.6576u    38.8658u
-  cdtot       1.6629f   191.3577f   118.9660f    28.1485f    25.3301f
-  cgtot      47.9741f   184.7819f   108.7473f   285.2293f   148.6160f
-  cstot      56.0333f   189.0186f   110.1853f   335.8329f   167.8505f
-  cbtot      19.5086f    66.0025f    42.6061f   147.7950f    79.1580f
-  cgs        44.2019f   100.5609f    52.5125f   246.5028f   123.3409f
-  cgd       707.4168a    85.8299f    52.8431f     8.1756f    10.0292f
+  gm         13.1403u    17.0576u     0.        190.7414u    94.5032u
+  gds         4.9946n    28.1746u     0.         69.3440n    77.8969n
+  gmb         4.1439u     5.6173u     0.         50.4713u    25.0074u
+  cdtot       1.3345f   235.6214f   139.9680f    37.9330f    36.4408f
+  cgtot      76.6131f   289.3000f   130.5235f     1.3653p   694.2306f
+  cstot      90.0857f   290.0732f   129.4950f     1.4989p   749.1341f
+  cbtot      29.8246f    98.4452f    49.8380f   524.5373f   268.2231f
+  cgs        71.4824f   182.4545f    61.9953f     1.1954p   598.1393f
+  cgd       407.1082a   108.6298f    63.8094f    15.6617f    19.1338f
 
 
 
@@ -14027,26 +14027,26 @@ Model Name: pod33ll_ckt
  element  43:m1      
  model    43:pod33ll_
  region      Saturati
-  id        -29.3856u
-  ibs       714.1961a
-  ibd         1.8821p
-  vgs      -876.8801m
-  vds      -909.0902m
+  id        -18.2486u
+  ibs       559.4910a
+  ibd         1.9869p
+  vgs      -838.5322m
+  vds      -965.1642m
   vbs         0.     
-  vth      -673.7925m
-  vdsat    -224.5267m
-  vod      -203.0876m
-  beta        1.2495m
+  vth      -676.8065m
+  vdsat    -193.6000m
+  vod      -161.7257m
+  beta        1.1065m
   gam eff   600.0000m
-  gm        244.5289u
-  gds       767.0973n
-  gmb        66.7062u
-  cdtot      13.9603f
-  cgtot      92.7826f
-  cstot     104.0863f
-  cbtot      44.5596f
-  cgs        76.5481f
-  cgd         7.7957f
+  gm        178.2965u
+  gds       517.8746n
+  gmb        48.7699u
+  cdtot      11.2259f
+  cgtot      65.0461f
+  cstot      75.5179f
+  cbtot      35.7885f
+  cgs        52.9329f
+  cgd         5.6712f
 
 
 
@@ -14054,15 +14054,15 @@ Model Name: pod33ll_ckt
  * msp generated netlist file
 
   ******  transient analysis tnom=  25.000 temp=  25.000 *****
-   up_imin= -3.0956E-05    at=  2.0010E-08
+   up_imin=  3.4004E-05    at=  2.0010E-08
                from=  2.0000E-08    to=  1.0000E-07
-   up_iavg=  4.0198E-05  from=  2.0000E-08     to=  1.8000E-07
-   up_imax=  9.7257E-05    at=  2.0020E-08
+   up_iavg=  4.0118E-05  from=  2.0000E-08     to=  1.8000E-07
+   up_imax=  4.5833E-05    at=  3.0012E-08
                from=  2.0000E-08    to=  1.0000E-07
-   lo_imin=  3.0567E-05    at=  9.0012E-08
+   lo_imin=  3.8206E-05    at=  2.0012E-08
                from=  2.0000E-08    to=  1.0000E-07
-   lo_iavg=  4.0028E-05  from=  2.0000E-08     to=  1.8000E-07
-   lo_imax=  4.4855E-05    at=  7.0005E-08
+   lo_iavg=  4.0015E-05  from=  2.0000E-08     to=  1.8000E-07
+   lo_imax=  4.0736E-05    at=  6.0010E-08
                from=  2.0000E-08    to=  1.0000E-07
 
           ***** job concluded
@@ -14075,8 +14075,8 @@ Model Name: pod33ll_ckt
  
  ******  Machine Information  ******
  CPU:
- model name	: Intel(R) Xeon(R) CPU E7- 8837  @ 2.67GHz
- cpu MHz	: 2661.000
+ model name	: Intel(R) Xeon(R) CPU           X5650  @ 2.67GHz
+ cpu MHz	: 2668.000
  
  OS:
  Linux version 2.6.32-220.el6.x86_64 (mockbuild@x86-004.build.bos.redhat.com) (g
@@ -14087,7 +14087,7 @@ Model Name: pod33ll_ckt
   ******  HSPICE Threads Information  ******
 
   Command Line Threads Count                  :     1
-  Available CPU Count                         :    64
+  Available CPU Count                         :    12
   Actual Model Evaluation(Load) Threads Count :     1
   Actual Solver Threads Count                 :     1
 
@@ -14106,19 +14106,19 @@ Model Name: pod33ll_ckt
   ******  Runtime Statistics (seconds)  ******
 
   analysis           time    # points   tot. iter  conv.iter
-  op point           0.06           1         290
-  transient          0.27      100001        1449         581 rev=        17
-  readin             0.12
-  errchk             0.04
+  op point           0.05           1         276
+  transient          0.23      100001        1391         557 rev=        30
+  readin             0.10
+  errchk             0.05
   setup              0.00
   output             0.00
 
 
            total memory used                878 kbytes
-           total cpu time            0.50 seconds
-           total elapsed time        2.10 seconds
-           job started at     22:49:23 10/22/2018
-           job ended   at     22:49:25 10/22/2018
+           total cpu time            0.43 seconds
+           total elapsed time        2.39 seconds
+           job started at     08:27:59 10/27/2018
+           job ended   at     08:28:01 10/27/2018
 
 
  lic: Release hspice token(s) 

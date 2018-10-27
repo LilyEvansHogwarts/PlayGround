@@ -1,10 +1,10 @@
  optimize index    : 1
- total result      : 3.40282e+37
- total min result  : not found.
- total max result  : 3.40282e+37
+ total result      : 11.381
+ total min result  : 11.381
+ total max result  : 11.381
  total iter time   : 1
  total iter cnt    : 1
- total time tick   : 8
+ total time tick   : 9
  total T-rej cnt   : 0
  total N-rej cnt   : 0
  total A-Collition : 0

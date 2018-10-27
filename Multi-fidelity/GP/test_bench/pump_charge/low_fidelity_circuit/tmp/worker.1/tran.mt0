@@ -1,6 +1,0 @@
-$DATA1 SOURCE='HSPICE' VERSION='D-2010.03 64-BIT'
-.TITLE '* msp generated netlist file'
- up_imin          up_iavg          up_imax          lo_imin           
- lo_iavg          lo_imax          temper           alter#            
- -2.843e-04        4.023e-05        2.457e-04        3.262e-05        
-  4.001e-05        4.653e-05         25.0000           1.0000         

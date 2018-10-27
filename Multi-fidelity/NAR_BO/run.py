@@ -67,9 +67,9 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
     def task(x0):
         x0 = fit(x0, model)
         # for i in range(x0.shape[1]):
-        #     x0[:, i:i+1] = sqp(x0[:, i:i+1], model, name)
-        # x0 = sqp(x0, model, name)
-        x0 = fit_py(x0, model)
+        #     x0[:, i:i+1] = fit_py(x0[:, i:i+1], model, name)
+        # x0 = fit_py(x0, model, name)
+        x0 = fit_new_py(x0, model)
         x0 = fit_test(x0, model)
         wEI_tmp = model.wEI(x0)
         return x0, wEI_tmp
@@ -96,7 +96,7 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
     py, ps2 = model.predict_low(new_x[:, idx])
     if (ps2.T > model.gamma).sum() > 0:
         new_y = funct[0](new_x[:, idx], bounds)
-        py,  ps2 = model.models[0].predict_low(new_x[:, idx])
+        # py,  ps2 = model.predict_low(new_x[:, idx])
         print('low_y', new_y.T)
         # print('ps2', ps2.T)
         dataset['low_x'] = np.concatenate((dataset['low_x'].T, new_x[:,idx].T)).T
