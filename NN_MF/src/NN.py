@@ -2,9 +2,9 @@ import autograd.numpy as np
 
 class NN:
     def __init__(self, layer_sizes, activations):
-        self.num_layers = np.copy(layer_sizes)
-        self.layer_sizes = np.copy(layer_sizes)
-        self.activations = np.copy(activations)
+        self.num_layers = len(layer_sizes)
+        self.layer_sizes = layer_sizes
+        self.activations = activations
 
     def num_param(self, dim):
         xs = [dim]

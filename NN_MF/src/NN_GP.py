@@ -13,18 +13,15 @@ def chol_inv(L, y):
     return np.linalg.solve(L.T, v)
 
 class NN_GP:
-    def __init__(self, dataset, layer_sizes, activations, bfgs_iter, debug=True):
-        self.train_x = dataset['train_x']
-        self.train_y = dataset['train_y'].reshape(-1)
+    def __init__(self, train_x, train_y, layer_sizes, activations, bfgs_iter, debug=True):
+        self.train_x = train_x
+        self.train_y = train_y.reshape(-1)
         self.nn = NN(layer_sizes, activations)
         self.m = layer_sizes[-1]
         self.bfgs_iter = bfgs_iter
         self.debug = debug
         self.dim = self.train_x.shape[0]
         self.num_train = self.train_x.shape[1]
-        self.mean = self.train_y.mean()
-        self.std = self.train_y.std()
-        self.train_y = (self.train_y - self.mean)/self.std
         self.num_param = 2+self.dim+self.nn.num_param(self.dim)
 
     def rand_theta(self, scale):
@@ -113,13 +110,14 @@ class NN_GP:
         Phi = self.nn.predict(w, scale_x(log_lscale, self.train_x))
         self.alpha = chol_inv(self.LA, np.dot(Phi, self.train_y))
 
-    def predict(self, test_x):
+    def predict(self, test_x, is_diag=1):
         sn2, sp2, log_lscale, w = self.split_theta(self.theta)
         Phi = self.nn.predict(w, scale_x(log_lscale, test_x))
         py = np.dot(Phi.T, self.alpha)
-        py = py * self.std + self.mean
-        ps2 = sn2 + sn2 * np.dot(Phi.T, chol_inv(self.LA, Phi))
-        ps2 = ps2 * (self.std**2)
+        if is_diag:
+            ps2 = sn2 + sn2 * (Phi.T * chol_inv(self.LA, Phi).T).sum(axis=1)
+        else:
+            ps2 = sn2 + sn2 * np.dot(Phi.T, chol_inv(self.LA, Phi))
         return py, ps2
         
 
