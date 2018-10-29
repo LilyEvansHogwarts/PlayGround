@@ -44,3 +44,37 @@ class NAR_BO:
         x[:,idx] = (0.05 * np.random.uniform(-0.5, 0.5, (self.dim, idx.sum())).T + self.best_x[0]).T
         x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))
         return x
+
+    def wEI(self, x):
+        x = x.reshape(self.dim, -1)
+        py, ps2 = self.predict(x)
+        ps = np.sqrt(ps2) + 0.000001
+        EI = np.zeros((x.shape[1]))
+        if self.best_constr[1] <= 0:
+            tmp = -(py[0] - self.best_y[1,0])/ps[0]
+            idx = (tmp > -6)
+            EI[idx] = ps[0,idx]*(tmp[idx]*cdf(tmp[idx])+pdf(tmp[idx]))
+            EI[idx] = np.log(np.maximum(EI[idx], 0.000001))
+            idx = (tmp <= -6)
+            tmp[idx] = tmp[idx]**2
+            EI[idx] = np.log(ps[0,idx]) - tmp[idx]/2 - np.log(tmp[idx]-1)
+        PI = np.zeros((x.shape[1]))
+        for i in range(1,self.outdim):
+            PI = PI + logphi_vector(-py[i]/ps[i])
+        return EI+PI
+
+    def predict(self, test_x):
+        num_test = test_x.shape[1]
+        py = np.zeros((self.outdim, num_test))
+        ps2 = np.zeros((self.outdim, num_test))
+        for i in range(self.outdim):
+            py[i], ps2[i] = self.models[i].predict_for_wEI(test_x)
+        return py, ps2
+
+    def predict_low(self, test_x):
+        num_test = test_x.shape[1]
+        py = np.zeros((self.outdim, num_test))
+        ps2 = np.zeros((self.outdim, num_test))
+        for i in range(self.outdim):
+            py[i], ps2[i] = self.models[i].predict_low(test_x)
+        return py, ps2

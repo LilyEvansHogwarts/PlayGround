@@ -18,14 +18,14 @@ class NAR_GP:
         dataset = {}
         dataset['train_x'] = self.low_x
         dataset['train_y'] = self.low_y
-        model1 = Bagging(self.num_models, dataset, self.layer_sizes[0], self.activations[0], self.bfgs_iter, debug=self.debug)
+        model1 = Bagging(self.num_models, dataset, self.layer_sizes, self.activations[0], self.bfgs_iter, debug=self.debug)
         model1.train(scale=scale)
         self.model1 = model1
 
         mu, v = self.model1.predict(self.high_x)
         dataset['train_x'] = np.concatenate((self.high_x, mu.reshape(1,-1)))
         dataset['train_y'] = self.high_y
-        model2 = Bagging(self.num_models, dataset, self.layer_sizes[1], self.activations[1], self.bfgs_iter, debug=self.debug)
+        model2 = Bagging(self.num_models, dataset, self.layer_sizes, self.activations[1], self.bfgs_iter, debug=self.debug)
         model2.train(scale=scale)
         self.model2 = model2
         print('NAR_GP. Finish training process')
