@@ -4,6 +4,7 @@ from scipy.optimize import fmin_l_bfgs_b, minimize
 import traceback
 import sys
 from .NAR_BO import NAR_BO
+from .activations import *
 
 def fit_low(x, model):
     x0 = np.copy(x).reshape(-1)

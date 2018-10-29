@@ -7,6 +7,7 @@ from scipy.optimize import fmin_l_bfgs_b
 
 def scale_x(log_lscale, x):
     lscale = np.exp(log_lscale)
+    lscale = np.maximum(0.000001, lscale)
     return (x.T/lscale).T
 
 def chol_inv(L, y):

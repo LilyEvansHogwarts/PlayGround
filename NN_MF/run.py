@@ -1,7 +1,7 @@
 import autograd.numpy as np
 from src.NAR_BO import NAR_BO
 from src.activations import *
-from src.NAR_GP import NAR_GP
+from src.fit import *
 from get_dataset import *
 import sys
 import toml
@@ -25,6 +25,7 @@ name = conf['funct']
 funct = get_funct(name)
 num_models = conf['num_models']
 iteration = conf['iteration']
+K = conf['K']
 
 dataset = init_dataset(funct, num, bounds)
 with open('dataset.pickle', 'wb') as f:
