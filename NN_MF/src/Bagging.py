@@ -2,13 +2,15 @@ import autograd.numpy as np
 from .NN_GP import NN_GP
 
 class Bagging:
-    def __init__(self, num_models, dataset, layer_sizes, activations, bfgs_iter, debug=True):
+    def __init__(self, num_models, dataset, layer_sizes, activations, bfgs_iter, l1=0, l2=0, debug=True):
         self.num_models = num_models
         self.train_x = dataset['train_x']
         self.train_y = dataset['train_y'].reshape(-1)
         self.layer_sizes = layer_sizes
         self.activations = activations
         self.bfgs_iter = bfgs_iter
+        self.l1 = l1
+        self.l2 = l2
         self.debug = debug
         self.mean = self.train_y.mean()
         self.std = self.train_y.std()
@@ -17,7 +19,7 @@ class Bagging:
     def train(self, scale=1.0):
         self.models = []
         for i in range(self.num_models):
-            model = NN_GP(self.train_x, self.train_y, self.layer_sizes, self.activations, self.bfgs_iter, debug=self.debug)
+            model = NN_GP(self.train_x, self.train_y, self.layer_sizes, self.activations, self.bfgs_iter, l1=self.l1, l2=self.l2, debug=self.debug)
             model.train(scale=scale)
             self.models.append(model)
         print('Bagging. Finish training process.')
@@ -39,5 +41,7 @@ class Bagging:
             ps2 = ps2 + tmp - py**2
         else:
             ps2 = ps2 + (tmp - py**2)*np.eye(num_test)
+        py = py * self.std + self.mean
+        ps2 = ps2 * (self.std**2)
         return py, ps2
 

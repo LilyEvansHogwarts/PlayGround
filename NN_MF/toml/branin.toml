@@ -1,0 +1,14 @@
+funct = 'branin'
+num = [50,3]
+bounds = [[-5,10],[0,15]]
+num_models = 5
+scale = 0.2
+bfgs_iter = 10000
+iteration = 20
+K = 100
+gamma = 0.01
+num_layers = [2]
+layer_sizes = [30]
+activations = ['relu']
+l1 = 0
+l2 = 0

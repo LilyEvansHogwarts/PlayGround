@@ -3,6 +3,7 @@ from autograd import grad
 import sys
 import traceback
 from .NN import NN
+from scipy.optimize import fmin_l_bfgs_b
 
 def scale_x(log_lscale, x):
     lscale = np.exp(log_lscale)
@@ -13,7 +14,7 @@ def chol_inv(L, y):
     return np.linalg.solve(L.T, v)
 
 class NN_GP:
-    def __init__(self, train_x, train_y, layer_sizes, activations, bfgs_iter, debug=True):
+    def __init__(self, train_x, train_y, layer_sizes, activations, bfgs_iter, l1=0, l2=0, debug=True):
         self.train_x = train_x
         self.train_y = train_y.reshape(-1)
         self.nn = NN(layer_sizes, activations)
@@ -23,6 +24,8 @@ class NN_GP:
         self.dim = self.train_x.shape[0]
         self.num_train = self.train_x.shape[1]
         self.num_param = 2+self.dim+self.nn.num_param(self.dim)
+        self.l1 = 0
+        self.l2 = 0
 
     def rand_theta(self, scale):
         # sn2, sp2, log_scales, nn.num_param
@@ -55,10 +58,10 @@ class NN_GP:
         if np.isnan(neg_likelihood):
             neg_likelihood = np.inf
 
+        l1_reg = 0
+        l2_reg = 0
         if self.l1 > 0 or self.l2 > 0:
             w_nobias = self.nn.w_nobias(w, self.dim)
-            l1_reg = 0
-            l2_reg = 0
         if self.l1 > 0:
             l1_reg = self.l1 * np.sum(np.abs(w_nobias))
         if self.l2 > 0:
