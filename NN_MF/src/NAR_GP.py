@@ -1,6 +1,6 @@
 import autograd.numpy as np
 from autograd import grad
-from .Bagging import Bagging
+from .NN_GP import Bagging
 from .GP import GP
 
 class NAR_GP:
