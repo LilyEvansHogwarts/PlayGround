@@ -62,7 +62,19 @@ class NAR_BO:
         idx = (tmp < 0.5) * (tmp > 0.4)
         x[:,idx] = (0.05*np.random.uniform(-0.5,0.5,(self.dim,idx.sum())).T + self.best_x[0]).T
         x[:,idx] = np.maximum(-0.5, np.minimum(0.5, x[:,idx]))
-        
+
+        idx = (tmp > 0.5) * (tmp < 0.6)
+        num = idx.sum()
+        num_seed = np.minimum(self.dataset['high_y'].shape[1], 5)
+        idx = np.argsort(idx)[-num:]
+        idx1 = np.random.randint(1, self.dim, num)
+        idx2 = np.random.randint(0, num_seed, num)
+        idx3 = np.random.randint(0, num_seed, num)
+        for i in range(num):
+            while idx2[i] == idx3[i]:
+                idx3[i] = random.randint(0, num_seed)
+            x[:idx1[i],i] = self.dataset['high_x'][:idx1[i],-idx2[i]]
+            x[idx1[i]:,i] = self.dataset['high_x'][idx1[i]:,-idx3[i]]
         return x
 
     
