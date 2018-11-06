@@ -1,0 +1,10 @@
+funct = 'Styblinski_Tang'
+num = [10, 3]
+bounds = [[-5, 5], [-5, 5], [-5, 5], [-5, 5], [-5, 5]]
+num_models = 1
+scale = [0.2]
+bfgs_iter = [2000]
+iteration = 80
+K = 100
+gamma = 0.01
+num_points = 1

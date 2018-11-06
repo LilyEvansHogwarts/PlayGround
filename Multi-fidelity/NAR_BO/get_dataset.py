@@ -187,6 +187,108 @@ def hartmann6d_low(x, bounds):
         ret[0, i] = -np.dot(alpha, np.exp(-tmp))
     return ret
 
+def ellipsoid_high(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:,1] - bounds[:,0]
+    x = (x.T * delta + mean).T
+    dim = bounds.shape[0]
+    y = ((x**2).T * np.arange(1,dim+1)).T.sum(axis=0)
+    return y.reshape(1, -1)
+
+def ellipsoid_low(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:,1] - bounds[:,0]
+    x = (x.T * delta + mean).T
+    dim = x.shape[0]
+    s1 = np.array([0.3, 0.4, 0.2, 0.6, 1, 0.9, 0.2, 0.8, 0.5, 0.7, 0.4, 0.3, 0.7, 1, 0.9, 0.6, 0.2, 0.8, 0.2, 0.5])
+    s2 = np.array([1.8, 0.4, 2, 1.2, 1.4, 0.6, 1.6, 0.2, 0.8, 1, 1.3, 1.1, 1.2, 1.4, 0.5, 0.3, 1.6, 0.7, 0.3, 1.9])
+    y = ((x.T - s2)**2 * s1 * np.arange(1,dim+1)).T.sum(axis=0)
+    return y.reshape(1, -1)
+
+def Dixon_Price_high(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:,1] - bounds[:,0]
+    x = (x.T * delta + mean).T
+    y = (x[0]-1)**2
+    for i in range(1,x.shape[0]):
+        y = y + (i+1)*(2*x[i]**2 - x[i-1])**2
+    return y.reshape(1, -1)
+
+def Dixon_Price_low(x, bounds):
+    delta = bounds[:,1] - bounds[:,0]
+    s = np.array([1.8, 0.5, 2, 1.2, 0.4, 0.2, 1.4, 0.3, 1.6, 0.6, 0.8, 1, 1.3, 1.9, 0.7, 1.6, 0.3, 1.1, 1.2, 1.4])
+    x = ((x.T * delta - s)/delta).T
+    return Dixon_Price_high(x, bounds)
+
+def Styblinski_Tang_high(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:,1] - bounds[:,0]
+    x = (x.T * delta + mean).T
+    y = 0.5*(x**4 - 16*x**2 + 5*x).sum(axis=0)
+    return y.reshape(1, -1)
+
+def Styblinski_Tang_low(x, bounds):
+    delta = bounds[:,1] - bounds[:,0]
+    s = np.array([0.28, 0.59, 0.47, 0.16, 0.32])
+    x = ((x.T * delta - s)/delta).T
+    return Styblinski_Tang_high(x, bounds)
+
+def Levy_high(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:, 1] - bounds[:, 0]
+    x = (x.T * delta + mean).T
+    dim = x.shape[0]
+    w = 1 + 0.25*(x-1)
+    y = np.sin(np.pi*w[0])**2
+    y = y + (1 + 10*np.sin(np.pi*w[:dim-1]+1)**2).sum(axis=0)
+    y = y + (1 + np.sin(2*np.pi*w[dim-1])**2) * (w[dim-1]-1)**2
+    return y.reshape(1, -1)
+
+def Levy_low(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:, 1] - bounds[:, 0]
+    x = (x.T * delta + mean).T
+    dim = x.shape[0]
+    sf = 0.8
+    ss = np.array([1.2, 0.3, 1, 0.3, 1.6, 0.8, 1.4, 0.7, 2, 1.5])
+    w = 1 + 0.25*(x.T - ss - 1).T
+    y = np.sin(sf*np.pi*w[0])**2
+    y = y + (1 + 10*np.sin(sf*np.pi*w[:dim-1]+1)**2).sum(axis=0)
+    y = y + (1 + np.sin(2*sf*np.pi*w[dim-1])**2) * (w[dim-1]-1)**2
+    return y.reshape(1, -1)
+
+def Ackley1_high(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:,1] - bounds[:,0]
+    x = (x.T * delta + mean).T
+    y = 20 + np.exp(1) - 20*np.exp(-0.2*np.sqrt((x**2).mean(axis=0))) - np.exp(np.cos(2*np.pi*x).mean(axis=0))
+    return y.reshape(1, -1)
+
+def Ackley1_low(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:,1] - bounds[:,0]
+    x = (x.T * delta + mean).T
+    sf = 1.3
+    ss = np.array([1.3, 0.1, 1.4, 0.8, 1.7, 1, 1.5, 0.6, 2, 0.4])
+    y = 20 + np.exp(1) - 20*np.exp(-0.2*np.sqrt(((x.T - ss)**2).mean(axis=1))) - np.exp(np.cos(2*sf*np.pi*x.T - ss).mean(axis=1))
+    return y.reshape(1, -1)
+
+def Ackley2_high(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:,1] - bounds[:,0]
+    x = (x.T * delta + mean).T
+    y = 20 + np.exp(1) - 20*np.exp(-0.2*np.sqrt((x**2).mean(axis=0))) - np.exp(np.cos(2*np.pi*x).mean(axis=0))
+    return y.reshape(1, -1)
+
+def Ackley2_low(x, bounds):
+    mean = bounds.mean(axis=1)
+    delta = bounds[:,1] - bounds[:,0]
+    x = (x.T * delta + mean).T
+    sf = 1.3
+    ss = np.array([1.2, 0.2, 1.4, 0.8, 1.8, 1, 1.6, 0.6, 2, 0.4, 1.3, 0.3, 1.5, 0.9, 1.9, 1.1, 1.7, 0.7, 2.1, 0.5])
+    y = 20 + np.exp(1) - 20 * np.exp(-0.2*np.sqrt(((x.T - ss)**2).mean(axis=1))) - np.exp(np.cos(2*sf*np.pi*x.T - ss).mean(axis=1))
+    return y.reshape(1, -1)
+
 def get_funct(funct):
     if funct == 'branin':
         return [branin_low, branin_high]
@@ -198,6 +300,18 @@ def get_funct(funct):
         return [hartmann6d_low, hartmann6d_high]
     elif funct == 'pump_charge':
         return [pump_charge_low, pump_charge_high]
+    elif funct == 'Ackley1':
+        return [Ackley1_low, Ackley1_high]
+    elif funct == 'Ackley2':
+        return [Ackley2_low, Ackley2_high]
+    elif funct == 'ellipsoid':
+        return [ellipsoid_low, ellipsoid_high]
+    elif funct == 'Dixon_Price':
+        return [Dixon_Price_low, Dixon_Price_high]
+    elif funct == 'Styblinski_Tang':
+        return [Styblinski_Tang_low, Styblinski_Tang_high]
+    elif funct == 'Levy':
+        return [Levy_low, Levy_high]
     else:
         return [branin_low, branin_high]
     
