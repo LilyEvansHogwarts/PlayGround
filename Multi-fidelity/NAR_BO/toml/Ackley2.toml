@@ -6,5 +6,5 @@ scale = [0.2]
 bfgs_iter = [2000]
 iteration = 300
 K = 200
-gamma = 0.01
+gamma = 0.003
 num_points = 1

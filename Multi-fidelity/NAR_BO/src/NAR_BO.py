@@ -67,7 +67,7 @@ class NAR_BO:
         num = idx.sum()
         num_seed = np.minimum(self.dataset['high_y'].shape[1], 5)
         idx = np.argsort(idx)[-num:]
-        idx1 = np.random.randint(1, self.dim, num)
+        idx1 = np.random.randint(0, self.dim, num)
         idx2 = np.random.randint(0, num_seed, num)
         idx3 = np.random.randint(0, num_seed, num)
         for i in range(num):
