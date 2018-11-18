@@ -9,6 +9,7 @@ import multiprocessing
 from get_dataset import *
 import pickle
 import matplotlib.pyplot as plt
+import GPy
 
 def high(x, bounds):
     tmp = low(x, bounds)
@@ -73,12 +74,38 @@ def make_figure(model, dataset, test_x, test_y):
     plt.ylabel('y', {'size':12})
 
     plt.subplot(212)
+    X = dataset['high_x'].T
+    Y = dataset['high_y'].T
+    kernel = GPy.kern.RBF(input_dim=1)
+    m = GPy.models.GPRegression(X,Y,kernel)
+    m.kern.variance = np.var(Y)
+    m.kern.lengthscale = np.std(X)
+    m.likelihood.variance = 0.01 * np.var(Y)
+    m.optimize()
+    y1, y2 = m.predict(test_x.T, full_cov=True)
+    py = y1[:,0]
+    ps = np.sqrt(np.diag(y2))
+    plt.plot(high_x[0], high_y[0], 'r*', markersize=3, label='high-fidelity data')
+    plt.plot(test_x[0], test_y[0], 'r-', label='exact', linewidth=1)
+    plt.plot(test_x[0], py, 'b--', label='prediction', linewidth=1)
+    plt.fill_between(test_x[0], py-3*ps, py+3*ps, facecolor='lightgray', alpha=0.5, label='three std band')
+    plt.yticks(fontsize=8)
+    plt.ylabel('y', {'size':12})
+    plt.xticks(fontsize=8)
+    plt.xlabel('x', {'size':12})
+    plt.show()
+
+
+
+    '''
+    plt.subplot(212)
     data = {}
     data['train_x'] = dataset['high_x']
     data['train_y'] = dataset['high_y']
     model = GP(data, bfgs_iter=2000, debug=False)
-    model.train(scale=0.2)
+    model.train(scale=0.1)
     py, ps2 = model.predict(test_x)
+    print(ps2)
     ps2 = np.sqrt(ps2)
     plt.plot(high_x[0], high_y[0], 'r*', markersize=3, label='high-fidelity data')
     plt.plot(test_x[0], test_y[0], 'r-', label='exact', linewidth=1)
@@ -89,7 +116,7 @@ def make_figure(model, dataset, test_x, test_y):
     plt.xticks(fontsize=8)
     plt.xlabel('x', {'size':12})
     plt.show()
-
+    '''
 
 def stand_print(x, py, ps2, true):
     print('x', x)
@@ -130,5 +157,20 @@ with open('make_figure.pickle', 'rb') as f:
     dataset = pickle.load(f)
 model = NAR_BO(dataset, gamma, scale, bounds, bfgs_iter=bfgs_iter, debug=False)
 make_figure(model, dataset, test_x, test_y)
+'''
+data = {}
+data['train_x'] = dataset['high_x']
+data['train_y'] = dataset['high_y']
+model = GP(data, bfgs_iter=2000, debug=True)
+model.train(scale=0.0001)
+py, ps2 = model.predict(test_x, is_diag=1)
+ps2 = np.sqrt(ps2)
+print(ps2)
 
-
+plt.figure()
+plt.plot(test_x[0], py-3*ps2)
+plt.plot(test_x[0], py+3*ps2)
+plt.plot(test_x[0], py)
+plt.plot(dataset['high_x'][0], dataset['high_y'][0], 'r*')
+plt.show()
+'''

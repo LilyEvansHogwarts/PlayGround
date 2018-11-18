@@ -41,6 +41,7 @@ class GP:
             for i in range(self.dim):
                 theta[2+i] = np.maximum(-100, np.log(0.5*(self.train_x[i].max() - self.train_x[i].min())))
         theta[0] = np.log(np.std(self.train_y)) # sn2
+        # theta[1] = np.log(np.std(self.train_y))
         return theta
     
     def kernel1(self, x, xp, hyp):
