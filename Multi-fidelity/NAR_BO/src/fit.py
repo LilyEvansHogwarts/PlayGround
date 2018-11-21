@@ -1,5 +1,5 @@
 import autograd.numpy as np
-from autograd import grad
+from autograd import grad, value_and_grad
 import traceback
 import sys
 from .activations import *
@@ -10,38 +10,13 @@ from scipy.optimize import minimize, fmin_l_bfgs_b
 # tmp_loss is scalar
 def fit(x, model):
     best_x = np.copy(x)
-    best_loss = np.inf
     x0 = np.copy(x).reshape(-1)
+    best_loss = np.inf
+    tmp_loss = np.inf
     
-    '''
-    def loss(x):
-        nonlocal best_x
-        nonlocal best_loss
-        x = x.reshape(model.dim, -1)
-        EI = np.ones((x.shape[1]))
-        if model.best_constr[1] <= 0:
-            py, ps2 = model.models[0].predict_low(x)
-            ps = np.sqrt(ps2) + 0.000001
-            # ps = np.maximum(0.000001, ps)
-            tmp = -(py - model.best_y[0, 0])/ps
-            EI = ps*(tmp*cdf(tmp)+pdf(tmp))
-        PI = np.zeros((x.shape[1]))
-        for i in range(1, model.outdim):
-            py,  ps2 = model.models[i].predict_low(x)
-            ps = np.sqrt(ps2) + 0.000001
-            PI = PI*cdf(-py/ps)
-        tmp_loss = -EI*PI
-        tmp_loss = tmp_loss.sum()
-        if tmp_loss < best_loss:
-            best_loss = tmp_loss
-            best_x = np.copy(x)
-        return tmp_loss
-    '''
-
     # loss log
     def loss(x):
-        nonlocal best_x
-        nonlocal best_loss
+        nonlocal tmp_loss
         x = x.reshape(model.dim, -1)
         EI = np.zeros((x.shape[1]))
         if model.best_constr[1] <= 0:
@@ -73,68 +48,47 @@ def fit(x, model):
             '''
         tmp_loss = -EI-PI
         tmp_loss = tmp_loss.sum()
+        return tmp_loss
+
+    def callback(x):
+        nonlocal best_x
+        nonlocal best_loss
         if tmp_loss < best_loss:
             best_loss = tmp_loss
             best_x = np.copy(x)
-        return tmp_loss
     
-    gloss = grad(loss)
+    # gloss = grad(loss)
+    gloss = value_and_grad(loss)
     
     try:
-        fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5,0.5]]*x.size, maxiter=2000, m=100, iprint=model.debug)
+        fmin_l_bfgs_b(gloss, x0, bounds=[[-0.5,0.5]]*x0.size, maxiter=2000, m=100, iprint=model.debug, callback=callback)
     except np.linalg.LinAlgError:
         print('fit, Increase noise term and re-optimization')
         x0 = np.copy(best_x).reshape(-1)
         x0[0] += 0.01
         try:
-            fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5,0.5]]*x.size, maxiter=2000, m=10, iprint=model.debug)
+            fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5,0.5]]*x.size, maxiter=2000, m=10, iprint=model.debug, callback=callback)
         except:
             print('fit, Exception caught, L-BFGS early stopping...')
             print(traceback.format_exc())
     except:
         print('fit, Exception caught, L-BFGS early stopping...')
         print(traceback.format_exc())
-
-    if(np.isnan(best_loss) or np.isinf(best_loss)):
-        print('fit, Fail to buildGP model')
-        sys.exit(1)
+    
 
     return best_x
 
     
 def fit_test(x, model):
     best_x = np.copy(x)
-    best_loss = np.inf
     x0 = np.copy(x).reshape(-1)
+    best_loss = np.inf
+    tmp_loss = np.inf
     
-    '''
-    def loss(x):
-        nonlocal best_x
-        nonlocal best_loss
-        x = x.reshape(model.dim, -1)
-        EI = np.ones((x.shape[1]))
-        if model.best_constr[1] <= 0:
-            py, ps2 = model.models[0].predict(x)
-            ps = np.sqrt(ps2) + 0.000001
-            tmp = -(py - model.best_y[1, 0])/ps
-            EI = ps*(tmp*cdf(tmp)+pdf(tmp))
-        PI = np.ones((x.shape[1]))
-        for i in range(1, model.outdim):
-            py, ps2 = model.models[i].predict(x)
-            ps = np.sqrt(ps2) + 0.000001
-            PI = PI*cdf(-py/ps)
-        tmp_loss = -EI*PI
-        tmp_loss = tmp_loss.sum()
-        if tmp_loss < best_loss:
-            best_loss = tmp_loss
-            best_x = np.copy(x)
-        return tmp_loss
-    '''
     
     # loss log
     def loss(x):
-        nonlocal best_x
-        nonlocal best_loss
+        nonlocal tmp_loss
         x = x.reshape(model.dim, -1)
         EI = np.zeros((x.shape[1]))
         if model.best_constr[1] <= 0:
@@ -165,21 +119,25 @@ def fit_test(x, model):
             '''
         tmp_loss = -EI-PI
         tmp_loss = tmp_loss.sum()
+        return tmp_loss
+
+    def callback(x):
+        nonlocal best_x
+        nonlocal best_loss
         if tmp_loss < best_loss:
             best_loss = tmp_loss
             best_x = np.copy(x)
-        return tmp_loss
 
-    gloss = grad(loss)
+    gloss = value_and_grad(loss)
 
     try:
-        fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5, 0.5]]*x.size, maxiter=2000, m=100, iprint=model.debug)
+        fmin_l_bfgs_b(gloss, x0, bounds=[[-0.5, 0.5]]*x.size, maxiter=2000, m=100, iprint=model.debug, callback=callback)
     except np.linalg.LinAlgError:
         print('Fit test. Increase noise term and re-optimization')
         x0 = np.copy(best_x).reshape(-1)
         x0[0] += 0.01
         try:
-            fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5, 0.5]]*x.size, maxiter=2000, m=10, iprint=model.debug)
+            fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5, 0.5]]*x.size, maxiter=2000, m=10, iprint=model.debug, callback=callback)
         except:
             print('Fit test. Exception caught,  L-BFGS early stopping...')
             print(traceback.format_exc())
@@ -187,9 +145,6 @@ def fit_test(x, model):
         print('Fit test. Exception caught, L-BFGS early stopping...')
         print(traceback.format_exc())
 
-    if(np.isnan(best_loss) or np.isinf(best_loss)):
-        print('Fit test. Fail to build GP model')
-        sys.exit(1)
 
     return best_x
 
@@ -231,41 +186,41 @@ def fit_new_py(x, model):
     x0 = np.copy(x).reshape(-1)
     best_x = np.copy(x)
     best_loss = np.inf
+    tmp_loss = np.inf
 
     def loss(x0):
-        nonlocal best_x
-        nonlocal best_loss
+        nonlocal tmp_loss
         x0 = x0.reshape(model.dim, -1)
         py, ps2 = model.models[0].predict(x0)
         tmp_loss = py.sum()
         for i in range(1, model.outdim):
             py, ps2 = model.models[0].predict(x0)
             tmp_loss += np.maximum(0, py).sum()
+        return tmp_loss
+
+    def callback(x):
+        nonlocal best_loss
+        nonlocal best_x
         if tmp_loss < best_loss:
             best_loss = tmp_loss
-            best_x = np.copy(x0)
-        return tmp_loss
+            best_x = np.copy(x)
     
-    gloss = grad(loss)
+    gloss = value_and_grad(loss)
 
     try:
-        fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5, 0.5]]*x.size, maxiter=2000, m=100, iprint=model.debug)
+        fmin_l_bfgs_b(gloss, x0, bounds=[[-0.5, 0.5]]*x.size, maxiter=2000, m=100, iprint=model.debug, callback=callback)
     except np.linalg.LinAlgError:
         print('Fit_new_py. Increase noise term and re-optimization')
         x0 = np.copy(best_x).reshape(-1)
         x0[0] += 0.01
         try:
-            fmin_l_bfgs_b(loss, x0, gloss, bounds=[[-0.5, 0.5]]*x.size, maxiter=2000, m=10, iprint=model.debug)
+            fmin_l_bfgs_b(gloss, x0, bounds=[[-0.5, 0.5]]*x.size, maxiter=2000, m=10, iprint=model.debug, callback=callback)
         except:
             print('Fit_new_py. Exception caught, L-BFGS early stopping...')
             print(traceback.format_exc())
     except:
         print('Fit_new_py. Exception caught, L-BFGS early stopping...')
         print(traceback.format_exc())
-
-    if(np.isnan(best_loss) or np.isinf(best_loss)):
-        print('Fit_new_py. Fail to build GP model')
-        sys.exit(1)
 
     return best_x
 

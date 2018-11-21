@@ -1,8 +1,11 @@
 import autograd.numpy as np
 from autograd import grad
-from scipy.optimize import fmin_l_bfgs_b
+from scipy.optimize import fmin_l_bfgs_b, minimize
 import traceback
 import sys
+import autograd.scipy.stats.multivariate_normal as mvn
+from autograd import value_and_grad
+
 
 def chol_inv(L, y):
     v = np.linalg.solve(L, y)
@@ -68,48 +71,43 @@ class GP:
             return self.kernel2(x, xp, hyp)
         else:
             return self.kernel1(x, xp, hyp)
-        
-    def neg_likelihood(self, theta):
+
+    def neg_log_likelihood(self, theta):
         sn2 = np.exp(theta[0])
         hyp = theta[1:]
-
-        K = self.kernel(self.train_x, self.train_x, hyp) + sn2*np.eye(self.num_train)
+         
+        K = self.kernel(self.train_x, self.train_x, hyp) + sn2 * np.eye(self.num_train)
         L = np.linalg.cholesky(K)
 
         logDetK = np.sum(np.log(np.diag(L)))
         alpha = chol_inv(L, self.train_y.T)
         neg_likelihood = 0.5*(np.dot(self.train_y, alpha) + self.num_train*np.log(2*np.pi)) + logDetK
-        if(np.isnan(neg_likelihood)):
-            neg_likelihood = np.inf
-
-        if neg_likelihood < self.loss:
-            self.loss = neg_likelihood
-            self.theta = theta.copy()
-            self.K = K.copy()
-            self.L = L.copy()
-
+        self.tmp = neg_likelihood
         return neg_likelihood
 
-    def train(self, scale=1.0):
-        theta = self.rand_theta(scale)
+    def train(self, scale=0.2):
+        theta0 = self.rand_theta(scale)
         self.loss = np.inf
-        theta0 = np.copy(theta)
-        self.theta = theta0.copy()
+        self.theta = np.copy(theta0)
 
         def loss(theta):
-            nlz = self.neg_likelihood(theta)
+            nlz = self.neg_log_likelihood(theta)
             return nlz
 
-        gloss = grad(loss)
+        def callback(theta):
+            if self.tmp < self.loss:
+                self.loss = self.tmp
+                self.theta = np.copy(theta)
 
+        gloss = value_and_grad(loss)
         try:
-            fmin_l_bfgs_b(loss, theta0, gloss, maxiter=self.bfgs_iter, m = 100, iprint=self.debug)
+            fmin_l_bfgs_b(gloss, theta0, maxiter=self.bfgs_iter, m=100, iprint=self.debug, callback=callback)
         except np.linalg.LinAlgError:
-            print('GP. Increase noise term and re-optimization')
+            print('GP. Increase noise term and re-optimization.')
             theta0 = np.copy(self.theta)
             theta0[0] += np.log(10)
             try:
-                fmin_l_bfgs_b(loss, theta0, gloss, maxiter=self.bfgs_iter, m=10, iprint=self.debug)
+                fmin_l_bfgs_b(gloss, theta0, maxiter=self.bfgs_iter, m=10, iprint=self.debug, callback=callback)
             except:
                 print('GP. Exception caught, L-BFGS early stopping...')
                 if self.debug:
@@ -118,17 +116,17 @@ class GP:
             print('GP. Exception caught, L-BFGS early stopping...')
             if self.debug:
                 print(traceback.format_exc())
-
-        if(np.isinf(self.loss) or np.isnan(self.loss)):
-            print('GP. Fail to build GP model')
-            sys.exit(1)
-
+        
+        sn2 = np.exp(self.theta[0])
+        hyp = self.theta[1:]
+        K = self.kernel(self.train_x, self.train_x, hyp) + sn2 * np.eye(self.num_train)
+        self.L = np.linalg.cholesky(K)
         self.alpha = chol_inv(self.L, self.train_y.T)
         if self.k:
             self.for_diag = np.exp(self.theta[1]) * np.exp(self.theta[3]) + np.exp(self.theta[3+self.dim])
         else:
             self.for_diag = np.exp(self.theta[1])
-        print('GP. Finished training process')
+        print('GP. Finished training process.')
 
     def predict(self, test_x, is_diag=1):
         sn2 = np.exp(self.theta[0])
@@ -150,4 +148,4 @@ class GP:
         py = py * self.std + self.mean
         ps2 = ps2 * (self.std**2)
         return py, ps2
-    
+

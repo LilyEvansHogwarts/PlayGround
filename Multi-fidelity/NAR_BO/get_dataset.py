@@ -240,7 +240,7 @@ def Levy_high(x, bounds):
     dim = x.shape[0]
     w = 1 + 0.25*(x-1)
     y = np.sin(np.pi*w[0])**2
-    y = y + (1 + 10*np.sin(np.pi*w[:dim-1]+1)**2).sum(axis=0)
+    y = y + ((w[:dim-1] - 1)**2 * (1 + 10*np.sin(np.pi*w[:dim-1]+1)**2)).sum(axis=0)
     y = y + (1 + np.sin(2*np.pi*w[dim-1])**2) * (w[dim-1]-1)**2
     return y.reshape(1, -1)
 
@@ -253,7 +253,7 @@ def Levy_low(x, bounds):
     ss = np.array([1.2, 0.3, 1, 0.3, 1.6, 0.8, 1.4, 0.7, 2, 1.5])
     w = 1 + 0.25*(x.T - ss - 1).T
     y = np.sin(sf*np.pi*w[0])**2
-    y = y + (1 + 10*np.sin(sf*np.pi*w[:dim-1]+1)**2).sum(axis=0)
+    y = y + ((w[:dim-1] - 1)**2 * (1 + 10*np.sin(sf*np.pi*w[:dim-1]+1)**2)).sum(axis=0)
     y = y + (1 + np.sin(2*sf*np.pi*w[dim-1])**2) * (w[dim-1]-1)**2
     return y.reshape(1, -1)
 

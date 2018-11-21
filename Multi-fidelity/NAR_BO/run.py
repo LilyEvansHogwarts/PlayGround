@@ -71,6 +71,7 @@ while (dataset['high_y'].shape[1] - num[1]) <= iteration:
         # x0 = fit_py(x0, model, name)
         x0 = fit_new_py(x0, model)
         x0 = fit_test(x0, model)
+        x0 = x0.reshape(model.dim,-1)
         wEI_tmp = model.wEI(x0)
         return x0, wEI_tmp
 
