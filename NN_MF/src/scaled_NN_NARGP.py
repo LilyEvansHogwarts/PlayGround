@@ -2,8 +2,8 @@ import autograd.numpy as np
 from scipy.optimize import fmin_l_bfgs_b
 from autograd import value_and_grad
 import traceback
-from activations import *
-from NN import NN
+from .activations import *
+from .NN import NN
 
 def chol_inv(L, y):
     v = np.linalg.solve(L, y)
@@ -241,9 +241,40 @@ class GP:
         ps2 = np.abs(ps2)
         return py, ps2
 
-        
+class NARGP:
+    def __init__(self, num_model, dataset, layer_sizes, activations, l1=0, l2=0, bfgs_iter=100, debug=False):
+        self.low_x = dataset['low_x']
+        self.low_y = dataset['low_y']
+        self.high_x = dataset['high_x']
+        self.high_y = dataset['high_y']
+        self.layer_sizes = layer_sizes
+        self.activations = activations
+        self.l1 = l1
+        self.l2 = l2
+        self.bfgs_iter = bfgs_iter
+        self.debug = debug
+        self.num_model = num_model
 
+    def train(self, scale=0.2):
+        self.model1 = Bagging(self.num_model, self.low_x, self.low_y, self.layer_sizes, self.activations, l1=self.l1, l2=self.l2, bfgs_iter=self.bfgs_iter, debug=self.debug)
+        self.model1.train(scale=scale)
+        mu, _ = self.model1.predict(self.high_x)
+        tmp = np.concatenate((self.high_x, mu.reshape((1,-1))))
+        self.model2 = GP(tmp, self.high_y, bfgs_iter=self.bfgs_iter, debug=self.debug)
+        self.model2.train(scale=scale)
 
+    def predict(self, test_x):
+        nsamples = 100
+        py1, ps21 = self.model1.predict(test_x)
+        Z = np.random.multivariate_normal(py1, ps21, nsamples)
+        pys = np.zeros((nsamples, test_x.shape[1]))
+        ps2s = np.zeros((nsamples, test_x.shape[1]))
+        for i in range(nsamples):
+            pys[i], tmp = self.model2.predict(np.concatenate((test_x, py1.reshape((1,-1)))))
+            ps2s[i] = np.diag(tmp)
+        ps2 = ps2s.mean(axis=0) + pys.var(axis=0)
+        py = pys.mean(axis=0)
+        return py, ps2
 
 
 

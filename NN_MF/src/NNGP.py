@@ -2,8 +2,8 @@ import autograd.numpy as np
 from scipy.optimize import fmin_l_bfgs_b
 import traceback
 from autograd import value_and_grad
-from NN import NN
-from activations import *
+from .NN import NN
+from .activations import *
 
 def chol_inv(L, y):
     v = np.linalg.solve(L, y)
@@ -101,37 +101,4 @@ class NNGP:
         ps2 = sn2 + sn2 * np.dot(phi.T, chol_inv(self.L, phi))
         return py, ps2
 
-class Bagging:
-    def __init__(self, num_model, train_x, train_y, layer_sizes, activations, l1=0, l2=0, bfgs_iter=100, debug=False):
-        self.train_x = train_x
-        self.train_y = train_y
-        self.mean = self.train_y.mean()
-        self.std = self.train_y.std()
-        self.train_y = (self.train_y.reshape(-1) - self.mean)/self.std
-        self.layer_sizes = layer_sizes
-        self.activations = activations
-        self.l1 = l1
-        self.l2 = l2
-        self.bfgs_iter = bfgs_iter
-        self.debug = debug
-        self.num_model = num_model
-
-    def train(self, scale=0.2):
-        self.models = []
-        for i in range(self.num_model):
-            model = NNGP(self.train_x, self.train_y, self.layer_sizes, self.activations, l1=self.l1, l2=self.l2, bfgs_iter=self.bfgs_iter, debug=self.debug)
-            model.train(scale=scale)
-            self.models.append(model)
-
-    def predict(self, test_x):
-        pys = np.zeros((self.num_model, test_x.shape[1]))
-        ps2 = np.zeros((test_x.shape[1], test_x.shape[1]))
-        for i in range(self.num_model):
-            pys[i], tmp = self.models[i].predict(test_x)
-            ps2 += tmp/self.num_model
-        py = pys.mean(axis=0) * self.std + self.mean
-        ps2 = ps2 + pys.var(axis=0)
-        ps2 = ps2*(self.std**2)
-        return py, ps2
-        
 

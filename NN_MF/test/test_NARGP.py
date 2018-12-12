@@ -1,5 +1,9 @@
+import sys
+sys.path.append('..')
+
 import autograd.numpy as np
-from NARGP import NARGP
+from src.NARGP import NARGP
+from print_out import print_out
 
 def branin_high(x, bounds):
     mean = bounds.mean(axis=1)
@@ -24,7 +28,7 @@ def get_dataset(funct, num, bounds):
     x = np.random.uniform(-0.5, 0.5, (dim, num.sum()))
     dataset = {}
     dataset['low_x'] = x[:,:num[0]]
-    dataset['high_x'] = x[:,num[0]:]
+    dataset['high_x'] = dataset['low_x'][:,:num[1]]
     dataset['low_y'] = funct[0](dataset['low_x'], bounds)
     dataset['high_y'] = funct[1](dataset['high_x'], bounds)
     return dataset
@@ -32,15 +36,12 @@ def get_dataset(funct, num, bounds):
 bounds = np.array([[-5,10],[0,15]])
 dataset = get_dataset([branin_low, branin_high], np.array([100, 30]), bounds)
 
-model = NARGP(dataset, bfgs_iter=100)
-model.train(scale=0.2)
-
 test_x = np.random.uniform(-0.5, 0.5, (bounds.shape[0], 20))
 test_y = branin_high(test_x, bounds)
-print(test_y)
 
+model = NARGP(dataset, bfgs_iter=100)
+model.train(scale=0.2)
 py, ps2 = model.predict(test_x)
-print(py)
-print(test_y - py)
-print(np.sqrt(ps2))
+
+print_out(test_y, py, ps2)
 

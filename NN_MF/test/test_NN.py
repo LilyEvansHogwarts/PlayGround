@@ -1,5 +1,9 @@
-from activations import *
-from NN import NN
+import sys
+sys.path.append('..')
+
+import autograd.numpy as np
+from src.activations import *
+from src.NN import NN
 
 dim = 2
 layer_sizes = np.array([3,3])

@@ -1,5 +1,5 @@
 import autograd.numpy as np
-from activations import *
+from .activations import *
 
 class NN:
     def __init__(self, layer_sizes, activations):

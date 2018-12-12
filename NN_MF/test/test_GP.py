@@ -1,7 +1,9 @@
-import autograd.numpy as np
-from NNGP import Bagging
-from activations import *
+import sys
+sys.path.append('..')
 
+import autograd.numpy as np
+from src.GP import GP
+from print_out import print_out
 
 def branin(x, bounds):
     mean = bounds.mean(axis=1)
@@ -23,18 +25,11 @@ def get_dataset(funct, num, bounds):
 bounds = np.array([[-5,10],[0,15]])
 train_x, train_y = get_dataset(branin, 100, bounds)
 
-layer_sizes = np.array([100]*3)
-activations = [relu]*3
-
-model = Bagging(5, train_x, train_y, layer_sizes, activations, l1=0, l2=0, bfgs_iter=100, debug=True)
-model.train(scale=0.4)
-
 test_x = np.random.uniform(-0.5, 0.5, (bounds.shape[0], 20))
 test_y = branin(test_x, bounds)
-print(test_y)
 
+model = GP(train_x, train_y)
+model.train(scale=0.4)
 py, ps2 = model.predict(test_x)
-print(py)
-print(test_y - py)
-print(np.sqrt(np.diag(ps2)))
 
+print_out(test_y, py, ps2)
