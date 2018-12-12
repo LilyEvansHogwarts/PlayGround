@@ -8,10 +8,10 @@ def chol_inv(L, y):
     return np.linalg.solve(L.T, v)
 
 class GP:
-    def __init__(self, train_x, train_y, k=0, bfgs_iter=100, debug=False):
+    def __init__(self, dataset, k=0, bfgs_iter=100, debug=False):
         self.k = k
-        self.train_x = train_x
-        self.train_y = train_y
+        self.train_x = dataset['train_x']
+        self.train_y = dataset['train_y']
         self.dim, self.num_train = self.train_x.shape
         self.bfgs_iter = bfgs_iter
         self.debug = debug

@@ -1,10 +1,9 @@
+import sys
+sys.path.append('..')
+
 import autograd.numpy as np
-import traceback
-from autograd import value_and_grad
-from scipy.optimize import fmin_l_bfgs_b
-from activations import *
-from NN import NN
-from scaled_NN_NARGP import scaled_NNGP, Bagging, GP, NARGP
+from src.activations import *
+from src.scaled_NN_NARGP import scaled_NN_NARGP
 from print_out import *
 
 def branin_high(x, bounds):
@@ -27,16 +26,16 @@ def branin_low(x, bounds):
 
 def get_dataset(funct, num, bounds):
     dim = bounds.shape[0]
-    x = np.random.uniform(-0.5, 0.5, (dim, num.sum()))
+    x = np.random.uniform(-0.5, 0.5, (dim, num[0]))
     dataset = {}
-    dataset['low_x'] = x[:,:num[0]]
-    dataset['high_x'] = x[:,num[0]:]
+    dataset['low_x'] = x
+    dataset['high_x'] = x[:,:num[1]]
     dataset['low_y'] = funct[0](dataset['low_x'], bounds)
     dataset['high_y'] = funct[1](dataset['high_x'], bounds)
     return dataset
 
 bounds = np.array([[-5,10],[0,15]])
-dataset = get_dataset([branin_low, branin_high], np.array([100, 30]), bounds)
+dataset = get_dataset([branin_low, branin_high], np.array([300, 100]), bounds)
 
 test_x = np.random.uniform(-0.5, 0.5, (bounds.shape[1], 20))
 test_y = branin_high(test_x, bounds)
@@ -44,25 +43,9 @@ test_y = branin_high(test_x, bounds)
 layer_sizes = np.array([100]*3)
 activations = [relu]*3
 
-model = NARGP(5, dataset, layer_sizes, activations, l1=0, l2=0, bfgs_iter=500, debug=True)
+model = scaled_NN_NARGP(5, dataset, layer_sizes, activations, l1=0, l2=0, bfgs_iter=100, debug=False)
 model.train(scale=0.2)
 py, ps2 = model.predict(test_x)
 
 print_out(test_y, py, ps2)
 
-'''
-model1 = Bagging(5, dataset['low_x'], dataset['low_y'], layer_sizes, activations, l1=0, l2=0, bfgs_iter=500, debug=False)
-model1.train(scale=0.2)
-mu, _ = model1.predict(dataset['high_x'])
-high_x = np.concatenate((dataset['high_x'], mu.reshape((1,-1))))
-model = GP(high_x, dataset['high_y'], debug=False)
-model.train(scale=0.2)
-
-print(test_y)
-mu, _ = model1.predict(test_x)
-test_x = np.concatenate((test_x, mu.reshape((1,-1))))
-py, ps2 = model.predict(test_x)
-print(py)
-print(test_y - py)
-print(np.sqrt(np.diag(ps2)))
-'''

@@ -18,17 +18,18 @@ def branin(x, bounds):
 
 def get_dataset(funct, num, bounds):
     dim = bounds.shape[0]
-    train_x = np.random.uniform(-0.5, 0.5, (dim, num))
-    train_y = funct(train_x, bounds)
-    return train_x, train_y
+    dataset = {}
+    dataset['train_x'] = np.random.uniform(-0.5, 0.5, (dim, num))
+    dataset['train_y'] = funct(dataset['train_x'], bounds)
+    return dataset
 
 bounds = np.array([[-5,10],[0,15]])
-train_x, train_y = get_dataset(branin, 100, bounds)
+dataset = get_dataset(branin, 100, bounds)
 
 test_x = np.random.uniform(-0.5, 0.5, (bounds.shape[0], 20))
 test_y = branin(test_x, bounds)
 
-model = GP(train_x, train_y)
+model = GP(dataset)
 model.train(scale=0.4)
 py, ps2 = model.predict(test_x)
 

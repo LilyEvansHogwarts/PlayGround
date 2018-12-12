@@ -14,14 +14,19 @@ class NARGP:
         self.debug = debug
 
     def train(self, scale=0.2):
-        self.model1 = GP(self.low_x, self.low_y, k=0, bfgs_iter=self.bfgs_iter, debug=self.debug)
+        data = {}
+        data['train_x'] = self.low_x
+        data['train_y'] = self.low_y
+        self.model1 = GP(data, k=0, bfgs_iter=self.bfgs_iter, debug=self.debug)
         self.model1.train(scale=scale)
 
         mu, _ = self.model1.predict(self.high_x)
         v = np.concatenate((self.high_x, mu.reshape((1,-1))))
-        self.model2 = GP(v, self.high_y, k=1, bfgs_iter=self.bfgs_iter, debug=self.debug)
+        data['train_x'] = v
+        data['train_y'] = self.high_y
+        self.model2 = GP(data, k=1, bfgs_iter=self.bfgs_iter, debug=self.debug)
         self.model2.train(scale=scale)
-        print('NAR_GP. Finish training NAR_GP.')
+        print('NARGP. Finish training')
 
     def predict(self, test_x):
         nsamples = 100

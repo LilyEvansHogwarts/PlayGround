@@ -10,9 +10,9 @@ def chol_inv(L, y):
     return np.linalg.solve(L.T, v)
 
 class NNGP:
-    def __init__(self, train_x, train_y, layer_sizes, activations, l1=0, l2=0, bfgs_iter=2000, debug=False):
-        self.train_x = train_x
-        self.train_y = train_y 
+    def __init__(self, dataset, layer_sizes, activations, l1=0, l2=0, bfgs_iter=2000, debug=False):
+        self.train_x = dataset['train_x']
+        self.train_y = dataset['train_y']
         self.bfgs_iter = bfgs_iter
         self.debug = debug
         self.NN = NN(layer_sizes, activations)
@@ -21,6 +21,9 @@ class NNGP:
         self.m = layer_sizes[-1]
         self.l1 = l1
         self.l2 = l2
+        self.mean = self.train_y.mean()
+        self.std = self.train_y.std()
+        self.train_y = (self.train_y.reshape(-1) - self.mean)/self.std
 
     def rand_theta(self, scale):
         theta = scale * np.random.randn(self.num_param)
@@ -72,17 +75,17 @@ class NNGP:
         try:
             fmin_l_bfgs_b(gloss, theta0, maxiter=self.bfgs_iter, m=100, iprint=self.debug, callback=call_back_funct)
         except np.linalg.LinAlgError:
-            print('NN_GP. Increase noise term and re-optimization.')
+            print('NNGP. Increase noise term and re-optimization.')
             theta0 = np.copy(self.theta)
             theta0[0] += np.log(10)
             try:
                 fmin_l_bfgs_b(gloss, theta0, maxiter=self.bfgs_iter, m=10, iprint=self.debug, callback=call_back_funct)
             except:
-                print('GP_NN. Exception caught, L-BFGS early stopping...')
+                print('NNGP. Exception caught, L-BFGS early stopping...')
                 if self.debug:
                     print(traceback.format_exc())
         except:
-            print('GP_NN. Exception caught, L-BFGS early stopping...')
+            print('NNGP. Exception caught, L-BFGS early stopping...')
             if self.debug:
                 print(traceback.format_exc())
 
@@ -92,13 +95,14 @@ class NNGP:
         A = np.dot(Phi, Phi.T) + (self.m*sn2/sp2)*np.eye(self.m)
         self.L = np.linalg.cholesky(A)
         self.alpha = chol_inv(self.L, Phi_y)
-        print('GP_NN. Finish training model')
+        print('NNGP. Finish training model')
 
     def predict(self, test_x):
         sn2, sp2, w = self.split_theta(self.theta)
         phi = self.NN.predict(w, test_x)
-        py = np.dot(phi.T, self.alpha)
+        py = np.dot(phi.T, self.alpha) * self.std + self.mean
         ps2 = sn2 + sn2 * np.dot(phi.T, chol_inv(self.L, phi))
+        ps2 = ps2 * (self.std**2)
         return py, ps2
 
 

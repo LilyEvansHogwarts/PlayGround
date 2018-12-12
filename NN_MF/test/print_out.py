@@ -7,7 +7,10 @@ def print_out(test_y, py, ps2):
     hues.info('prediction')
     print(py)
     hues.info('uncertainty')
-    print(np.sqrt(np.diag(ps2)))
+    if ps2.ndim == 1:
+        print(np.sqrt(ps2))
+    else:
+        print(np.sqrt(np.diag(ps2)))
     delta = test_y - py
     hues.info('delta')
     print(delta)

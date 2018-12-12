@@ -2,8 +2,11 @@ import sys
 sys.path.append('..')
 
 import autograd.numpy as np
-from src.NARGP import NARGP
-from print_out import print_out
+from print_out import *
+from src.activations import *
+from src.new_NARGP import new_NARGP
+from src.Bagging import Bagging
+from src.NNGP import NNGP
 
 def branin_high(x, bounds):
     mean = bounds.mean(axis=1)
@@ -36,12 +39,43 @@ def get_dataset(funct, num, bounds):
 bounds = np.array([[-5,10],[0,15]])
 dataset = get_dataset([branin_low, branin_high], np.array([300, 100]), bounds)
 
-test_x = np.random.uniform(-0.5, 0.5, (bounds.shape[0], 20))
+test_x = np.random.uniform(-0.5, 0.5, (bounds.shape[1], 20))
 test_y = branin_high(test_x, bounds)
 
-model = NARGP(dataset, bfgs_iter=100)
+layer_sizes = np.array([20]*3)
+activations = [relu]*3
+
+model = new_NARGP(5, dataset, layer_sizes, activations, bfgs_iter=100)
 model.train(scale=0.2)
 py, ps2 = model.predict(test_x)
-
 print_out(test_y, py, ps2)
 
+'''
+data = {}
+data['train_x'] = dataset['low_x']
+data['train_y'] = dataset['low_y']
+
+model1 = Bagging(NNGP, 5, data, layer_sizes, activations, bfgs_iter=100)
+model1.train(scale=0.2)
+mu, _ = model1.predict(dataset['high_x'])
+
+
+data['train_x'] = np.concatenate((dataset['high_x'], mu.reshape((1,-1))))
+data['train_y'] = dataset['high_y']
+model = GP(data, layer_sizes, activations, bfgs_iter=100, debug=False)
+model.train(scale=0.2)
+
+mu, v = model1.predict(test_x)
+nsamples = 100
+Z = np.random.multivariate_normal(mu, v, nsamples)
+pys = np.zeros((nsamples, test_x.shape[1]))
+ps2 = np.zeros(test_x.shape[1])
+for i in range(nsamples):
+    v = np.concatenate((test_x, Z[i].reshape((1,-1))))
+    pys[i], tmp = model.predict(v)
+    ps2 += np.diag(tmp)/nsamples
+py = pys.mean(axis=0)
+ps2 += pys.var(axis=0)
+
+print_out(test_y, py, ps2)
+'''

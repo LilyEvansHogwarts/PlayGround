@@ -1,9 +1,10 @@
-import sys
-sys.path.append('..')
-
+from src.NARGP import NARGP 
+from src.scaled_NN_NARGP import scaled_NN_NARGP
+from src.new_NARGP import new_NARGP
+from src.activations import *
 import autograd.numpy as np
-from src.NARGP import NARGP
-from print_out import print_out
+from test.print_out import *
+
 
 def branin_high(x, bounds):
     mean = bounds.mean(axis=1)
@@ -35,13 +36,26 @@ def get_dataset(funct, num, bounds):
 
 bounds = np.array([[-5,10],[0,15]])
 dataset = get_dataset([branin_low, branin_high], np.array([300, 100]), bounds)
-
 test_x = np.random.uniform(-0.5, 0.5, (bounds.shape[0], 20))
 test_y = branin_high(test_x, bounds)
 
-model = NARGP(dataset, bfgs_iter=100)
-model.train(scale=0.2)
-py, ps2 = model.predict(test_x)
+model1 = NARGP(dataset)
+model1.train(scale=0.2)
+py, ps2 = model1.predict(test_x)
 
 print_out(test_y, py, ps2)
 
+num_layer = 3
+layer_sizes = np.array([100]*num_layer)
+activations = [relu]*num_layer
+model2 = scaled_NN_NARGP(5, dataset, layer_sizes, activations, bfgs_iter=500)
+model2.train(scale=0.2)
+py, ps2 = model2.predict(test_x)
+
+print_out(test_y, py, ps2)
+
+model3 = new_NARGP(5, dataset, layer_sizes, activations, bfgs_iter=500)
+model3.train(scale=0.2)
+py, ps2 = model3.predict(test_x)
+
+print_out(test_y, py, ps2)
