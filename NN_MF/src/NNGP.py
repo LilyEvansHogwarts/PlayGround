@@ -33,7 +33,7 @@ class NNGP:
 
     def split_theta(self, theta):
         sn2 = np.exp(2*theta[0])
-        sp2 = np.exp(2*theta[1])
+        sp2 = np.maximum(0.000001, np.exp(2*theta[1]))
         w = theta[2:]
         return sn2, sp2, w
 

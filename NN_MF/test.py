@@ -36,7 +36,7 @@ def get_dataset(funct, num, bounds):
 
 bounds = np.array([[-5,10],[0,15]])
 dataset = get_dataset([branin_low, branin_high], np.array([300, 100]), bounds)
-test_x = np.random.uniform(-0.5, 0.5, (bounds.shape[0], 20))
+test_x = np.random.uniform(-0.5, 0.5, (bounds.shape[0], 800))
 test_y = branin_high(test_x, bounds)
 
 model1 = NARGP(dataset)
@@ -48,14 +48,15 @@ print_out(test_y, py, ps2)
 num_layer = 3
 layer_sizes = np.array([100]*num_layer)
 activations = [relu]*num_layer
-model2 = scaled_NN_NARGP(5, dataset, layer_sizes, activations, bfgs_iter=500)
+model2 = scaled_NN_NARGP(5, dataset, layer_sizes, activations, l1=0, l2=0, bfgs_iter=800)
 model2.train(scale=0.2)
 py, ps2 = model2.predict(test_x)
 
 print_out(test_y, py, ps2)
-
-model3 = new_NARGP(5, dataset, layer_sizes, activations, bfgs_iter=500)
+'''
+model3 = new_NARGP(5, dataset, layer_sizes, activations, bfgs_iter=800)
 model3.train(scale=0.2)
 py, ps2 = model3.predict(test_x)
 
 print_out(test_y, py, ps2)
+'''
