@@ -2,13 +2,16 @@ import autograd.numpy as np
 from .activations import *
 
 class NN:
-    def __init__(self, layer_sizes, activations):
+    def __init__(self, dim, layer_sizes, activations):
+        self.dim = dim
         self.num_layers = len(layer_sizes)
         self.layer_sizes = np.copy(layer_sizes)
         self.activations = activations
+        self.num_param = self.calc_num_param()
+        
 
-    def num_param(self, dim):
-        pre_size = dim
+    def calc_num_param(self):
+        pre_size = self.dim
         result = 0
         for i in range(self.num_layers):
             result += (pre_size + 1) * self.layer_sizes[i]
@@ -30,8 +33,8 @@ class NN:
             start_idx += num_layer
         return out
 
-    def w_nobias(self, w, dim):
-        pre_size = dim
+    def w_nobias(self, w):
+        pre_size = self.dim
         start_idx = 0
         w_nobia = np.array([])
         for i in range(self.num_layers):

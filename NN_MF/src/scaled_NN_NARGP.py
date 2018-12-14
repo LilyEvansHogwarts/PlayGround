@@ -40,9 +40,13 @@ class scaled_NN_NARGP:
     def predict(self, test_x):
         nsamples = 100
         py1, ps21 = self.model1.predict(test_x)
+        print('Finish predicting model1')
+        np.savetxt('ps21', ps21)
+        ps21 = (ps21.T + ps21)*0.5
         Z = np.random.multivariate_normal(py1, ps21, nsamples)
         pys = np.zeros((nsamples, test_x.shape[1]))
         ps2 = np.zeros((test_x.shape[1], test_x.shape[1]))
+        print('start predict')
         for i in range(nsamples):
             pys[i], tmp = self.model2.predict(np.concatenate((test_x, py1.reshape((1,-1)))))
             ps2 += tmp/nsamples

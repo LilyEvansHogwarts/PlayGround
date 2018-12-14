@@ -31,7 +31,7 @@ dataset = get_dataset(branin, 100, bounds)
 layer_sizes = np.array([100]*3)
 activations = [relu]*3
 
-model = Bagging(scaled_NNGP, 5, dataset, layer_sizes, activations, l1=0, l2=0, bfgs_iter100, debug=False)
+model = Bagging(scaled_NNGP, 5, dataset, layer_sizes, activations, l1=0, l2=0, bfgs_iter=100, debug=False)
 model.train(scale=0.4)
 
 test_x = np.random.uniform(-0.5, 0.5, (bounds.shape[0], 20))

@@ -15,9 +15,9 @@ class scaled_NNGP:
         self.train_y = dataset['train_y'] 
         self.bfgs_iter = bfgs_iter
         self.debug = debug
-        self.NN = NN(layer_sizes, activations)
         self.dim, self.num_train = self.train_x.shape
-        self.num_param = 2 + self.dim + self.NN.num_param(self.dim)
+        self.NN = NN(self.dim, layer_sizes, activations)
+        self.num_param = 2 + self.dim + self.NN.num_param
         self.m = layer_sizes[-1]
         self.l1 = l1
         self.l2 = l2
@@ -52,7 +52,7 @@ class scaled_NNGP:
         datafit = ((self.train_y**2).sum() - np.dot(Phi_y, chol_inv(L, Phi_y)))/sn2
         NLML = 0.5*(datafit + logDetA + self.num_train*np.log(2*np.pi*sn2) - self.m*np.log(self.m*sn2/sp2))
         
-        w_nobias = self.NN.w_nobias(w, self.dim)
+        w_nobias = self.NN.w_nobias(w)
         l1_reg = self.l1 * np.abs(w_nobias).sum()
         l2_reg = self.l2 * np.dot(w_nobias, w_nobias)
         NLML += l1_reg + l2_reg

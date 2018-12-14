@@ -26,6 +26,5 @@ class Bagging:
             pys[i], tmp = self.models[i].predict(test_x)
             ps2 += tmp/self.num_model
         py = pys.mean(axis=0)
-        ps2 = ps2 + pys.var(axis=0)
-        ps2 = ps2 
+        ps2 = ps2 + pys.var(axis=0)*np.eye(test_x.shape[1])
         return py, ps2

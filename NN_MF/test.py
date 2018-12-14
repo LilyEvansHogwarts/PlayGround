@@ -48,7 +48,7 @@ print_out(test_y, py, ps2)
 num_layer = 3
 layer_sizes = np.array([100]*num_layer)
 activations = [relu]*num_layer
-model2 = scaled_NN_NARGP(5, dataset, layer_sizes, activations, l1=0, l2=0, bfgs_iter=800)
+model2 = scaled_NN_NARGP(5, dataset, layer_sizes, activations, l1=0, l2=0.0001, bfgs_iter=1000)
 model2.train(scale=0.2)
 py, ps2 = model2.predict(test_x)
 
